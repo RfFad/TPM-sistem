@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const app = express();
@@ -10,6 +11,8 @@ const app = express();
  */
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(cookieParser());
 
 /**
  * Static files
@@ -37,6 +40,14 @@ app.use('/prosesRekrut', prosesRoutes);
 const revisiRoutes = require('./routes/rekrutRoutes/revisiController');
 app.use('/revisi', revisiRoutes);
 
+const dokumenRoutes = require('./routes/dokumen/dokumenRoutes');
+app.use('/dokumen', dokumenRoutes);
+
+const authRoutes = require('./routes/auth/authRoutes');
+app.use('/auth', authRoutes);
+
+const user = require('./routes/develop/userRoutes')
+app.use('/user', user);
 /**
  * Server
  */
