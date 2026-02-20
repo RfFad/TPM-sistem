@@ -8,6 +8,7 @@ const dokumenController = require('../../controllers/dokumen/dokumenController')
 //router.post('/update/:id', dokumenController.update);
 //router.delete('/delete/:id', dokumenController.delete);
 router.get('/', dokumenController.page)
+router.put('/update', dokumenController.update)
 
 module.exports = router;
  
