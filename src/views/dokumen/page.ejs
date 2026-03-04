@@ -1,0 +1,309 @@
+ <%- include("../partials/header") %>
+ <%- include("../partials/sideNavbar") %>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Daftar Dokumen</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Daftar Dokumen</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+           
+
+            <div class="card">
+              <div class="card-header">
+               
+              <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+
+  <!-- JUDUL -->
+  <h3 class="card-title mb-2 mb-md-0">
+    Data Dokumen
+  </h3>
+
+  <!-- BUTTON -->
+  <button class="btn btn-success d-flex align-items-center px-3" id="btn-tambah" data-toggle="modal" data-target="#modal-default">
+    <i class="fas fa-plus mr-2"></i>
+    Tambahkan Data
+  </button>
+
+</div>
+
+              </div>
+              <!-- /.card-header -->
+          <div class="card-body">
+  <div id="table-wrapper"></div>
+</div>
+
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Tambahkan data</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+        <input type="hidden" id="id">
+
+        <div class="form-group">
+          <label>Nama Istilah</label>
+          <input type="text" id="nama_istilah" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Deskripsi</label>
+          <textarea id="deskripsi" class="form-control"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">
+    Batal
+  </button>
+
+  <!-- CREATE -->
+  <button type="button" id="btnCreate" class="btn btn-primary">
+    Simpan
+  </button>
+
+  <!-- UPDATE -->
+  <button type="button" id="btnUpdate" class="btn btn-warning" style="display:none">
+    Update
+  </button>
+</div>
+
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+
+  <%- include("../partials/footer") %>
+ <script>
+/* =======================
+   MODAL CLEANUP
+======================= */
+$('#modal-default').on('hidden.bs.modal', function () {
+  $('body').removeClass('modal-open');
+  $('.modal-backdrop').remove();
+
+  // reset form & button
+  $('#form')[0].reset();
+  $('#id').val('');
+  $('#btnCreate').show();
+  $('#btnUpdate').hide();
+});
+
+/* =======================
+   LOAD DATA
+======================= */
+function loadData() {
+  $.get('/dokumen/data', function (res) {
+
+    const data = res.data || res; // jaga-jaga format response
+
+    let tableHTML = `
+      <table id="example1" class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>No Doc</th>
+            <th>Nama Dokumen</th>
+            <th>Departemen</th>
+            <th>Created At</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    data.forEach((u, index) => {
+      tableHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${u.no_doc}</td>
+          <td>${u.nama_doc}</td>
+          <td>${u.departemen}</td>
+          <td>${u.tgl_new}</td>
+          <td>${u.status}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" onclick="edit(${u.id_daftar}, '${u.nama_istilah}', '${u.deskripsi}')"> Edit </button>
+            <button class="btn btn-danger btn-sm"
+              onclick="removeData(${u.id_doc})">
+              Hapus
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+
+    tableHTML += `</tbody></table>`;
+    $('#table-wrapper').html(tableHTML);
+
+    $('#example1').DataTable({
+      responsive: true,
+      autoWidth: false
+    });
+  });
+}
+
+/* =======================
+   OPEN CREATE MODAL
+======================= */
+$('#btn-tambah').on('click', function () {
+  $('#modal-title').text('Tambah Data');
+  $('#btnCreate').show();
+  $('#btnUpdate').hide();
+  $('#modal-default').modal('show');
+});
+
+/* =======================
+   OPEN EDIT MODAL
+======================= */
+function edit(id, nama, deskripsi) { 
+  isEdit = true;
+  $('#modal-title').text('Edit Data'); 
+  $('#id').val(id); $('#nama_istilah').val(nama); 
+  $('#deskripsi').val(deskripsi); 
+  
+  $('#btnCreate').hide();
+  $('#btnUpdate').show();
+
+  $('#modal-default').modal('show'); }
+
+/* =======================
+   CREATE
+======================= */
+function createData() {
+  const data = {
+    nama_istilah: $('#nama_istilah').val(),
+    deskripsi: $('#deskripsi').val()
+  };
+
+  if (!data.nama_istilah || !data.deskripsi) {
+    Swal.fire('Warning', 'Semua field wajib diisi', 'warning');
+    return;
+  }
+
+  $.post('/istilah/save', data, function (res) {
+    if (res.success) {
+      Swal.fire('Berhasil', res.message, 'success');
+      $('#modal-default').modal('hide');
+      loadData();
+    } else {
+      Swal.fire('Gagal', res.message, 'error');
+    }
+  }).fail(function (xhr) {
+    console.error('CREATE ERROR:', xhr);
+    Swal.fire('Error', 'Server error', 'error');
+  });
+}
+
+/* =======================
+   UPDATE
+======================= */
+function updateData() {
+  const id = $('#id').val();
+
+  const data = {
+    nama_istilah: $('#nama_istilah').val(),
+    deskripsi: $('#deskripsi').val()
+  };
+
+  if (!id) {
+    Swal.fire('Error', 'ID tidak ditemukan', 'error');
+    return;
+  }
+
+  if (!data.nama_istilah || !data.deskripsi) {
+    Swal.fire('Warning', 'Semua field wajib diisi', 'warning');
+    return;
+  }
+
+  $.post(`/istilah/update/${id}`, data, function (res) {
+    if (res.success) {
+      Swal.fire('Berhasil', res.message, 'success');
+      $('#modal-default').modal('hide');
+      loadData();
+    } else {
+      Swal.fire('Gagal', res.message, 'error');
+    }
+  }).fail(function (xhr) {
+    console.error('UPDATE ERROR:', xhr);
+    Swal.fire('Error', 'Server error', 'error');
+  });
+}
+
+/* =======================
+   DELETE
+======================= */
+function removeData(id) {
+  Swal.fire({
+    title: 'Yakin?',
+    text: 'Data akan dihapus',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Hapus'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: `/dokumen/delete/${id}`,
+        method: 'DELETE',
+        success: function (res) {
+          if (res.success) {
+            Swal.fire('Terhapus', res.message, 'success');
+            loadData();
+          } else {
+            Swal.fire('Gagal', res.message, 'error');
+          }
+        }
+      });
+    }
+  });
+}
+
+/* =======================
+   INIT
+======================= */
+$(document).ready(function () {
+  loadData();
+
+  $('#btnCreate').on('click', createData);
+  $('#btnUpdate').on('click', updateData);
+});
+</script>
+
