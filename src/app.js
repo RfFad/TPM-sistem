@@ -28,6 +28,8 @@ app.set('views', path.join(__dirname, 'views'));
 /**
  * Routes
  */
+
+
 const webRoutes = require('./routes/web');
 app.use('/', webRoutes);
 

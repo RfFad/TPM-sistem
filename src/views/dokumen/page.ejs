@@ -41,7 +41,6 @@
     <i class="fas fa-plus mr-2"></i>
     Tambahkan Data
   </button>
-
 </div>
 
               </div>
@@ -65,75 +64,240 @@
   <!-- /.content-wrapper -->
 
   <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Tambahkan data</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+  <div class="modal-dialog modal-lg"> <!-- BISA GANTI modal-lg JIKA MAU -->
+    <div class="modal-content">
+      
+      <div class="modal-header bg-primary">
+        <h4 class="modal-title text-white">Form Dokumen</h4>
+        <button type="button" class="close text-white" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        
+        <form id="formDokumen" enctype="multipart/form-data">
+          
+          <input type="hidden" id="id_doc" name="id_doc">
+          <input type="hidden" id="old_file" name="old_file">
+          <input type="hidden" id="id_user" name="id_user" value=" <%= user.id_user %> ">
+
+          <div class="row">
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>No Dokumen</label>
+                <input type="text" name="no_doc" id="no_doc" class="form-control" required>
+              </div>
             </div>
-            <div class="modal-body">
-        <input type="hidden" id="id">
 
-        <div class="form-group">
-          <label>Nama Istilah</label>
-          <input type="text" id="nama_istilah" class="form-control">
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Tanggal New</label>
+                <input type="date" name="tgl_new" id="tgl_new" class="form-control" required>
+              </div>
+            </div>
 
-        <div class="form-group">
-          <label>Deskripsi</label>
-          <textarea id="deskripsi" class="form-control"></textarea>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Nama Dokumen</label>
+                <input type="text" name="nama_doc" id="nama_doc" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Departemen</label>
+                <input type="text" name="departemen" id="departemen" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Upload File (Excel, PDF, Word)</label>
+                <input type="file" name="file" id="file" class="form-control">
+                <small class="text-muted">
+                  Kosongkan jika tidak ingin mengganti file saat update
+                </small>
+              </div>
+            </div>
+            <div class="col-md-12" id="revisiDek" style="display:none;">
+              <div class="form-group">
+                   <label>Keterangan Revisi</label>
+               <textarea name="keterangan" id="revisiForm" class="form-control"></textarea>
+              </div>
+            </div>
+
+          </div>
+
+        </form>
+
       </div>
 
       <div class="modal-footer">
-  <button type="button" class="btn btn-secondary" data-dismiss="modal">
-    Batal
-  </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Batal
+        </button>
 
-  <!-- CREATE -->
-  <button type="button" id="btnCreate" class="btn btn-primary">
-    Simpan
-  </button>
+        <!-- CREATE -->
+        <button type="button" id="btnCreate" class="btn btn-primary">
+          Simpan
+        </button>
 
-  <!-- UPDATE -->
-  <button type="button" id="btnUpdate" class="btn btn-warning" style="display:none">
-    Update
-  </button>
+        <!-- UPDATE -->
+        <button type="button" id="btnUpdate" class="btn btn-warning" style="display:none">
+          update
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+      <!-- /.modal -->
+<div class="modal fade" id="modalDetail">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+      <div class="modal-header bg-info">
+        <h4 class="modal-title text-white">Detail Dokumen</h4>
+        <button type="button" class="close text-white" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="row">
+
+          <div class="col-md-6">
+            <p><b>Nama Dokumen:</b> <span id="d_nama"></span></p>
+            <p><b>No Dokumen:</b> <span id="d_no"></span></p>
+            <p><b>Departemen:</b> <span id="d_departemen"></span></p>
+            <p><b>Tanggal New:</b> <span id="d_tgl_new"></span></p>
+          </div>
+
+          <div class="col-md-6">
+            <p><b>Uploaded By:</b> <span id="d_uploaded_by"></span></p>
+            <p><b>Tanggal Upload:</b> <span id="d_created_at"></span></p>
+            <p><b>Terakhir Direvisi:</b> <span id="d_last_revisi"></span></p>
+          </div>
+
+        </div>
+
+        <hr>
+
+        <h5>Riwayat Revisi</h5>
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Direvisi Oleh</th>
+              <th>Tanggal</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+          <tbody id="revisiBody"></tbody>
+        </table>
+
+        <hr>
+
+        <div class="text-right">
+          <a id="btnDownload" class="btn btn-success" target="_blank">
+            <i class="fas fa-download"></i> Download Dokumen
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </div>
 
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
-
-
   <%- include("../partials/footer") %>
- <script>
+<script>
+ function showDetail(id) {
+
+  $.get('/dokumen/detail/' + id, function(res) {
+
+    const d = res.dokumen;
+
+    $('#d_nama').text(d.nama_doc);
+    $('#d_no').text(d.no_doc);
+    $('#d_departemen').text(d.departemen);
+
+    $('#d_tgl_new').text(
+      new Date(d.tgl_new).toLocaleString('id-ID', {
+        timeZone: 'Asia/Jakarta'
+      })
+    );
+
+    $('#d_uploaded_by').text(d.uploaded_by);
+
+    $('#d_created_at').text(
+      new Date(d.created_at).toLocaleString('id-ID', {
+        timeZone: 'Asia/Jakarta'
+      })
+    );
+
+    $('#btnDownload').attr('href', '/uploads/' + d.file);
+
+    // Riwayat revisi
+    let html = '';
+
+    if (res.revisi.length > 0) {
+
+      res.revisi.forEach((r, i) => {
+        html += `
+          <tr>
+            <td>${i+1}</td>
+            <td>${r.username}</td>
+            <td>${new Date(r.tgl).toLocaleString('id-ID', { timeZone:'Asia/Jakarta' })}</td>
+            <td>${r.keterangan || '-'}</td>
+          </tr>
+        `;
+      });
+
+      // $('#d_last_revisi').text(
+      //   new Date(d.revisi[0].tgl)
+      //     .toLocaleString('id-ID', { timeZone:'Asia/Jakarta' })
+      // );
+
+    } else {
+      html = `<tr><td colspan="4" class="text-center">Belum ada revisi</td></tr>`;
+      $('#d_last_revisi').text('-');
+    }
+
+    $('#revisiBody').html(html);
+
+    $('#modalDetail').modal('show');
+
+  });
+
+}
 /* =======================
    MODAL CLEANUP
 ======================= */
 $('#modal-default').on('hidden.bs.modal', function () {
-  $('body').removeClass('modal-open');
-  $('.modal-backdrop').remove();
 
-  // reset form & button
-  $('#form')[0].reset();
-  $('#id').val('');
+  $('#formDokumen')[0].reset();
+  $('#id_doc').val('');
+
   $('#btnCreate').show();
   $('#btnUpdate').hide();
+ // $('#revisiDek').hide();
+  
 });
+
 
 /* =======================
    LOAD DATA
 ======================= */
 function loadData() {
+
   $.get('/dokumen/data', function (res) {
 
-    const data = res.data || res; // jaga-jaga format response
+    const data = res.data || res;
 
     let tableHTML = `
       <table id="example1" class="table table-bordered table-striped">
@@ -143,7 +307,7 @@ function loadData() {
             <th>No Doc</th>
             <th>Nama Dokumen</th>
             <th>Departemen</th>
-            <th>Created At</th>
+            <th>Tanggal</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -152,19 +316,43 @@ function loadData() {
     `;
 
     data.forEach((u, index) => {
+
       tableHTML += `
         <tr>
           <td>${index + 1}</td>
           <td>${u.no_doc}</td>
           <td>${u.nama_doc}</td>
           <td>${u.departemen}</td>
-          <td>${u.tgl_new}</td>
-          <td>${u.status}</td>
+        <td>
+  ${
+    u.tgl_new
+      ? new Date(u.tgl_new).toLocaleString('id-ID', {
+          timeZone: 'Asia/Jakarta',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        })
+      : ''
+  }
+</td>
           <td>
-            <button class="btn btn-warning btn-sm" onclick="edit(${u.id_daftar}, '${u.nama_istilah}', '${u.deskripsi}')"> Edit </button>
-            <button class="btn btn-danger btn-sm"
-              onclick="removeData(${u.id_doc})">
+            ${
+              u.status === 'NEW'
+                ? '<span class="badge bg-danger">NEW</span>'
+                : u.status === 'REVISI'
+                ? '<span class="badge bg-primary">REVISI</span>'
+                : ''
+            }
+          </td>
+          <td>
+            <button class="btn btn-warning btn-sm" onclick="editData(${u.id_doc})">
+              Edit
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="removeData(${u.id_doc})">
               Hapus
+            </button>
+            <button class="btn btn-success btn-sm" onclick="showDetail(${u.id_doc})">
+              Detail
             </button>
           </td>
         </tr>
@@ -172,106 +360,136 @@ function loadData() {
     });
 
     tableHTML += `</tbody></table>`;
+
     $('#table-wrapper').html(tableHTML);
 
     $('#example1').DataTable({
+      destroy: true,
       responsive: true,
       autoWidth: false
     });
+
   });
 }
+
 
 /* =======================
    OPEN CREATE MODAL
 ======================= */
-$('#btn-tambah').on('click', function () {
-  $('#modal-title').text('Tambah Data');
+$('#btn-tambah').click(function () {
+
+  $('#formDokumen')[0].reset();
+  $('#id_doc').val('');
+  $('#revisiForm').val('');
+
   $('#btnCreate').show();
   $('#btnUpdate').hide();
+  $('#revisiDek').hide();
+
+  $('.modal-title').text('Tambah Dokumen');
+
   $('#modal-default').modal('show');
 });
 
-/* =======================
-   OPEN EDIT MODAL
-======================= */
-function edit(id, nama, deskripsi) { 
-  isEdit = true;
-  $('#modal-title').text('Edit Data'); 
-  $('#id').val(id); $('#nama_istilah').val(nama); 
-  $('#deskripsi').val(deskripsi); 
-  
-  $('#btnCreate').hide();
-  $('#btnUpdate').show();
 
-  $('#modal-default').modal('show'); }
+/* =======================
+   EDIT DATA
+======================= */
+function editData(id) {
+
+  $.get('/dokumen/edit/' + id, function(data) {
+
+    $('#id_doc').val(data.id_doc);
+    $('#no_doc').val(data.no_doc);
+    $('#nama_doc').val(data.nama_doc);
+    $('#departemen').val(data.departemen);
+    if (data.tgl_new) {
+
+  const dateObj = new Date(data.tgl_new);
+
+  const formatter = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'Asia/Jakarta',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+
+  $('#tgl_new').val(formatter.format(dateObj));
+}
+    $('#old_file').val(data.file);
+
+    $('#btnCreate').hide();
+    $('#btnUpdate').show();
+    $('#revisiDek').show();
+
+    $('.modal-title').text('Edit Dokumen');
+
+    $('#modal-default').modal('show');
+  });
+
+}
+
 
 /* =======================
    CREATE
 ======================= */
-function createData() {
-  const data = {
-    nama_istilah: $('#nama_istilah').val(),
-    deskripsi: $('#deskripsi').val()
-  };
-
-  if (!data.nama_istilah || !data.deskripsi) {
-    Swal.fire('Warning', 'Semua field wajib diisi', 'warning');
-    return;
-  }
-
-  $.post('/istilah/save', data, function (res) {
-    if (res.success) {
-      Swal.fire('Berhasil', res.message, 'success');
-      $('#modal-default').modal('hide');
-      loadData();
-    } else {
-      Swal.fire('Gagal', res.message, 'error');
-    }
-  }).fail(function (xhr) {
-    console.error('CREATE ERROR:', xhr);
-    Swal.fire('Error', 'Server error', 'error');
-  });
-}
-
+$('#btnCreate').click(function () { let formData = new FormData($('#formDokumen')[0]); $.ajax({ url: '/dokumen/save', type: 'POST', data: formData, contentType: false, processData: false, beforeSend: function () { Swal.fire({ title: 'Menyimpan...', text: 'Mohon tunggu', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } }); }, success: function (res) { Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Data berhasil disimpan', timer: 2000, showConfirmButton: false }); $('#modalDokumen').modal('hide'); $('#formDokumen')[0].reset(); loadData(); }, error: function (err) { Swal.fire({ icon: 'error', title: 'Gagal!', text: 'Terjadi kesalahan saat menyimpan' }); } }); });
 /* =======================
    UPDATE
 ======================= */
-function updateData() {
-  const id = $('#id').val();
+$('#btnUpdate').click(function () {
 
-  const data = {
-    nama_istilah: $('#nama_istilah').val(),
-    deskripsi: $('#deskripsi').val()
-  };
+  let id = $('#id_doc').val();
 
   if (!id) {
-    Swal.fire('Error', 'ID tidak ditemukan', 'error');
+    Swal.fire('Error', 'ID tidak ditemukan!', 'error');
     return;
   }
 
-  if (!data.nama_istilah || !data.deskripsi) {
-    Swal.fire('Warning', 'Semua field wajib diisi', 'warning');
-    return;
-  }
+  let formData = new FormData($('#formDokumen')[0]);
 
-  $.post(`/istilah/update/${id}`, data, function (res) {
-    if (res.success) {
-      Swal.fire('Berhasil', res.message, 'success');
+  $.ajax({
+    url: '/dokumen/update/' + id,
+    type: 'PUT',   // WAJIB PUT (Pastikan route backend pakai PUT)
+    data: formData,
+    contentType: false,
+    processData: false,
+
+    beforeSend: function () {
+      Swal.fire({
+        title: 'Mengupdate...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+    },
+
+    success: function () {
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: 'Data berhasil diupdate',
+        timer: 2000,
+        showConfirmButton: false
+      });
+
       $('#modal-default').modal('hide');
       loadData();
-    } else {
-      Swal.fire('Gagal', res.message, 'error');
+    },
+
+    error: function () {
+      Swal.fire('Gagal!', 'Terjadi kesalahan saat update', 'error');
     }
-  }).fail(function (xhr) {
-    console.error('UPDATE ERROR:', xhr);
-    Swal.fire('Error', 'Server error', 'error');
   });
-}
+
+});
+
 
 /* =======================
    DELETE
 ======================= */
 function removeData(id) {
+
   Swal.fire({
     title: 'Yakin?',
     text: 'Data akan dihapus',
@@ -279,31 +497,30 @@ function removeData(id) {
     showCancelButton: true,
     confirmButtonText: 'Hapus'
   }).then((result) => {
+
     if (result.isConfirmed) {
+
       $.ajax({
-        url: `/dokumen/delete/${id}`,
-        method: 'DELETE',
-        success: function (res) {
-          if (res.success) {
-            Swal.fire('Terhapus', res.message, 'success');
-            loadData();
-          } else {
-            Swal.fire('Gagal', res.message, 'error');
-          }
+        url: '/dokumen/delete/' + id,
+        type: 'DELETE',
+        success: function () {
+          Swal.fire('Terhapus', 'Data berhasil dihapus', 'success');
+          loadData();
         }
       });
+
     }
+
   });
 }
+
 
 /* =======================
    INIT
 ======================= */
 $(document).ready(function () {
   loadData();
-
-  $('#btnCreate').on('click', createData);
-  $('#btnUpdate').on('click', updateData);
 });
+
 </script>
 
