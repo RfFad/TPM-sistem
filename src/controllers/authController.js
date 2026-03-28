@@ -14,15 +14,15 @@ exports.login = (req, res) => {
       }
 
       if (results.length === 0) {
-        return res.status(401).json({ message: 'User tidak ditemukan' });
+        return res.redirect('/auth/page?error=User tidak ditemukan');
       }
 
       const user = results[0];
       const match = await bcrypt.compare(password, user.password);
 
-      if (!match) {
-        return res.status(401).json({ message: 'Password salah' });
-      }
+    if (!match) {
+   return res.redirect('/auth/page?error=Password salah');;
+}
 
       const token = jwt.sign(
         {
@@ -46,7 +46,8 @@ exports.login = (req, res) => {
 };
 
 exports.page = (req, res) => {
- res.render('auth/login', { tittle: 'Login', message: 'Project TPM Sistem'})
+   const error = req.query.error || null;
+ res.render('auth/login', { tittle: 'Login', message: 'Project TPM Sistem', error: error})
 };
 
 exports.logout = (req, res) => {

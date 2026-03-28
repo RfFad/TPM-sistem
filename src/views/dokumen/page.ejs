@@ -35,13 +35,14 @@
   <h3 class="card-title mb-2 mb-md-0">
     Data Dokumen
   </h3>
-
+ <% if (canManage) { %>
   <!-- BUTTON -->
   <button class="btn btn-success d-flex align-items-center px-3" id="btn-tambah" data-toggle="modal" data-target="#modal-default">
     <i class="fas fa-plus mr-2"></i>
     Tambahkan Data
   </button>
 </div>
+<% } %>
 
               </div>
               <!-- /.card-header -->
@@ -192,6 +193,7 @@
           <thead>
             <tr>
               <th>No</th>
+              <th>Revisi ke</th>
               <th>Direvisi Oleh</th>
               <th>Tanggal</th>
               <th>Keterangan</th>
@@ -222,16 +224,19 @@
 
     const d = res.dokumen;
 
+    $('.modal-title').text('Detail Dokumen');
     $('#d_nama').text(d.nama_doc);
     $('#d_no').text(d.no_doc);
     $('#d_departemen').text(d.departemen);
 
-    $('#d_tgl_new').text(
-      new Date(d.tgl_new).toLocaleString('id-ID', {
-        timeZone: 'Asia/Jakarta'
-      })
-    );
-
+   $('#d_tgl_new').text(
+  new Date(d.tgl_new).toLocaleDateString('id-ID', {
+    timeZone: 'Asia/Jakarta',
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  })
+);
     $('#d_uploaded_by').text(d.uploaded_by);
 
     $('#d_created_at').text(
@@ -244,29 +249,31 @@
 
     // Riwayat revisi
     let html = '';
+if (res.revisi.length > 0) {
 
-    if (res.revisi.length > 0) {
+  res.revisi.forEach((r, i) => {
+    html += `
+      <tr>
+        <td>${i+1}</td>
+        <td> ${r.no_rev} </td>
+        <td>${r.username}</td>
+        <td>${new Date(r.tgl).toLocaleString('id-ID', { timeZone:'Asia/Jakarta' })}</td>
+        <td>${r.keterangan || '-'}</td>
+      </tr>
+    `;
+  });
 
-      res.revisi.forEach((r, i) => {
-        html += `
-          <tr>
-            <td>${i+1}</td>
-            <td>${r.username}</td>
-            <td>${new Date(r.tgl).toLocaleString('id-ID', { timeZone:'Asia/Jakarta' })}</td>
-            <td>${r.keterangan || '-'}</td>
-          </tr>
-        `;
-      });
-
-      // $('#d_last_revisi').text(
-      //   new Date(d.revisi[0].tgl)
-      //     .toLocaleString('id-ID', { timeZone:'Asia/Jakarta' })
-      // );
-
-    } else {
-      html = `<tr><td colspan="4" class="text-center">Belum ada revisi</td></tr>`;
-      $('#d_last_revisi').text('-');
-    }
+}
+// 🔥 UPDATED_AT dari tabel DOKUMEN
+if (d.updated_at) {
+  $('#d_last_revisi').text(
+    new Date(d.updated_at).toLocaleString('id-ID', {
+      timeZone: 'Asia/Jakarta'
+    })
+  );
+} else {
+  $('#d_last_revisi').text('-');
+}
 
     $('#revisiBody').html(html);
 
@@ -345,12 +352,14 @@ function loadData() {
             }
           </td>
           <td>
+            <% if (canManage) { %>
             <button class="btn btn-warning btn-sm" onclick="editData(${u.id_doc})">
               Edit
             </button>
             <button class="btn btn-danger btn-sm" onclick="removeData(${u.id_doc})">
               Hapus
             </button>
+             <% } %>
             <button class="btn btn-success btn-sm" onclick="showDetail(${u.id_doc})">
               Detail
             </button>

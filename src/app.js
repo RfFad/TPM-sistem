@@ -33,15 +33,6 @@ app.set('views', path.join(__dirname, 'views'));
 const webRoutes = require('./routes/web');
 app.use('/', webRoutes);
 
-const istilahRoutes = require('./routes/istilahRoutes');
-app.use('/istilah', istilahRoutes);
-
-const prosesRoutes = require('./routes/rekrutRoutes/prosesRoutes');
-app.use('/prosesRekrut', prosesRoutes);
-
-const revisiRoutes = require('./routes/rekrutRoutes/revisiController');
-app.use('/revisi', revisiRoutes);
-
 const dokumenRoutes = require('./routes/dokumen/dokumenRoutes');
 app.use('/dokumen', dokumenRoutes);
 

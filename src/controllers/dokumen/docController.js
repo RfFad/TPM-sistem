@@ -12,16 +12,11 @@ const storage = multer.diskStorage({
     cb(null, 'public/uploads/');
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, file.originalname); // gunakan nama asli file
   }
 });
 
 const upload = multer({ storage: storage }).single('file');
-
-
-// ===============================
-// EXPORT UPLOAD MIDDLEWARE
-// ===============================
 
 exports.uploadFile = upload;
 
@@ -265,10 +260,12 @@ exports.detail = (req, res) => {
 // ===============================
 
 exports.page = (req, res) => {
-
+const canManage = ['admin', 'develop'].includes(req.user.role);
   res.render('dokumen/page', {
     tittle: "Data Dokumen",
-    active: "dokumen"
+    active: "dokumen",
+    user: req.user,
+    canManage
   });
 
 };

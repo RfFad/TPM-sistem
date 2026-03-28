@@ -1,0 +1,448 @@
+ <%- include("../../partials/header") %>
+ <%- include("../../partials/sideNavbar") %>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>DataTables</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">DataTables</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+           
+
+            <div class="card">
+              <div class="card-header">
+               
+              <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+
+  <!-- JUDUL -->
+  <h3 class="card-title mb-2 mb-md-0">
+    DataTable with Default Features
+  </h3>
+
+  <!-- BUTTON -->
+  <button class="btn btn-success d-flex align-items-center px-3" id="btn-tambah" data-toggle="modal" data-target="#modal-default">
+    <i class="fas fa-plus mr-2"></i>
+    Tambahkan Data
+  </button>
+
+</div>
+
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+  <div id="table-wrapper"></div>
+</div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+ <!-- CREATE USER MODAL -->
+<div class="modal fade" id="modal-default" tabindex="-1">
+  <div class="modal-dialog modal-md modal-dialog-centered">
+    <div class="modal-content shadow-lg rounded-lg">
+
+      <!-- HEADER -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          <i class="fas fa-user-plus mr-2"></i>
+          Tambah User Baru
+        </h5>
+        <button type="button" class="close text-white" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <!-- ALERT AREA -->
+        <div id="alertUser"></div>
+
+        <form id="formUser">
+
+          <!-- USERNAME -->
+          <div class="form-group">
+            <label>Username</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-user"></i>
+                </span>
+              </div>
+              <input type="text" 
+                     class="form-control" 
+                     id="username" 
+                     name="username"
+                     placeholder="Masukkan username">
+            </div>
+          </div>
+
+          <!-- PASSWORD -->
+          <div class="form-group">
+            <label>Password</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-light">
+                  <i class="fas fa-lock"></i>
+                </span>
+              </div>
+              <input type="password" 
+                     class="form-control" 
+                     id="password" 
+                     name="password"
+                     placeholder="Minimal 6 karakter">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+            <small class="text-muted">Password minimal 6 karakter</small>
+          </div>
+
+          <!-- ROLE -->
+          <div class="form-group">
+            <label>Role</label>
+            <select class="form-control" id="role" name="role">
+              <option value="">-- Pilih Role --</option>
+              <option value="admin">Admin</option>
+              <option value="develop">Develop</option>
+              <option value="user">User</option>
+            </select>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Batal
+        </button>
+        <button type="button" id="btnCreate" class="btn btn-primary">
+          Simpan
+        </button>
+
+        <!-- UPDATE -->
+        <button type="button" id="btnUpdate" class="btn btn-warning" style="display:none">
+          update
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+  <%- include("../../partials/footer") %>
+ <script>
+
+$(document).ready(function () {
+
+  // pertama kali halaman dibuka
+  loadData();
+
+});
+
+$(document).on('click', '#togglePassword', function () {
+
+  const passwordInput = $('#password');
+  const icon = $(this).find('i');
+
+  if (passwordInput.attr('type') === 'password') {
+    passwordInput.attr('type', 'text');
+    icon.removeClass('fa-eye').addClass('fa-eye-slash');
+  } else {
+    passwordInput.attr('type', 'password');
+    icon.removeClass('fa-eye-slash').addClass('fa-eye');
+  }
+
+});
+
+
+// ======================
+// LOAD DATA (TIDAK DIUBAH SESUAI PERMINTAAN)
+// ======================
+function loadData() {
+
+  $.get('/user/data', function (res) {
+
+    const data = res.data || res;
+
+    let tableHTML = `
+      <table id="example1" class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th style="width: 1px;">No</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    data.forEach((u, index) => {
+
+      tableHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${u.username}</td>
+          <td>${u.role}</td>
+          <td>
+            <% if (canManage) { %>
+            <button class="btn btn-warning btn-sm" onclick="editData(${u.id_user})">
+              Edit
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="removeData(${u.id_user})">
+              Hapus
+            </button>
+             <% } %>
+            <button class="btn btn-success btn-sm" onclick="showDetail(${u.id_user})">
+              Detail
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+
+    tableHTML += `</tbody></table>`;
+
+    $('#table-wrapper').html(tableHTML);
+
+    $('#example1').DataTable({
+      destroy: true,
+      responsive: true,
+      autoWidth: false
+    });
+
+  });
+}
+
+
+// ======================
+// RESET MODAL
+// ======================
+$('#modal-default').on('hidden.bs.modal', function () {
+
+  $('#formUser')[0].reset();
+  $('#id_user').val('');
+
+  $('#btnCreate').show();
+  $('#btnUpdate').hide();
+});
+
+$('#modal-default').on('hidden.bs.modal', function () {
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
+});
+
+// ======================
+// BUTTON TAMBAH
+// ======================
+$('#btn-tambah').click(function () {
+
+  $('#formUser')[0].reset();
+  $('#id_user').val('');
+
+  $('#btnCreate').show();
+  $('#btnUpdate').hide();
+
+  $('.modal-title').text('Tambah User Baru');
+
+  $('#modal-default').modal('show');
+});
+
+
+// ======================
+// CREATE (SUDAH DIPERBAIKI - TANPA FORM DATA)
+// ======================
+$('#btnCreate').click(function () {
+
+  let formData = $('#formUser').serialize();
+
+  $.ajax({
+    url: '/user/save',
+    type: 'POST',
+    data: formData,
+
+    beforeSend: function () {
+      Swal.fire({
+        title: 'Menyimpan...',
+        text: 'Mohon tunggu',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+    },
+
+    success: function () {
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: 'Data berhasil disimpan',
+        timer: 2000,
+        showConfirmButton: false
+      });
+
+      $('#modal-default').modal('hide');
+      loadData();
+    },
+
+    error: function(err){
+      console.log(err);
+      Swal.fire('Error', err.responseJSON?.message || 'Terjadi kesalahan', 'error');
+    }
+  });
+
+});
+
+
+// ======================
+// EDIT
+// ======================
+function editData(id) {
+
+  $.get('/user/detail/' + id, function(res){
+
+    $('#id_user').val(res.id_user);
+    $('#username').val(res.username);
+    $('#role').val(res.role);
+    $('#password').val('');
+
+    $('#btnCreate').hide();
+    $('#btnUpdate').show();
+
+    $('.modal-title').text('Update User');
+
+    $('#modal-default').modal('show');
+  });
+
+}
+
+
+// ======================
+// UPDATE
+// ======================
+$('#btnUpdate').click(function () {
+
+  let id = $('#id_user').val();
+  let formData = $('#formUser').serialize();
+
+  $.ajax({
+    url: '/user/update/' + id,
+    type: 'POST',
+    data: formData,
+
+    beforeSend: function () {
+      Swal.fire({
+        title: 'Mengupdate...',
+        text: 'Mohon tunggu',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+    },
+
+    success: function () {
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: 'Data berhasil diupdate',
+        timer: 2000,
+        showConfirmButton: false
+      });
+
+      $('#modal-default').modal('hide');
+      loadData();
+    },
+
+    error: function(err){
+      console.log(err);
+      Swal.fire('Error', err.responseJSON?.message || 'Terjadi kesalahan', 'error');
+    }
+  });
+
+});
+
+
+// ======================
+// DELETE
+// ======================
+function removeData(id) {
+
+  Swal.fire({
+    title: 'Yakin?',
+    text: "Data akan dihapus permanen!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Ya, hapus!',
+    cancelButtonText: 'Batal'
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+
+      $.ajax({
+        url: '/user/delete/' + id,
+        type: 'DELETE',
+        success: function () {
+          Swal.fire('Berhasil!', 'Data berhasil dihapus', 'success');
+          loadData();
+        },
+        error: function(err){
+          Swal.fire('Error', err.responseJSON?.message || 'Terjadi kesalahan', 'error');
+        }
+      });
+
+    }
+  });
+
+}
+
+
+// ======================
+// DETAIL
+// ======================
+function showDetail(id){
+
+  $.get('/user/detail/' + id, function(res){
+
+    Swal.fire({
+      title: 'Detail User',
+      html: `
+        <b>Username:</b> ${res.username}<br>
+        <b>Role:</b> ${res.role}
+      `,
+      icon: 'info'
+    });
+
+  });
+
+}
+
+</script>
