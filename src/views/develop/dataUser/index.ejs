@@ -86,7 +86,7 @@
         <div id="alertUser"></div>
 
         <form id="formUser">
-
+          <input type="hidden" id="id_user" name="id_user">
           <!-- USERNAME -->
           <div class="form-group">
             <label>Username</label>
@@ -357,7 +357,7 @@ $('#btnUpdate').click(function () {
 
   $.ajax({
     url: '/user/update/' + id,
-    type: 'POST',
+    type: 'PUT',
     data: formData,
 
     beforeSend: function () {

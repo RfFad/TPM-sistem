@@ -1,48 +1,241 @@
- <%- include("partials/header") %>
- <%- include("partials/sideNavbar") %>
- <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Dashboard</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+<%- include("partials/header") %>
+<%- include("partials/sideNavbar") %>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-              <div class="inner">
-                <h3>150</h3>
+<div class="content-wrapper">
 
-                <p>Daftar Dokumen</p>
+  <!-- Hero Section -->
+  <section class="content pt-4">
+    <div class="container-fluid">
+      <div class="card shadow-lg border-0">
+        <div class="row no-gutters">
+          
+          <!-- Left Content -->
+          <div class="col-md-6 d-flex align-items-center">
+            <div class="p-5">
+              <h1 class="font-weight-bold text-primary">
+                Selamat Datang di TPM SISTEM
+              </h1>
+              <p class="mt-3 text-muted">
+               Web ini dibuat untuk memudahkaan dalam mengelola data dokumen yang penting dalam perusahaan.
+              </p>
+
+              <div class="mt-4">
+                <a href="/dokumen/page" class="btn btn-primary btn-lg mr-2">
+                  <i class="fas fa-folder-open"></i> Lihat Dokumen
+                </a>
               </div>
-              <div class="icon">
-                <i class="fas fa-file"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
-          <!-- ./col -->
+
+          <!-- Right Image -->
+          <div class="col-md-6">
+            <img src="/bg/indutri.jpg" 
+                 alt="Foto Perusahaan" 
+                 class="img-fluid w-100 h-100"
+                 style="object-fit: cover;">
+          </div>
+
         </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Statistik Perusahaan -->
+  <section class="content mt-4">
+    <div class="container-fluid">
+      <div class="row">
+
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-info shadow">
+            <div class="inner">
+              <h3>150</h3>
+              <p>Total Dokumen</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <a href="/dokumen/page" class="small-box-footer">
+              Detail <i class="fas fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-success shadow">
+            <div class="inner">
+              <h3>25</h3>
+              <p>Departemen</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <a href="/departemen" class="small-box-footer">
+              Detail <i class="fas fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-warning shadow">
+            <div class="inner">
+              <h3>10</h3>
+              <p>Dokumen baru bulan ini</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-danger shadow">
+            <div class="inner">
+              <h3>10+</h3>
+              <p>Tahun Pengalaman</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-award"></i>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Keunggulan Perusahaan -->
+  <!-- Quick Access & System Info -->
+<section class="content mt-4 pb-5">
+  <div class="container-fluid">
+    <div class="row">
+
+      <!-- Quick Access -->
+      <div class="col-md-6">
+        <div class="card shadow border-0">
+          <div class="card-header bg-primary">
+            <h3 class="card-title text-white">
+              <i class="fas fa-bolt"></i> Quick Access Menu
+            </h3>
+          </div>
+          <div class="card-body">
+
+            <div class="row text-center">
+
+              <div class="col-6 mb-4">
+                <a href="/dokumen" class="text-decoration-none">
+                  <div class="p-3 border rounded hover-shadow">
+                    <i class="fas fa-folder fa-2x text-primary mb-2"></i>
+                    <h6 class="font-weight-bold">Kelola Dokumen</h6>
+                  </div>
+                </a>
+              </div>
+
+              <div class="col-6 mb-4">
+                <a href="/departemen" class="text-decoration-none">
+                  <div class="p-3 border rounded">
+                    <i class="fas fa-building fa-2x text-success mb-2"></i>
+                    <h6 class="font-weight-bold">Data Departemen</h6>
+                  </div>
+                </a>
+              </div>
+
+              <div class="col-6 mb-4">
+                <a href="/users" class="text-decoration-none">
+                  <div class="p-3 border rounded">
+                    <i class="fas fa-users fa-2x text-warning mb-2"></i>
+                    <h6 class="font-weight-bold">Data User</h6>
+                  </div>
+                </a>
+              </div>
+
+              <div class="col-6 mb-4">
+                <a href="/laporan" class="text-decoration-none">
+                  <div class="p-3 border rounded">
+                    <i class="fas fa-chart-bar fa-2x text-danger mb-2"></i>
+                    <h6 class="font-weight-bold">MTN</h6>
+                  </div>
+                </a>
+              </div>
+              <div class="col-6 mb-4">
+                <a href="/laporan" class="text-decoration-none">
+                  <div class="p-3 border rounded">
+                    <i class="fas fa-cubes fa-2x text-danger mb-2"></i>
+                    <h6 class="font-weight-bold">Produksi</h6>
+                  </div>
+                </a>
+              </div>
+              <div class="col-6 mb-4">
+                <a href="#" class="text-decoration-none">
+                  <div class="p-3 border rounded">
+                    <i class="fas fa-search fa-2x text-warning mb-2"></i>
+                    <h6 class="font-weight-bold">QC</h6>
+                  </div>
+                </a>
+              </div>
+              <div class="col-6">
+                <a href="/laporan" class="text-decoration-none">
+                  <div class="p-3 border rounded">
+                    <i class="fas fa-cog fa-2x text-gray mb-2"></i>
+                    <h6 class="font-weight-bold">Mold</h6>
+                  </div>
+                </a>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Aktivitas Terbaru -->
+      <div class="col-md-6">
+        <div class="card shadow border-0">
+          <div class="card-header bg-info">
+            <h3 class="card-title text-white">
+              <i class="fas fa-history"></i> Aktivitas Terbaru
+            </h3>
+          </div>
+          <div class="card-body">
+
+            <ul class="list-group list-group-flush">
+
+              <li class="list-group-item">
+                <i class="fas fa-file text-primary"></i>
+                Dokumen SOP-001 berhasil ditambahkan
+                <small class="text-muted float-right">5 menit lalu</small>
+              </li>
+
+              <li class="list-group-item">
+                <i class="fas fa-edit text-warning"></i>
+                Dokumen WI-002 diperbarui
+                <small class="text-muted float-right">30 menit lalu</small>
+              </li>
+
+              <li class="list-group-item">
+                <i class="fas fa-user-plus text-success"></i>
+                User baru ditambahkan
+                <small class="text-muted float-right">1 jam lalu</small>
+              </li>
+
+              <li class="list-group-item">
+                <i class="fas fa-trash text-danger"></i>
+                Dokumen lama dihapus
+                <small class="text-muted float-right">2 jam lalu</small>
+              </li>
+
+            </ul>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
-  <%- include("partials/footer") %>
+</section>
+
+</div>
+
+<%- include("partials/footer") %>
