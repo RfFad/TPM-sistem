@@ -43,6 +43,24 @@ exports.create = (req, res) => {
       return res.status(500).json(err);
     }
 
+    // =========================
+    // TAMBAHAN HISTORY
+    // =========================
+    const historyData = {
+      id_doc: result.insertId,
+      aksi: 'CREATE',
+      deskripsi: 'Membuat dokumen baru',
+       nama_doc: req.body.nama_doc,
+      id_user: req.body.id_user
+    };
+
+    db.query("INSERT INTO history SET ?", historyData, (errHistory) => {
+      if (errHistory) {
+        console.error("HISTORY ERROR:", errHistory);
+      }
+    });
+    // =========================
+
     res.json({
       success: true,
       message: "Data berhasil ditambahkan"
@@ -110,7 +128,7 @@ exports.update = (req, res) => {
     file: req.file ? req.file.filename : req.body.old_file,
   };
 
-  // 1️⃣ Update dokumen dulu
+  //  Update dokumen dulu
   db.query(
     "UPDATE doc SET ? WHERE id_doc = ?",
     [data, id],
@@ -131,7 +149,7 @@ exports.update = (req, res) => {
         });
       }
 
-      // 2️⃣ Ambil nomor revisi terakhir
+      // Ambil nomor revisi terakhir
       db.query(
         "SELECT MAX(no_rev) AS last_rev FROM revisi WHERE id_doc = ?",
         [id],
@@ -148,7 +166,7 @@ exports.update = (req, res) => {
           const lastRev = rows[0].last_rev || 0;
           const newRev = lastRev + 1;
 
-          // 3️⃣ Insert ke tabel revisi
+          // Insert ke tabel revisi
           const revisiData = {
             id_doc: id,
             tgl: new Date(),
@@ -169,6 +187,27 @@ exports.update = (req, res) => {
                   message: "Gagal simpan revisi"
                 });
               }
+
+              // TAMBAHAN HISTORY
+             
+              const historyData = {
+                id_doc: id,
+                aksi: 'UPDATE',
+                deskripsi: `Update dokumen & tambah revisi ke-${newRev}`,
+                nama_doc: req.body.nama_doc,
+                id_user: req.body.id_user
+              };
+
+              db.query(
+                "INSERT INTO history SET ?",
+                historyData,
+                (errHistory) => {
+                  if (errHistory) {
+                    console.error("HISTORY ERROR:", errHistory);
+                  }
+                }
+              );
+              // =========================
 
               res.json({
                 success: true,
@@ -193,34 +232,46 @@ exports.delete = (req, res) => {
 
   const id = req.params.id;
 
-  db.query(
-    "DELETE FROM doc WHERE id_doc = ?",
-    [id],
-    (err, result) => {
+ db.query("SELECT nama_doc FROM doc WHERE id_doc = ?", [id], (err, rows) => {
 
-      if (err) {
-        console.error("DELETE ERROR:", err);
-        return res.status(500).json({
-          success: false,
-          message: "Gagal menghapus data"
-        });
-      }
+  if (err || rows.length === 0) {
+    return res.status(404).json({
+      success: false,
+      message: "Data tidak ditemukan"
+    });
+  }
 
-      if (result.affectedRows === 0) {
-        return res.status(404).json({
-          success: false,
-          message: "Data tidak ditemukan"
-        });
-      }
+  const namaDoc = rows[0].nama_doc;
 
-      res.json({
-        success: true,
-        message: "Data berhasil dihapus"
+  db.query("DELETE FROM doc WHERE id_doc = ?", [id], (err2, result) => {
+
+    if (err2) {
+      return res.status(500).json({
+        success: false,
+        message: "Gagal menghapus data"
       });
     }
-  );
-};
 
+    // Simpan history dengan nama dokumen
+    const historyData = {
+      id_doc: id,
+      nama_doc: namaDoc,
+      aksi: 'DELETE',
+      deskripsi: 'Menghapus dokumen',
+      id_user: req.user.id_user
+    };
+
+    db.query("INSERT INTO history SET ?", historyData);
+
+    res.json({
+      success: true,
+      message: "Data berhasil dihapus"
+    });
+
+  });
+
+});
+};
 
 exports.detail = (req, res) => {
 

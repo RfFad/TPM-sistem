@@ -100,7 +100,7 @@ exports.updateUser = async (req, res) => {
   // Trim password supaya spasi dianggap kosong
   password = password ? password.trim() : '';
 
-  // 🔍 CEK USERNAME DUPLIKAT
+  // CEK USERNAME DUPLIKAT
   db.query(
     "SELECT id_user FROM user WHERE username = ? AND id_user != ?",
     [username, id],
@@ -117,7 +117,7 @@ exports.updateUser = async (req, res) => {
         let sql;
         let values;
 
-        // ✅ Kalau password DIISI
+        // password DIISI
         if (password !== '') {
 
           if (password.length < 6) {
@@ -137,7 +137,7 @@ exports.updateUser = async (req, res) => {
           values = [username, hash, role, id];
 
         } 
-        // ✅ Kalau password KOSONG → tidak diupdate
+        //Kalau password KOSONG → tidak diupdate
         else {
 
           sql = `
@@ -186,11 +186,13 @@ exports.deleteUser = (req, res) => {
 
 exports.page = (req, res) => {
 const canManage = ['admin', 'develop'].includes(req.user.role);
+const canManage2 = ['develop'].includes(req.user.role);
   res.render('develop/dataUser/index', {
     tittle: "Data User",
     active: "user",
     user: req.user,
-    canManage
+    canManage,
+    canManage2
   });
 
 };

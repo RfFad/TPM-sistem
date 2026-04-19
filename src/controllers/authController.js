@@ -38,7 +38,7 @@ exports.login = (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: Number(process.env.COOKIE_EXPIRE)
+        maxAge: Number(process.env.COOKIE_EXPIRE),
       });
       res.redirect('/')
          }

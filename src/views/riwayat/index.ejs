@@ -1,0 +1,82 @@
+<%- include("../partials/header") %>
+<%- include("../partials/sideNavbar") %>
+
+<div class="content-wrapper">
+
+  <!-- Keunggulan Perusahaan -->
+  <!-- Quick Access & System Info -->
+<section class="content mt-4 pb-5">
+  <div class="container-fluid">
+    <div class="row">
+
+      <!-- Quick Access -->
+      
+<%
+function timeAgo(date) {
+  const now = new Date();
+  const seconds = Math.floor((now - new Date(date)) / 1000);
+
+  const intervalMinute = Math.floor(seconds / 60);
+  const intervalHour = Math.floor(seconds / 3600);
+  const intervalDay = Math.floor(seconds / 86400);
+  const intervalMonth = Math.floor(seconds / 2592000);
+  const intervalYear = Math.floor(seconds / 31536000);
+
+  if (seconds < 60) return "Baru saja";
+  if (intervalMinute < 60) return intervalMinute + " menit lalu";
+  if (intervalHour < 24) return intervalHour + " jam lalu";
+  if (intervalDay < 30) return intervalDay + " hari lalu";
+  if (intervalMonth < 12) return intervalMonth + " bulan lalu";
+  return intervalYear + " tahun lalu";
+}
+%>
+      <!-- Aktivitas Terbaru -->
+      <div class="col-md-12">
+        <div class="card shadow border-0">
+          <div class="card-header bg-info">
+            <h3 class="card-title text-white">
+              <i class="fas fa-history"></i> Aktivitas Terbaru
+            </h3>
+          </div>
+          <div class="card-body">
+
+            <ul class="list-group list-group-flush">
+  <% if (history.length === 0) { %>
+    <li class="list-group-item text-center text-muted">
+      Belum ada aktivitas
+    </li>
+  <% } %>
+
+    <% history.forEach(function(item){ %>
+      <li class="list-group-item">
+                <% if (item.aksi === 'CREATE') { %>
+                <i class="fas fa-file text-primary"></i>
+                <%= item.username %>
+                Menambahkan dokumen baru ||  <strong><%= item.nama_doc %></strong>
+                <% } else if (item.aksi === 'UPDATE') { %>
+                  <i class="fas fa-edit text-warning"></i>
+               <%= item.username %>
+                Memperbarui dokumen ||  <strong><%= item.nama_doc %></strong>
+                <% } else if (item.aksi === 'DELETE') { %>
+                   <i class="fas fa-trash text-danger"></i>
+                   <%= item.username %>
+                Menghapus dokumen ||  <strong><%= item.nama_doc %></strong>
+                <% } %>
+
+                
+                <small class="text-muted float-right"> <%= timeAgo(item.created_at) %></small>
+                 </li>
+  <% }) %>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</div>
+
+<%- include("../partials/footer") %>

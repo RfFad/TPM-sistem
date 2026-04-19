@@ -61,7 +61,6 @@ exports.isAuthenticated = function(req, res, next){
 
                 req.user = result[0];
                 res.locals.user = result[0];
-
                 next();
             }
         );

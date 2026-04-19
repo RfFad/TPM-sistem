@@ -41,6 +41,12 @@ app.use('/auth', authRoutes);
 
 const user = require('./routes/develop/userRoutes')
 app.use('/user', user);
+
+const riwayat = require('./routes/riwayat/riwayatRoutes')
+app.use('/riwayat', riwayat);
+
+const departemen = require('./routes/departemen/departemenRoutes')
+app.use('/departemen', departemen);
 /**
  * Server
  */

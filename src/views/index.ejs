@@ -49,7 +49,7 @@
         <div class="col-lg-3 col-6">
           <div class="small-box bg-info shadow">
             <div class="inner">
-              <h3>150</h3>
+              <h3><%= totalDoc %></h3>
               <p>Total Dokumen</p>
             </div>
             <div class="icon">
@@ -64,7 +64,7 @@
         <div class="col-lg-3 col-6">
           <div class="small-box bg-success shadow">
             <div class="inner">
-              <h3>25</h3>
+              <h3>4</h3>
               <p>Departemen</p>
             </div>
             <div class="icon">
@@ -79,7 +79,7 @@
         <div class="col-lg-3 col-6">
           <div class="small-box bg-warning shadow">
             <div class="inner">
-              <h3>10</h3>
+              <h3><%= totalBulanIni %></h3>
               <p>Dokumen baru bulan ini</p>
             </div>
             <div class="icon">
@@ -151,33 +151,33 @@
               </div>
 
               <div class="col-6 mb-4">
-                <a href="/laporan" class="text-decoration-none">
+                <a href="/departemen/mtn" class="text-decoration-none">
                   <div class="p-3 border rounded">
-                    <i class="fas fa-chart-bar fa-2x text-danger mb-2"></i>
+                    <i class="fas fa-cogs fa-2x text-danger mb-2"></i>
                     <h6 class="font-weight-bold">MTN</h6>
                   </div>
                 </a>
               </div>
               <div class="col-6 mb-4">
-                <a href="/laporan" class="text-decoration-none">
+                <a href="/departemen/produksi" class="text-decoration-none">
                   <div class="p-3 border rounded">
-                    <i class="fas fa-cubes fa-2x text-danger mb-2"></i>
+                    <i class="fas fa-industry fa-2x text-success mb-2"></i>
                     <h6 class="font-weight-bold">Produksi</h6>
                   </div>
                 </a>
               </div>
               <div class="col-6 mb-4">
-                <a href="#" class="text-decoration-none">
+                <a href="/departemen/qc" class="text-decoration-none">
                   <div class="p-3 border rounded">
-                    <i class="fas fa-search fa-2x text-warning mb-2"></i>
+                    <i class="fas fa-search fa-2x text-primary mb-2"></i>
                     <h6 class="font-weight-bold">QC</h6>
                   </div>
                 </a>
               </div>
               <div class="col-6">
-                <a href="/laporan" class="text-decoration-none">
+                <a href="/departemen/mold" class="text-decoration-none">
                   <div class="p-3 border rounded">
-                    <i class="fas fa-cog fa-2x text-gray mb-2"></i>
+                    <i class="fas fa-tools fa-2x text-warning mb-2"></i>
                     <h6 class="font-weight-bold">Mold</h6>
                   </div>
                 </a>
@@ -189,7 +189,25 @@
         </div>
       </div>
 
+<%
+function timeAgo(date) {
+  const now = new Date();
+  const seconds = Math.floor((now - new Date(date)) / 1000);
 
+  const intervalMinute = Math.floor(seconds / 60);
+  const intervalHour = Math.floor(seconds / 3600);
+  const intervalDay = Math.floor(seconds / 86400);
+  const intervalMonth = Math.floor(seconds / 2592000);
+  const intervalYear = Math.floor(seconds / 31536000);
+
+  if (seconds < 60) return "Baru saja";
+  if (intervalMinute < 60) return intervalMinute + " menit lalu";
+  if (intervalHour < 24) return intervalHour + " jam lalu";
+  if (intervalDay < 30) return intervalDay + " hari lalu";
+  if (intervalMonth < 12) return intervalMonth + " bulan lalu";
+  return intervalYear + " tahun lalu";
+}
+%>
       <!-- Aktivitas Terbaru -->
       <div class="col-md-6">
         <div class="card shadow border-0">
@@ -201,31 +219,32 @@
           <div class="card-body">
 
             <ul class="list-group list-group-flush">
+  <% if (history.length === 0) { %>
+    <li class="list-group-item text-center text-muted">
+      Belum ada aktivitas
+    </li>
+  <% } %>
 
-              <li class="list-group-item">
+    <% history.forEach(function(item){ %>
+      <li class="list-group-item">
+                <% if (item.aksi === 'CREATE') { %>
                 <i class="fas fa-file text-primary"></i>
-                Dokumen SOP-001 berhasil ditambahkan
-                <small class="text-muted float-right">5 menit lalu</small>
-              </li>
+                <%= item.username %>
+                Menambahkan dokumen baru ||  <strong><%= item.nama_doc %></strong>
+                <% } else if (item.aksi === 'UPDATE') { %>
+                  <i class="fas fa-edit text-warning"></i>
+               <%= item.username %>
+                Memperbarui dokumen ||  <strong><%= item.nama_doc %></strong>
+                <% } else if (item.aksi === 'DELETE') { %>
+                   <i class="fas fa-trash text-danger"></i>
+                   <%= item.username %>
+                Menghapus dokumen ||  <strong><%= item.nama_doc %></strong>
+                <% } %>
 
-              <li class="list-group-item">
-                <i class="fas fa-edit text-warning"></i>
-                Dokumen WI-002 diperbarui
-                <small class="text-muted float-right">30 menit lalu</small>
-              </li>
-
-              <li class="list-group-item">
-                <i class="fas fa-user-plus text-success"></i>
-                User baru ditambahkan
-                <small class="text-muted float-right">1 jam lalu</small>
-              </li>
-
-              <li class="list-group-item">
-                <i class="fas fa-trash text-danger"></i>
-                Dokumen lama dihapus
-                <small class="text-muted float-right">2 jam lalu</small>
-              </li>
-
+                
+                <small class="text-muted float-right"> <%= timeAgo(item.created_at) %></small>
+                 </li>
+  <% }) %>
             </ul>
 
           </div>

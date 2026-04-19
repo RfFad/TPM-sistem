@@ -49,6 +49,64 @@
             </a>
           </li>
           <% } %>
+          <li class="nav-item has-treeview <%= 
+    ['mtn','produksi','qc','mold'].includes(active) ? 'menu-open' : '' 
+%>">
+
+  <a href="#" class="nav-link <%= 
+    ['mtn','produksi','qc','mold'].includes(active) ? 'active' : '' 
+  %>">
+    <i class="nav-icon fas fa-building"></i>
+    <p>
+      Departemen
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+
+  <ul class="nav nav-treeview">
+
+    <li class="nav-item">
+      <a href="/departemen/mtn" 
+         class="nav-link <%= active === 'mtn' ? 'active' : '' %>">
+        <i class="far fa-circle nav-icon"></i>
+        <p>MTN</p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href="/departemen/produksi" 
+         class="nav-link <%= active === 'produksi' ? 'active' : '' %>">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Produksi</p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href="/departemen/qc" 
+         class="nav-link <%= active === 'qc' ? 'active' : '' %>">
+        <i class="far fa-circle nav-icon"></i>
+        <p>QC</p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href="/departemen/mold" 
+         class="nav-link <%= active === 'mold' ? 'active' : '' %>">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Mold</p>
+      </a>
+    </li>
+
+  </ul>
+</li>
+           <li class="nav-item has-treeview">
+            <a href="/riwayat" class="nav-link nav-link <%= active === 'riwayat' ? 'active' : '' %>">
+              <i class="nav-icon fas fa-history"></i>
+              <p>
+                Riwayat Aktivitas
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
