@@ -1,6 +1,7 @@
 const db = require('../../config/database');
 const path = require('path');
 const multer = require('multer');
+const fs = require('fs');
 
 
 // ===============================
@@ -30,11 +31,11 @@ exports.create = (req, res) => {
   const data = {
     no_doc: req.body.no_doc,
     nama_doc: req.body.nama_doc,
-    departemen: req.body.departemen,
-    tgl_new: req.body.tgl_new,
     status: 'NEW',
     file: req.file ? req.file.filename : null,
-    id_user: req.body.id_user
+    id_user: req.body.id_user,
+    id_kategori: req.body.id_kategori,
+    id_dept: req.body.id_dept
   };
 
   db.query("INSERT INTO doc SET ?", data, (err, result) => {
@@ -75,7 +76,7 @@ exports.create = (req, res) => {
 
 exports.getAll = (req, res) => {
 
-  db.query('SELECT * FROM doc ORDER BY id_doc DESC', (err, result) => {
+  db.query('SELECT doc.*, kategori_doc.nama_kategori, departemen.nama_dept FROM doc JOIN kategori_doc on doc.id_kategori = kategori_doc.id_kategori JOIN departemen on doc.id_dept = departemen.id_dept ORDER BY doc.id_doc DESC', (err, result) => {
     if (err) {
       console.error("GET ALL ERROR:", err);
       return res.status(500).json({ success: false });
@@ -85,6 +86,7 @@ exports.getAll = (req, res) => {
   });
 
 };
+
 
 
 // ===============================
@@ -122,10 +124,10 @@ exports.update = (req, res) => {
   const data = {
     no_doc: req.body.no_doc,
     nama_doc: req.body.nama_doc,
-    departemen: req.body.departemen,
-    tgl_new: req.body.tgl_new,
     status: 'REVISI',
     file: req.file ? req.file.filename : req.body.old_file,
+    id_kategori: req.body.id_kategori,
+    id_dept: req.body.id_dept
   };
 
   //  Update dokumen dulu
@@ -169,7 +171,7 @@ exports.update = (req, res) => {
           // Insert ke tabel revisi
           const revisiData = {
             id_doc: id,
-            tgl: new Date(),
+            tgl: req.body.tgl || new Date(),
             no_rev: newRev,
             keterangan: req.body.keterangan || 'Revisi dokumen',
             id_user: req.body.id_user
@@ -224,53 +226,91 @@ exports.update = (req, res) => {
   );
 };
 
-// ===============================
+
 // DELETE
-// ===============================
+
+
 
 exports.delete = (req, res) => {
 
   const id = req.params.id;
 
- db.query("SELECT nama_doc FROM doc WHERE id_doc = ?", [id], (err, rows) => {
+  db.query(
+    "SELECT file, nama_doc FROM doc WHERE id_doc = ?",
+    [id],
+    (err, rows) => {
 
-  if (err || rows.length === 0) {
-    return res.status(404).json({
-      success: false,
-      message: "Data tidak ditemukan"
-    });
-  }
+      if (err || rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "Data tidak ditemukan"
+        });
+      }
 
-  const namaDoc = rows[0].nama_doc;
+      const fileName = rows[0].file;
 
-  db.query("DELETE FROM doc WHERE id_doc = ?", [id], (err2, result) => {
+      console.log("FILE DB :", fileName);
 
-    if (err2) {
-      return res.status(500).json({
-        success: false,
-        message: "Gagal menghapus data"
+      const filePath = path.join(
+  __dirname,
+  '../../..',
+  'public/uploads',
+  fileName
+);
+
+      console.log("FILE PATH :", filePath);
+
+      // cek file ada atau tidak
+      if (!fs.existsSync(filePath)) {
+
+        console.log("FILE TIDAK ADA");
+
+        return res.status(404).json({
+          success: false,
+          message: "File tidak ditemukan di folder"
+        });
+      }
+
+      // hapus file
+      fs.unlink(filePath, (fileErr) => {
+
+        if (fileErr) {
+          console.log("ERROR HAPUS :", fileErr);
+
+          return res.status(500).json({
+            success: false,
+            message: "Gagal hapus file"
+          });
+        }
+
+        console.log("FILE BERHASIL DIHAPUS");
+
+        // hapus database
+        db.query(
+          "DELETE FROM doc WHERE id_doc = ?",
+          [id],
+          (err2) => {
+
+            if (err2) {
+              return res.status(500).json({
+                success: false,
+                message: "Gagal hapus database"
+              });
+            }
+
+            res.json({
+              success: true,
+              message: "Data & file berhasil dihapus"
+            });
+
+          }
+        );
+
       });
+
     }
+  );
 
-    // Simpan history dengan nama dokumen
-    const historyData = {
-      id_doc: id,
-      nama_doc: namaDoc,
-      aksi: 'DELETE',
-      deskripsi: 'Menghapus dokumen',
-      id_user: req.user.id_user
-    };
-
-    db.query("INSERT INTO history SET ?", historyData);
-
-    res.json({
-      success: true,
-      message: "Data berhasil dihapus"
-    });
-
-  });
-
-});
 };
 
 exports.detail = (req, res) => {
@@ -278,7 +318,29 @@ exports.detail = (req, res) => {
   const id = req.params.id;
 
   const query = `
-    SELECT d.*, u.username AS uploaded_by FROM doc d LEFT JOIN user u ON d.id_user = u.id_user WHERE d.id_doc = ?;
+    SELECT 
+      d.*,
+
+      u.username AS uploaded_by,
+
+      k.id_kategori,
+      k.nama_kategori,
+
+      dp.id_dept,
+      dp.nama_dept
+
+    FROM doc d
+
+    LEFT JOIN user u 
+      ON d.id_user = u.id_user
+
+    LEFT JOIN kategori_doc k 
+      ON d.id_kategori = k.id_kategori
+
+    LEFT JOIN departemen dp 
+      ON d.id_dept = dp.id_dept
+
+    WHERE d.id_doc = ?;
   `;
 
   db.query(query, [id], (err, dokumen) => {
@@ -290,7 +352,7 @@ exports.detail = (req, res) => {
       FROM revisi r
       LEFT JOIN user u ON r.id_user = u.id_user
       WHERE r.id_doc = ?
-      ORDER BY r.tgl DESC
+      ORDER BY r.no_rev DESC
     `, [id], (err2, revisi) => {
 
       if (err2) return res.status(500).json(err2);
@@ -311,12 +373,39 @@ exports.detail = (req, res) => {
 // ===============================
 
 exports.page = (req, res) => {
-const canManage = ['admin', 'develop'].includes(req.user.role);
-  res.render('dokumen/page', {
-    tittle: "Data Dokumen",
-    active: "dokumen",
-    user: req.user,
-    canManage
-  });
+  const canManage = ['admin', 'develop'].includes(req.user.role);
 
+  db.query(
+    'SELECT id_kategori, nama_kategori FROM kategori_doc ORDER BY nama_kategori ASC',
+    (err, kategori) => {
+
+      if (err) {
+        console.error("GET KATEGORI ERROR:", err);
+        return res.status(500).send("Error");
+      }
+
+      // QUERY DEPARTEMEN
+      db.query(
+        'SELECT id_dept, nama_dept FROM departemen ORDER BY nama_dept ASC',
+        (err2, departemen) => {
+
+          if (err2) {
+            console.error("GET DEPARTEMEN ERROR:", err2);
+            return res.status(500).send("Error");
+          }
+
+          res.render('dokumen/page', {
+            tittle: "Data Dokumen",
+            active: "dokumen",
+            user: req.user,
+            canManage,
+            kategori,
+            departemen
+          });
+
+        }
+      );
+
+    }
+  );
 };

@@ -18,7 +18,7 @@
   </section>
 
   <!-- Tentang MTN -->
-  <section class="content">
+  <!-- <section class="content">
     <div class="container-fluid">
       <div class="card shadow-sm border-0">
         <div class="card-body">
@@ -37,21 +37,39 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
-  <!-- Work Instruction -->
+  <!-- Data Dokumen Section -->
   <section class="content mt-4">
     <div class="container-fluid">
       <div class="card shadow border-0">
         <div class="card-header bg-danger text-white">
           <h5 class="mb-0">
-            <i class="fas fa-book"></i> Work Instruction Maintenance
+            <i class="fas fa-file"></i> Data Dokumen Maintenance
           </h5>
         </div>
         <div class="card-body text-center">
 
+          <div id="table-wrapper"></div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work Instruction -->
+  <!-- <section class="content mt-4">
+    <div class="container-fluid">
+      <div class="card shadow border-0">  
+        <div class="card-header bg-danger text-white">
+          <h5 class="mb-0">
+            <i class="fas fa-book"></i> Work Instruction Maintenance
+          </h5>
+        </div>
+        <div class="card-body text-center"> -->
+
           <!-- GANTI DENGAN GAMBAR ANDA -->
-          <img src="/images/work-instruction-mtn.jpg" 
+          <!-- <img src="/images/work-instruction-mtn.jpg" 
                class="img-fluid rounded shadow-sm mb-3"
                style="max-height:400px; object-fit:cover;">
 
@@ -59,64 +77,223 @@
             Panduan prosedur preventive & corrective maintenance untuk menjaga performa mesin produksi.
           </p>
 
-        </div>
-      </div>
+        </div> -->
+      <!-- </div>
     </div>
-  </section>
-
-  <!-- Aktivitas Maintenance -->
-  <section class="content mt-4 pb-5">
-    <div class="container-fluid">
-
-      <h4 class="font-weight-bold text-danger mb-3">
-        Aktivitas Maintenance
-      </h4>
-
-      <div class="row">
-
-        <!-- Foto 1 -->
-        <div class="col-md-4">
-          <div class="card shadow-sm border-0">
-            <img src="/images/mtn-1.jpg" class="card-img-top" style="height:220px; object-fit:cover;">
-            <div class="card-body">
-              <h6 class="font-weight-bold">Preventive Maintenance</h6>
-              <p class="text-muted small">
-                Pemeriksaan rutin dan perawatan berkala untuk mencegah kerusakan mesin.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Foto 2 -->
-        <div class="col-md-4">
-          <div class="card shadow-sm border-0">
-            <img src="/images/mtn-2.jpg" class="card-img-top" style="height:220px; object-fit:cover;">
-            <div class="card-body">
-              <h6 class="font-weight-bold">Machine Repair</h6>
-              <p class="text-muted small">
-                Proses perbaikan mesin saat terjadi breakdown.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Foto 3 -->
-        <div class="col-md-4">
-          <div class="card shadow-sm border-0">
-            <img src="/images/mtn-3.jpg" class="card-img-top" style="height:220px; object-fit:cover;">
-            <div class="card-body">
-              <h6 class="font-weight-bold">Downtime Analysis</h6>
-              <p class="text-muted small">
-                Analisa penyebab gangguan untuk meningkatkan reliability mesin.
-              </p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
+  </section> -->
 
 </div>
 
+
+<div class="modal fade" id="modalDetail">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+
+      <div class="modal-header bg-info">
+        <h4 class="modal-title text-white">Detail Dokumen</h4>
+        <button type="button" class="close text-white" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="row">
+
+          <div class="col-md-6">
+            <p><b>Nama Dokumen:</b> <span id="d_nama"></span></p>
+            <p><b>No Dokumen:</b> <span id="d_no"></span></p>
+            <p><b>Departemen:</b> <span id="d_departemen"></span></p>
+            <p><b>Kategori:</b> <span id="d_kategori"></span></p>
+          </div>
+          
+          <div class="col-md-6">
+            <p><b>Uploaded By:</b> <span id="d_uploaded_by"></span></p>
+            <p><b>Tanggal Upload:</b> <span id="d_created_at"></span></p>
+            <p><b>Terakhir Direvisi:</b> <span id="d_last_revisi"></span></p>
+          </div>
+
+        </div>
+
+        <hr>
+
+        <h5>Riwayat Revisi</h5>
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Revisi ke</th>
+              <th>Direvisi Oleh</th>
+              <th>Tanggal</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+          <tbody id="revisiBody"></tbody>
+        </table>
+
+        <hr>
+
+        <div class="text-right">
+          <a id="btnDownload" class="btn btn-success" target="_blank">
+            <i class="fas fa-download"></i> Download Dokumen
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
 <%- include("../partials/footer") %>
+<script>
+  
+  function loadData() {
+    
+  const  deptId = "<%= dept %>";
+  $.get('/departemen/dept/' + deptId, function (res) {
+
+    const data = res.data || res;
+
+    let tableHTML = `
+      <table id="example1" class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>No Doc</th>
+            <th>Nama Dokumen</th>
+            <th>Kategori</th>
+            <th>Departemen</th>
+            <th>Tgl Upload</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    data.forEach((u, index) => {
+
+      tableHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${u.no_doc}</td>
+          <td>${u.nama_doc}</td>
+          <td>${u.nama_kategori}</td>
+          <td>${u.nama_dept}</td>
+        <td>
+  ${
+    u.created_at
+      ? new Date(u.created_at).toLocaleString('id-ID', {
+          timeZone: 'Asia/Jakarta',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        })
+      : ''
+  }
+</td>
+          <td>
+            ${
+              u.status === 'NEW'
+                ? '<span class="badge bg-danger">NEW</span>'
+                : u.status === 'REVISI'
+                ? '<span class="badge bg-primary">REVISI</span>'
+                : ''
+            }
+          </td>
+          <td>
+            <button class="btn btn-success btn-sm" onclick="showDetail(${u.id_doc})">
+              Detail
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+
+    tableHTML += `</tbody></table>`;
+
+    $('#table-wrapper').html(tableHTML);
+
+    $('#example1').DataTable({
+      destroy: true,
+      responsive: true,
+      autoWidth: false
+    });
+
+  });
+}
+ function showDetail(id) {
+
+  $.get('/dokumen/detail/' + id, function(res) {
+
+    const d = res.dokumen;
+
+    $('.modal-title').text('Detail Dokumen');
+    $('#d_nama').text(d.nama_doc);
+    $('#d_no').text(d.no_doc);
+    $('#d_departemen').text(d.nama_dept);
+    $('#d_kategori').text(d.nama_kategori);
+
+//    $('#d_tgl_new').text(
+//   new Date(d.tgl_new).toLocaleDateString('id-ID', {
+//     timeZone: 'Asia/Jakarta',
+//     day: '2-digit',
+//     month: 'long',
+//     year: 'numeric'
+//   })
+// );
+    $('#d_uploaded_by').text(d.uploaded_by);
+
+    $('#d_created_at').text(
+      new Date(d.created_at).toLocaleString('id-ID', {
+        timeZone: 'Asia/Jakarta'
+      })
+    );
+
+    $('#btnDownload').attr('href', '/uploads/' + d.file);
+
+    // Riwayat revisi
+    let html = '';
+if (res.revisi.length > 0) {
+
+  res.revisi.forEach((r) => {
+    html += `
+      <tr>
+        <td> ${r.no_rev} </td>
+        <td>${r.username}</td>
+        <td>${new Date(r.tgl).toLocaleString('id-ID', {  timeZone: 'Asia/Jakarta',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit' })}</td>
+        <td>${r.keterangan || '-'}</td>
+      </tr>
+    `;
+  });
+
+}
+// 🔥 UPDATED_AT dari tabel DOKUMEN
+if (d.updated_at) {
+  $('#d_last_revisi').text(
+    new Date(d.updated_at).toLocaleString('id-ID', {
+      timeZone: 'Asia/Jakarta'
+    })
+  );
+} else {
+  $('#d_last_revisi').text('-');
+}
+
+    $('#revisiBody').html(html);
+
+    $('#modalDetail').modal('show');
+
+  });
+
+}
+/* =======================
+   INIT
+======================= */
+$(document).ready(function () {
+  loadData();
+});
+
+</script>

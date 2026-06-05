@@ -1,6 +1,6 @@
  <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="#" class="brand-link">
       <img src="/login-bg/logo-tpm.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">TPM Sistem</span>
@@ -11,7 +11,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="/profile/hanmaru.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="/profile/profile.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <a href="#" class="d-block ml-3">
   <%= user ? user.username : 'Guest' %>
@@ -49,20 +49,30 @@
             </a>
           </li>
           <% } %>
-          <li class="nav-item has-treeview <%= 
-    ['mtn','produksi','qc','mold'].includes(active) ? 'menu-open' : '' 
+         <li class="nav-item has-treeview <%= 
+  ['departemen','mtn','produksi','qc','mold','ppic'].includes(active) 
+    ? 'menu-open' 
+    : '' 
 %>">
 
-  <a href="#" class="nav-link <%= 
-    ['mtn','produksi','qc','mold'].includes(active) ? 'active' : '' 
-  %>">
+  <!-- Menu Utama -->
+  <a href="/departemen/page" 
+     class="nav-link <%= 
+       ['departemen','mtn','produksi','qc','mold','ppic'].includes(active) 
+         ? 'active' 
+         : '' 
+     %>">
+
     <i class="nav-icon fas fa-building"></i>
+
     <p>
       Departemen
       <i class="right fas fa-angle-left"></i>
     </p>
+
   </a>
 
+  <!-- Sub Menu -->
   <ul class="nav nav-treeview">
 
     <li class="nav-item">
@@ -94,6 +104,14 @@
          class="nav-link <%= active === 'mold' ? 'active' : '' %>">
         <i class="far fa-circle nav-icon"></i>
         <p>Mold</p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href="/departemen/ppic" 
+         class="nav-link <%= active === 'ppic' ? 'active' : '' %>">
+        <i class="far fa-circle nav-icon"></i>
+        <p>PPIC</p>
       </a>
     </li>
 

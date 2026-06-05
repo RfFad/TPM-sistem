@@ -1,9 +1,10 @@
 const db = require('../config/database');
 
 module.exports =  {
-   homePage: (req, res) => {
+  homePage: (req, res) => {
 
     const canManage = ['admin', 'develop'].includes(req.user.role);
+  const canManage2= ['develop'].includes(req.user.role);
 
     // 1️⃣ Ambil history terakhir
     db.query(`
@@ -50,16 +51,34 @@ module.exports =  {
                     totalBulanIni = bulanResult[0].total_bulan;
                 }
 
-                // Render ke halaman
-                res.render('index', {
-                    tittle: 'Home Page',
-                    message: 'Project TPM Sistem',
-                    active: 'dashboard',
-                    user: req.user,
-                    canManage,
-                    history,
-                    totalDoc,
-                    totalBulanIni
+                // 4️⃣ Total departemen
+                db.query(`
+                    SELECT COUNT(*) AS total_departemen
+                    FROM departemen
+                `, (err4, deptResult) => {
+
+                    let totalDepartemen = 0;
+
+                    if (err4) {
+                        console.error("DEPARTEMEN ERROR:", err4);
+                    } else {
+                        totalDepartemen = deptResult[0].total_departemen;
+                    }
+
+                    // Render ke halaman
+                    res.render('index', {
+                        tittle: 'Home Page',
+                        message: 'Project TPM Sistem',
+                        active: 'dashboard',
+                        user: req.user,
+                        canManage,
+                        history,
+                        totalDoc,
+                        totalBulanIni,
+                        totalDepartemen,
+                        canManage2
+                    });
+
                 });
 
             });

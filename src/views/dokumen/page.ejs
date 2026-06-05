@@ -92,10 +92,10 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6" id="tanggalRevisiGroup" style="display:none;">
               <div class="form-group">
-                <label>Tanggal New</label>
-                <input type="date" name="tgl_new" id="tgl_new" class="form-control" required>
+                <label>Tanggal Revisi</label>
+                <input type="date" name="tgl" id="tgl_new" class="form-control">
               </div>
             </div>
 
@@ -108,9 +108,31 @@
 
             <div class="col-md-6">
               <div class="form-group">
-                <label>Departemen</label>
-                <input type="text" name="departemen" id="departemen" class="form-control" required>
+                <label>Kategori dokumen</label>
+                <select id="kategoriSelect" name="id_kategori" class="form-control" required>
+                    <option value="">-- Pilih Kategori --</option>
+
+                    <% kategori.forEach(item => { %>
+                      <option value="<%= item.id_kategori %>">
+                        <%= item.nama_kategori %>
+                      </option>
+                    <% }) %>
+                  </select>
               </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Departemen</label>
+                 <select id="deptSelect" name="id_dept" class="form-control" required>
+                    <option value="">-- Pilih Departemen --</option>
+                    <% departemen.forEach(item => { %>
+                      <option value="<%= item.id_dept %>">
+                        <%= item.nama_dept %>
+                      </option>
+                    <% }) %>
+                  </select>
+                  </div>
             </div>
 
             <div class="col-md-12">
@@ -174,11 +196,12 @@
             <p><b>Nama Dokumen:</b> <span id="d_nama"></span></p>
             <p><b>No Dokumen:</b> <span id="d_no"></span></p>
             <p><b>Departemen:</b> <span id="d_departemen"></span></p>
-            <p><b>Tanggal New:</b> <span id="d_tgl_new"></span></p>
+            <p><b>Kategori:</b> <span id="d_kategori"></span></p>
           </div>
-
+          
           <div class="col-md-6">
             <p><b>Uploaded By:</b> <span id="d_uploaded_by"></span></p>
+            <!-- <p><b>Tanggal New:</b> <span id="d_tgl_new"></span></p> -->
             <p><b>Tanggal Upload:</b> <span id="d_created_at"></span></p>
             <p><b>Terakhir Direvisi:</b> <span id="d_last_revisi"></span></p>
           </div>
@@ -192,10 +215,9 @@
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th>No</th>
               <th>Revisi ke</th>
               <th>Direvisi Oleh</th>
-              <th>Tanggal</th>
+              <th>Tanggal Revisi</th>
               <th>Keterangan</th>
             </tr>
           </thead>
@@ -227,16 +249,17 @@
     $('.modal-title').text('Detail Dokumen');
     $('#d_nama').text(d.nama_doc);
     $('#d_no').text(d.no_doc);
-    $('#d_departemen').text(d.departemen);
+    $('#d_departemen').text(d.nama_dept);
+    $('#d_kategori').text(d.nama_kategori);
 
-   $('#d_tgl_new').text(
-  new Date(d.tgl_new).toLocaleDateString('id-ID', {
-    timeZone: 'Asia/Jakarta',
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-  })
-);
+//    $('#d_tgl_new').text(
+//   new Date(d.tgl_new).toLocaleDateString('id-ID', {
+//     timeZone: 'Asia/Jakarta',
+//     day: '2-digit',
+//     month: 'long',
+//     year: 'numeric'
+//   })
+// );
     $('#d_uploaded_by').text(d.uploaded_by);
 
     $('#d_created_at').text(
@@ -251,10 +274,9 @@
     let html = '';
 if (res.revisi.length > 0) {
 
-  res.revisi.forEach((r, i) => {
+  res.revisi.forEach((r) => {
     html += `
       <tr>
-        <td>${i+1}</td>
         <td> ${r.no_rev} </td>
         <td>${r.username}</td>
         <td>${new Date(r.tgl).toLocaleString('id-ID', {  timeZone: 'Asia/Jakarta',
@@ -267,7 +289,7 @@ if (res.revisi.length > 0) {
   });
 
 }
-// 🔥 UPDATED_AT dari tabel DOKUMEN
+// UPDATED_AT dari tabel DOKUMEN
 if (d.updated_at) {
   $('#d_last_revisi').text(
     new Date(d.updated_at).toLocaleString('id-ID', {
@@ -316,8 +338,9 @@ function loadData() {
             <th>No</th>
             <th>No Doc</th>
             <th>Nama Dokumen</th>
+            <th>Kategori</th>
             <th>Departemen</th>
-            <th>Tanggal</th>
+            <th>Tgl Upload</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -332,11 +355,12 @@ function loadData() {
           <td>${index + 1}</td>
           <td>${u.no_doc}</td>
           <td>${u.nama_doc}</td>
-          <td>${u.departemen}</td>
+          <td>${u.nama_kategori}</td>
+          <td>${u.nama_dept}</td>
         <td>
   ${
-    u.tgl_new
-      ? new Date(u.tgl_new).toLocaleString('id-ID', {
+    u.created_at
+      ? new Date(u.created_at).toLocaleString('id-ID', {
           timeZone: 'Asia/Jakarta',
           year: 'numeric',
           month: '2-digit',
@@ -396,14 +420,18 @@ $('#btn-tambah').click(function () {
 
   $('#btnCreate').show();
   $('#btnUpdate').hide();
+  $('.text-muted').hide();
+
+  // sembunyikan revisi
   $('#revisiDek').hide();
+
+  // sembunyikan tanggal revisi
+  $('#tanggalRevisiGroup').hide();
 
   $('.modal-title').text('Tambah Dokumen');
 
   $('#modal-default').modal('show');
 });
-
-
 /* =======================
    EDIT DATA
 ======================= */
@@ -414,25 +442,31 @@ function editData(id) {
     $('#id_doc').val(data.id_doc);
     $('#no_doc').val(data.no_doc);
     $('#nama_doc').val(data.nama_doc);
-    $('#departemen').val(data.departemen);
-    if (data.tgl_new) {
+    $('#kategoriSelect').val(data.id_kategori);
+    $('#deptSelect').val(data.id_dept);
 
-  const dateObj = new Date(data.tgl_new);
+//     if (data.tgl_new) {
 
-  const formatter = new Intl.DateTimeFormat('sv-SE', {
-    timeZone: 'Asia/Jakarta',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  });
+//   const dateObj = new Date(data.tgl_new);
 
-  $('#tgl_new').val(formatter.format(dateObj));
-}
+//   const formatter = new Intl.DateTimeFormat('sv-SE', {
+//     timeZone: 'Asia/Jakarta',
+//     year: 'numeric',
+//     month: '2-digit',
+//     day: '2-digit'
+//   });
+
+//   $('#tgl_new').val(formatter.format(dateObj));
+// }
     $('#old_file').val(data.file);
 
     $('#btnCreate').hide();
     $('#btnUpdate').show();
     $('#revisiDek').show();
+    $('.text-muted').show();
+
+    // tampilkan tanggal revisi saat edit
+$('#tanggalRevisiGroup').show();
 
     $('.modal-title').text('Edit Dokumen');
 
@@ -445,8 +479,83 @@ function editData(id) {
 /* =======================
    CREATE
 ======================= */
-$('#btnCreate').click(function () { let formData = new FormData($('#formDokumen')[0]); $.ajax({ url: '/dokumen/save', type: 'POST', data: formData, contentType: false, processData: false, beforeSend: function () { Swal.fire({ title: 'Menyimpan...', text: 'Mohon tunggu', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } }); }, success: function (res) { Swal.fire({ icon: 'success', title: 'Berhasil!', text: 'Data berhasil disimpan', timer: 2000, showConfirmButton: false }); $('#modalDokumen').modal('hide'); $('#formDokumen')[0].reset(); loadData(); }, error: function (err) { Swal.fire({ icon: 'error', title: 'Gagal!', text: 'Terjadi kesalahan saat menyimpan' }); } }); });
-/* =======================
+$('#btnCreate').click(function () {
+
+  // Validasi form
+  let isValid = true;
+
+  $('#formDokumen')
+    .find('input[required], select[required]')
+    .each(function () {
+      if ($(this).val().trim() === '') {
+        isValid = false;
+
+        // Tambahkan border merah
+        $(this).addClass('is-invalid');
+      } else {
+        $(this).removeClass('is-invalid');
+      }
+    });
+
+  // Jika ada field kosong
+  if (!isValid) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Form Belum Lengkap',
+      text: 'Masih ada data yang belum diisi!',
+    });
+
+    return;
+  }
+
+  let formData = new FormData($('#formDokumen')[0]);
+
+  $.ajax({
+    url: '/dokumen/save',
+    type: 'POST',
+    data: formData,
+    contentType: false,
+    processData: false,
+
+    beforeSend: function () {
+      Swal.fire({
+        title: 'Menyimpan...',
+        text: 'Mohon tunggu',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+    },
+
+    success: function (res) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: 'Data berhasil disimpan',
+        timer: 2000,
+        showConfirmButton: false
+      });
+
+      $('#modalDokumen').modal('hide');
+      $('#formDokumen')[0].reset();
+
+      // Hapus invalid setelah reset
+      $('#formDokumen .is-invalid').removeClass('is-invalid');
+
+      loadData();
+    },
+
+    error: function (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: 'Terjadi kesalahan saat menyimpan'
+      });
+    }
+  });
+
+});/* =======================
    UPDATE
 ======================= */
 $('#btnUpdate').click(function () {

@@ -47,6 +47,12 @@ app.use('/riwayat', riwayat);
 
 const departemen = require('./routes/departemen/departemenRoutes')
 app.use('/departemen', departemen);
+
+const planning = require('./routes/planning/planRoutes')
+app.use('/planning', planning);
+
+const produk = require('./routes/produk/produkRoutes')
+app.use('/produk', produk);
 /**
  * Server
  */

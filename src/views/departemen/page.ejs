@@ -1,0 +1,230 @@
+<%- include("../partials/header") %>
+<%- include("../partials/sideNavbar") %>
+
+<style>
+  .dashboard-box {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 30px 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    border: 1px solid #f1f1f1;
+    height: 100%;
+  }
+
+  .dashboard-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  }
+
+  .dashboard-icon {
+    width: 85px;
+    height: 85px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 18px;
+    font-size: 34px;
+  }
+
+  .dashboard-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0;
+  }
+
+  .bg-soft-primary {
+    background: rgba(0,123,255,0.12);
+    color: #007bff;
+  }
+
+  .bg-soft-success {
+    background: rgba(40,167,69,0.12);
+    color: #28a745;
+  }
+
+  .bg-soft-warning {
+    background: rgba(255,193,7,0.15);
+    color: #f0ad00;
+  }
+
+  .bg-soft-danger {
+    background: rgba(220,53,69,0.12);
+    color: #dc3545;
+  }
+
+  .dashboard-link {
+    text-decoration: none !important;
+  }
+
+  .dashboard-link:hover {
+    text-decoration: none !important;
+  }
+</style>
+
+<!-- Content Wrapper -->
+<div class="content-wrapper">
+
+  <!-- Header -->
+  <div class="content-header">
+    <div class="container-fluid">
+
+      <div class="row mb-3">
+        
+        <div class="col-sm-6">
+          <h1 class="m-0 font-weight-bold text-dark">
+            <i class="fas fa-building text-success mr-2"></i>
+            Departemen
+          </h1>
+        </div>
+
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right bg-white px-3 py-2 shadow-sm rounded">
+            <li class="breadcrumb-item">
+              <a href="#">Home</a>
+            </li>
+            <li class="breadcrumb-item active">
+              Departemen
+            </li>
+          </ol>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <section class="content">
+    <div class="container-fluid">
+
+      <div class="row">
+
+      
+
+        <!-- User -->
+      
+        <!-- MTN -->
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+          <a href="/departemen/mtn" class="dashboard-link">
+            <div class="dashboard-box text-center">
+
+              <div class="dashboard-icon bg-soft-danger">
+                <i class="fas fa-cogs"></i>
+              </div>
+
+              <h5 class="dashboard-title">
+                MTN
+              </h5>
+
+            </div>
+          </a>
+        </div>
+
+        <!-- Produksi -->
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+          <a href="/departemen/produksi" class="dashboard-link">
+            <div class="dashboard-box text-center">
+
+              <div class="dashboard-icon bg-soft-success">
+                <i class="fas fa-industry"></i>
+              </div>
+
+              <h5 class="dashboard-title">
+                Produksi
+              </h5>
+
+            </div>
+          </a>
+        </div>
+
+        <!-- QC -->
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+          <a href="/departemen/qc" class="dashboard-link">
+            <div class="dashboard-box text-center">
+
+              <div class="dashboard-icon bg-soft-primary">
+                <i class="fas fa-search"></i>
+              </div>
+
+              <h5 class="dashboard-title">
+                QC
+              </h5>
+
+            </div>
+          </a>
+        </div>
+
+        <!-- Mold -->
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+          <a href="/departemen/mold" class="dashboard-link">
+            <div class="dashboard-box text-center">
+
+              <div class="dashboard-icon bg-soft-warning">
+                <i class="fas fa-tools"></i>
+              </div>
+
+              <h5 class="dashboard-title">
+                Mold
+              </h5>
+
+            </div>
+          </a>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+          <a href="/departemen/ppic" class="dashboard-link">
+            <div class="dashboard-box text-center">
+
+              <div class="dashboard-icon bg-soft-warning">
+                <i class="fas fa-tools"></i>
+              </div>
+
+              <h5 class="dashboard-title">
+                PPIC
+              </h5>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+          <a href="/departemen/engineering" class="dashboard-link">
+            <div class="dashboard-box text-center">
+
+              <div class="dashboard-icon bg-soft-warning">
+                <i class="fas fa-tools"></i>
+              </div>
+
+              <h5 class="dashboard-title">
+                Engineering
+              </h5>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-12 mb-4">
+          <a href="/departemen/hr" class="dashboard-link">
+            <div class="dashboard-box text-center">
+
+              <div class="dashboard-icon bg-soft-warning">
+                <i class="fas fa-tools"></i>
+              </div>
+
+              <h5 class="dashboard-title">
+                HR
+              </h5>
+            </div>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<%- include("../partials/footer") %>
