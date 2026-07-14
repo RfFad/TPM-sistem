@@ -1,68 +1,1012 @@
- <%- include("../partials/header") %>
- <%- include("../partials/sideNavbar") %>
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
+<%- include("../partials/header") %>
+<%- include("../partials/sideNavbar") %>
+
+<div class="content-wrapper">
+
+<section class="content-header">
+    <div class="container-fluid">
+
         <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Daftar Planning</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Planning</li>
-            </ol>
-          </div>
+
+            <div class="col-sm-6">
+                <h1>Planning Produksi</h1>
+            </div>
+
+            <div class="col-sm-6">
+
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item active">Planning</li>
+                </ol>
+
+            </div>
+
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-           
+    </div>
+</section>
 
-            <div class="card">
-              <div class="card-header">
-               
-              <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+<section class="content">
 
-  <!-- JUDUL -->
-  <h3 class="card-title mb-2 mb-md-0">
-    Planning
-  </h3>
- <% if (canManage) { %>
-  <!-- BUTTON -->
-  <button class="btn btn-success d-flex align-items-center px-3" id="btn-tambah" data-toggle="modal" data-target="#modal-default">
-    <i class="fas fa-plus mr-2"></i>
-    Tambahkan Data
-  </button>
+<div class="container-fluid">
+
+<!-- KPI -->
+<div class="row">
+
+    <div class="col-md-3">
+
+    <a href="/planning/tabel" class="text-white" style="text-decoration:none;">
+
+        <div class="small-box bg-info">
+
+            <div class="inner">
+                <h3 id="totalPlanHari"><%= totalPlanHariIni %></h3>
+                <p>Plan Hari Ini</p>
+            </div>
+
+            <div class="icon">
+                <i class="fas fa-calendar-day"></i>
+            </div>
+
+        </div>
+
+    </a>
+
 </div>
+    <div class="col-md-3">
+         <a href="/planning/archive" class="text-white" style="text-decoration:none;">
+        <div class="small-box bg-success">
+
+            <div class="inner">
+                <h3 id="totalTargetHari"><%= totalBulanPlanning %></h3>
+                <p>Daftar Plan</p>
+            </div>
+
+            <div class="icon">
+                <i class="fas fa-bullseye"></i>
+            </div>
+
+        </div>
+        </a>
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="small-box bg-warning">
+
+            <div class="inner">
+                <h3 id="totalMesin">0</h3>
+                <p>Mesin Aktif</p>
+            </div>
+
+            <div class="icon">
+                <i class="fas fa-cogs"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="small-box bg-danger">
+
+            <div class="inner">
+                <h3 id="totalProduk">0</h3>
+                <p>Produk Aktif</p>
+            </div>
+
+            <div class="icon">
+                <i class="fas fa-box"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- FILTER -->
+<div class="card">
+
+    <div class="card-header">
+        <h3 class="card-title">Filter Data</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-md-2">
+                <label>Tanggal</label>
+                <input type="date" id="filterTanggal" class="form-control">
+            </div>
+
+            <div class="col-md-2">
+                <label>Bulan</label>
+                <select id="filterBulan" class="form-control">
+                    <option value="">Semua</option>
+
+                    <% for(let i=1;i<=12;i++){ %>
+                    <option value="<%= i %>">
+                        <%= i %>
+                    </option>
+                    <% } %>
+
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label>Tahun</label>
+                <input type="number" id="filterTahun" class="form-control">
+            </div>
+
+            <div class="col-md-3">
+                <label>Produk</label>
+                <select id="filterProduk" class="form-control produk">
+                    <option value="">Semua Produk</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label>Mesin</label>
+                <input type="text" id="filterMesin" class="form-control">
+            </div>
+
+            <div class="col-md-1">
+                <label>&nbsp;</label>
+                <button class="btn btn-primary btn-block" id="btnFilter">
+                    Cari
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- TAB -->
+<div class="card">
+
+<div class="card-header p-0">
+
+<ul class="nav nav-tabs">
+
+<li class="nav-item">
+<a class="nav-link active" data-toggle="tab" href="#planning">
+Planning
+</a>
+</li>
+
+</ul>
+
+</div>
+
+<div class="card-body">
+
+<div class="tab-content">
+
+<!-- PLANNING -->
+<div class="tab-pane active" id="planning">
+
+<% if (canManage) { %>
+
+<button
+class="btn btn-success mb-3"
+id="btn-tambah"
+data-toggle="modal"
+data-target="#modal-default">
+
+<i class="fas fa-plus"></i>
+Tambah Planning
+
+</button>
+
 <% } %>
 
-              </div>
-              <!-- /.card-header -->
-          <div class="card-body">
-  <div id="table-wrapper"></div>
+<div id="tablePlanning"></div>
+
 </div>
 
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+<!-- HARIAN -->
+<div class="tab-pane" id="harian">
 
-  <%- include("../partials/footer") %>
+<table id="tblHarian"
+class="table table-bordered table-striped">
 
+<thead>
+
+<tr>
+<th>Tanggal</th>
+<th>Total Planning</th>
+<th>Total Target</th>
+</tr>
+
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+<!-- BULANAN -->
+<div class="tab-pane" id="bulanan">
+
+<table id="tblBulanan"
+class="table table-bordered table-striped">
+
+<thead>
+
+<tr>
+<th>Bulan</th>
+<th>Total Planning</th>
+<th>Total Target</th>
+</tr>
+
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+<!-- TAHUNAN -->
+<div class="tab-pane" id="tahunan">
+
+<table id="tblTahunan"
+class="table table-bordered table-striped">
+
+<thead>
+
+<tr>
+<th>Tahun</th>
+<th>Total Planning</th>
+<th>Total Target</th>
+</tr>
+
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="modal-default">
+
+<div class="modal-dialog modal-xl">
+
+<div class="modal-content">
+
+<div class="modal-header bg-primary">
+
+<h4 class="modal-title">
+Form Planning Produksi
+</h4>
+
+<button
+type="button"
+class="close text-white"
+data-dismiss="modal">
+
+<span>&times;</span>
+
+</button>
+
+</div>
+
+<div class="modal-body">
+
+<form id="formPlanning">
+
+<input
+type="hidden"
+id="id_plan"
+name="id_plan">
+
+<div class="row">
+
+<div class="col-md-4">
+
+<label>Produk</label>
+
+<select
+name="id_produk"
+id="id_produk"
+class="form-control select2">
+
+</select>
+
+</div>
+
+<div class="col-md-2">
+
+<label>Tanggal</label>
+
+<input
+type="date"
+name="tgl"
+id="tgl"
+class="form-control">
+
+</div>
+
+<div class="col-md-2">
+
+<label>No Mesin</label>
+
+<input
+type="text"
+name="no_mc"
+id="no_mc"
+class="form-control">
+
+</div>
+
+<div class="col-md-2">
+
+<label>Tonage</label>
+
+<input
+type="number"
+name="tonage"
+id="tonage"
+class="form-control">
+
+</div>
+
+<div class="col-md-2">
+
+<label>Cycle Time</label>
+
+<input
+type="number"
+name="cycle_time"
+id="cycle_time"
+class="form-control">
+
+</div>
+
+<div class="col-md-2">
+
+<label>Cavity</label>
+
+<input
+type="number"
+name="cavity"
+id="cavity"
+class="form-control">
+
+</div>
+
+<div class="col-md-2">
+
+<label>Target Shift</label>
+
+<input
+type="number"
+name="target_shift"
+id="target_shift"
+class="form-control">
+
+</div>
+
+<div class="col-md-2">
+
+<label>Target Hour</label>
+
+<input
+type="number"
+name="target_hour"
+id="target_hour"
+class="form-control">
+
+</div>
+
+<div class="col-md-2">
+
+<label>Target Day</label>
+
+<input
+type="number"
+name="target_day"
+id="target_day"
+class="form-control">
+
+</div>
+
+<div class="col-md-4">
+
+<label>Keterangan</label>
+
+<input
+type="text"
+name="keterangan"
+id="keterangan"
+class="form-control">
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+<div class="modal-footer">
+
+<button
+class="btn btn-primary"
+id="btnCreate">
+
+Simpan
+
+</button>
+
+<button
+class="btn btn-warning"
+id="btnUpdate"
+style="display:none">
+
+Update
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<%- include("../partials/footer") %>
+<script>
+
+$(document).ready(function () {
+
+    setDefaultTanggal();
+    loadPlanning();
+    loadProduk();
+    loadProdukFilter();
+
+    $('#id_produk').select2({
+    theme: 'bootstrap4',
+    placeholder: 'Pilih Produk',
+    allowClear: true,
+    width: '100%',
+    dropdownParent: $('#modal-default')
+});
+
+});
+
+/* ==================================
+   LOAD DATA PLANNING
+================================== */
+function loadPlanning() {
+
+    const tanggal = $('#filterTanggal').val();
+    const bulan   = $('#filterBulan').val();
+    const tahun   = $('#filterTahun').val();
+    const produk  = $('#filterProduk').val();
+    const mesin   = $('#filterMesin').val();
+
+    $.ajax({
+
+        url: '/planning/data',
+
+        type: 'GET',
+
+        data: {
+            tanggal: $('#filterTanggal').val(),
+            bulan: bulan,
+            tahun: tahun,
+            produk: produk,
+            mesin: mesin
+        },
+
+        success: function (res) {
+
+            let data = res.data || [];
+
+            let html = `
+            <table id="tblPlanning"
+                   class="table table-bordered table-striped">
+
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Produk</th>
+                        <th>Mesin</th>
+                        <th>Tonage</th>
+                        <th>Cycle Time</th>
+                        <th>Cavity</th>
+                        <th>Target Shift</th>
+                        <th>Target Day</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+            `;
+
+            data.forEach((d, i) => {
+
+                html += `
+                <tr>
+
+                    <td>${i + 1}</td>
+                    <td>${formatDate(d.tgl)}</td>
+                    <td>${d.nama_produk}</td>
+                    <td>${d.no_mc}</td>
+                    <td>${d.tonage}</td>
+                    <td>${d.cycle_time}</td>
+                    <td>${d.cavity}</td>
+                    <td>${d.target_shift}</td>
+                    <td>${Number(d.target_day).toLocaleString('id-ID')}</td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-info btn-sm"
+                            onclick="detailData(${d.id_plan})">
+                            Detail
+                        </button>
+
+                        <button
+                            class="btn btn-warning btn-sm"
+                            onclick="editData(${d.id_plan})">
+                            Edit
+                        </button>
+
+                        <button
+                            class="btn btn-danger btn-sm"
+                            onclick="removeData(${d.id_plan})">
+                            Hapus
+                        </button>
+
+                    </td>
+
+                </tr>
+                `;
+            });
+
+            html += `
+                </tbody>
+            </table>
+            `;
+
+            $('#tablePlanning').html(html);
+
+            $('#tblPlanning').DataTable({
+                destroy: true,
+                responsive: true,
+                pageLength: 25
+            });
+
+        }
+
+    });
+
+}
+/* ==================================
+   TAMBAH DATA
+================================== */
+$('#btnCreate').click(function () {
+
+    $.ajax({
+
+        url: '/planning/save',
+
+        type: 'POST',
+
+        data: $('#formPlanning').serialize(),
+
+        beforeSend: function () {
+
+            Swal.fire({
+                title: 'Menyimpan...',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+        },
+
+        success: function (res) {
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: res.message
+            });
+
+            $('#modal-default').modal('hide');
+
+            loadPlanning();
+
+        },
+
+        error: function (xhr) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: xhr.responseJSON?.message || 'Terjadi kesalahan'
+            });
+
+        }
+
+    });
+
+});
+
+/* ==================================
+   EDIT DATA
+================================== */
+function editData(id) {
+
+    $.ajax({
+
+        url: '/planning/get/' + id,
+
+        type: 'GET',
+
+        success: function (data) {
+
+            $('#id_plan').val(data.id_plan);
+
+                // pilih produk sesuai id_produk
+            $('#id_produk').val(data.id_produk);
+
+            // jika menggunakan Select2
+        $('#id_produk').trigger('change');
+
+            $('#tgl').val(data.tgl?.substring(0,10));
+
+            $('#no_mc').val(data.no_mc);
+
+            $('#tonage').val(data.tonage);
+
+            $('#cycle_time').val(data.cycle_time);
+
+            $('#cavity').val(data.cavity);
+
+            $('#target_shift').val(data.target_shift);
+
+            $('#target_hour').val(data.target_hour);
+
+            $('#target_day').val(data.target_day);
+
+            $('#keterangan').val(data.keterangan);
+
+            $('#btnCreate').hide();
+            $('#btnUpdate').show();
+
+            $('.modal-title').text('Edit Planning');
+
+            $('#modal-default').modal('show');
+
+        }
+
+    });
+
+}
+
+/* ==================================
+   UPDATE
+================================== */
+$('#btnUpdate').click(function () {
+
+    $.ajax({
+
+        url: '/planning/update',
+
+        type: 'PUT',
+
+        data: $('#formPlanning').serialize(),
+
+        beforeSend: function () {
+
+            Swal.fire({
+                title: 'Mengupdate...',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+        },
+
+        success: function (res) {
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: res.message
+            });
+
+            $('#modal-default').modal('hide');
+
+            loadPlanning();
+
+        },
+
+        error: function (xhr) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: xhr.responseJSON?.message || 'Terjadi kesalahan'
+            });
+
+        }
+
+    });
+
+});
+
+/* ==================================
+   HAPUS
+================================== */
+function removeData(id) {
+
+    Swal.fire({
+
+        title: 'Yakin?',
+        text: 'Data akan dihapus',
+
+        icon: 'warning',
+
+        showCancelButton: true,
+
+        confirmButtonText: 'Ya'
+
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            $.ajax({
+
+                url: '/planning/delete/' + id,
+
+                type: 'DELETE',
+
+                success: function (res) {
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: res.message
+                    });
+
+                    loadPlanning();
+
+                }
+
+            });
+
+        }
+
+    });
+
+}
+
+/* ==================================
+   DETAIL
+================================== */
+function detailData(id) {
+
+    $.get('/planning/get/' + id, function (d) {
+
+        Swal.fire({
+
+            title: 'Detail Planning',
+
+            html: `
+                <table class="table table-bordered">
+
+                    <tr>
+                        <td>Produk</td>
+                        <td>${d.nama_produk || '-'}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Tanggal</td>
+                        <td>${formatDate(d.tgl)}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Mesin</td>
+                        <td>${d.no_mc}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Tonage</td>
+                        <td>${d.tonage}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Cycle Time</td>
+                        <td>${d.cycle_time}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Cavity</td>
+                        <td>${d.cavity}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Target Shift</td>
+                        <td>${d.target_shift}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Target Day</td>
+                        <td>${d.target_day}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Keterangan</td>
+                        <td>${d.keterangan || '-'}</td>
+                    </tr>
+
+                </table>
+            `,
+
+            width: 800
+
+        });
+
+    });
+
+}
+
+/* ==================================
+   RESET MODAL
+================================== */
+$('#modal-default').on('hidden.bs.modal', function () {
+
+    $('#formPlanning')[0].reset();
+
+    $('#id_plan').val('');
+
+    $('#btnCreate').show();
+
+    $('#btnUpdate').hide();
+
+});
+
+/* ==================================
+   FORMAT TANGGAL
+================================== */
+function formatDate(date) {
+
+    if (!date) return '-';
+
+    return new Date(date).toLocaleDateString('id-ID', {
+
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+
+    });
+
+}
+function loadProduk() {
+
+    $.ajax({
+        url: '/produk/data',
+        type: 'GET',
+        success: function(res) {
+
+            let html = '<option value="">Pilih Produk</option>';
+
+            const data = res.data || res;
+
+            data.forEach(item => {
+
+                html += `
+                    <option value="${item.id_produk}">
+                        ${item.nama_produk} | ${item.no_part} | ${item.material}
+                    </option>
+                `;
+
+            });
+
+            $('#id_produk').html(html);
+
+        }
+    });
+
+}
+$('#btnFilter').click(function(){
+
+    let tanggal = $('#filterTanggal').val();
+    let bulan   = $('#filterBulan').val();
+    let tahun   = $('#filterTahun').val();
+    let produk  = $('#filterProduk').val();
+    let mesin   = $('#filterMesin').val();
+
+    loadPlanning(
+        tanggal,
+        bulan,
+        tahun,
+        produk,
+        mesin
+    );
+
+});
+function loadProdukFilter() {
+
+    $.ajax({
+        url: '/produk/data',
+        type: 'GET',
+        success: function(res) {
+
+            let html = '<option value="">Pilih Produk</option>';
+
+            const data = res.data || res;
+
+            data.forEach(item => {
+
+                html += `
+                    <option value="${item.id_produk}">
+                        ${item.nama_produk} | ${item.no_part} | ${item.material}
+                    </option>
+                `;
+
+            });
+
+            $('#filterProduk').html(html);
+
+        }
+    });
+
+}
+
+function setDefaultTanggal() {
+
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+
+    const tanggal = `${year}-${month}-${day}`;
+
+    $('#filterTanggal').val(tanggal);
+
+}
+$('#modal-default').on('hidden.bs.modal', function () {
+
+    $('#formPlanning')[0].reset();
+
+    $('#id_plan').val('');
+
+    $('#btnCreate').show();
+
+    $('#btnUpdate').hide();
+
+    // paksa hapus backdrop
+    $('.modal-backdrop').remove();
+
+    // kembalikan body seperti semula
+    $('body').removeClass('modal-open');
+    $('body').css('padding-right', '');
+});
+</script>

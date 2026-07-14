@@ -1,0 +1,617 @@
+ <%- include("../partials/header") %>
+ <%- include("../partials/sideNavbar") %>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Daftar Produk</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Produk</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+           
+
+            <div class="card">
+              <div class="card-header">
+               
+              <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+
+  <!-- JUDUL -->
+  <h3 class="card-title mb-2 mb-md-0">
+    Produk
+  </h3>
+ <% if (canManage) { %>
+  <!-- BUTTON -->
+  <button class="btn btn-success d-flex align-items-center px-3" id="btn-tambah" data-toggle="modal" data-target="#modal-default">
+    <i class="fas fa-plus mr-2"></i>
+    Tambahkan Data
+  </button>
+</div>
+<% } %>
+
+              </div>
+              <!-- /.card-header -->
+          <div class="card-body">
+  <div id="table-wrapper"></div>
+</div>
+
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+    <div class="modal fade" id="modal-default">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow">
+
+      <!-- Header -->
+      <div class="modal-header bg-primary">
+        <h4 class="modal-title">
+          <i class="fas fa-box mr-2"></i> Form Produk
+        </h4>
+        <button type="button" class="close text-white" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <div class="card card-outline card-primary mb-0">
+          <div class="card-header">
+            <h5 class="card-title mb-0">
+              Informasi Produk
+            </h5>
+          </div>
+
+          <div class="card-body">
+
+            <form id="formDokumen" enctype="multipart/form-data">
+
+              <div class="row">
+                <input type="hidden" name="id_produk" id="id_produk">
+                <!-- Nama Produk -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      <i class="fas fa-tag text-primary"></i>
+                      Nama Produk
+                    </label>
+                    <input type="text"
+                           name="nama_produk"
+                           id="nama_produk"
+                           class="form-control"
+                           placeholder="Masukkan nama produk"
+                           required>
+                  </div>
+                </div>
+
+                <!-- No Part -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      <i class="fas fa-barcode text-primary"></i>
+                      No Part
+                    </label>
+                    <input type="text"
+                           name="no_part"
+                           id="no_part"
+                           class="form-control"
+                           placeholder="Masukkan nomor part"
+                           required>
+                  </div>
+                </div>
+
+                <!-- Material -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      <i class="fas fa-cubes text-primary"></i>
+                      Material / Compound
+                    </label>
+                    <input type="text"
+                           name="material"
+                           id="material"
+                           class="form-control"
+                           placeholder="Masukkan material"
+                           required>
+                  </div>
+                </div>
+
+                <!-- Customer -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>
+                      <i class="fas fa-user-tie text-primary"></i>
+                      Customer
+                    </label>
+                    <input type="text"
+                           name="costumer"
+                           id="costumer"
+                           class="form-control"
+                           placeholder="Masukkan nama customer"
+                           required>
+                  </div>
+                </div>
+
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+          <i class="fas fa-times"></i> Batal
+        </button>
+
+        <div>
+          <button type="button" id="btnCreate" class="btn btn-primary">
+            <i class="fas fa-save"></i> Simpan
+          </button>
+
+          <button type="button" id="btnUpdate" class="btn btn-warning" style="display:none">
+            <i class="fas fa-edit"></i> Update
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+  <%- include("../partials/footer") %>
+<script>
+ function showDetail(id) {
+
+  $.get('/dokumen/detail/' + id, function(res) {
+
+    const d = res.dokumen;
+
+    $('.modal-title').text('Detail Dokumen');
+    $('#d_nama').text(d.nama_doc);
+    $('#d_no').text(d.no_doc);
+    $('#d_departemen').text(d.nama_dept);
+    $('#d_kategori').text(d.nama_kategori);
+
+//    $('#d_tgl_new').text(
+//   new Date(d.tgl_new).toLocaleDateString('id-ID', {
+//     timeZone: 'Asia/Jakarta',
+//     day: '2-digit',
+//     month: 'long',
+//     year: 'numeric'
+//   })
+// );
+    $('#d_uploaded_by').text(d.uploaded_by);
+
+    $('#d_created_at').text(
+      new Date(d.created_at).toLocaleString('id-ID', {
+        timeZone: 'Asia/Jakarta'
+      })
+    );
+
+    $('#btnDownload').attr('href', '/uploads/' + d.file);
+
+    // Riwayat revisi
+    let html = '';
+if (res.revisi.length > 0) {
+
+  res.revisi.forEach((r) => {
+    html += `
+      <tr>
+        <td> ${r.no_rev} </td>
+        <td>${r.username}</td>
+        <td>${new Date(r.tgl).toLocaleString('id-ID', {  timeZone: 'Asia/Jakarta',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit' })}</td>
+        <td>${r.keterangan || '-'}</td>
+      </tr>
+    `;
+  });
+
+}
+// UPDATED_AT dari tabel DOKUMEN
+if (d.updated_at) {
+  $('#d_last_revisi').text(
+    new Date(d.updated_at).toLocaleString('id-ID', {
+      timeZone: 'Asia/Jakarta'
+    })
+  );
+} else {
+  $('#d_last_revisi').text('-');
+}
+
+    $('#revisiBody').html(html);
+
+    $('#modalDetail').modal('show');
+
+  });
+
+}
+/* =======================
+   MODAL CLEANUP
+======================= */
+$('#modal-default').on('hidden.bs.modal', function () {
+
+  $('#formDokumen')[0].reset();
+  $('#id_doc').val('');
+
+  $('#btnCreate').show();
+  $('#btnUpdate').hide();
+ // $('#revisiDek').hide();
+  
+});
+
+
+/* =======================
+   LOAD DATA
+======================= */
+function loadData() {
+
+  $.get('/produk/data', function (res) {
+
+    const data = res.data || res;
+
+    let tableHTML = `
+      <table id="example1" class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Produk</th>
+            <th>No Part</th>
+            <th>Material/Compound</th>
+            <th>Costumer</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    data.forEach((u, index) => {
+
+      tableHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${u.nama_produk}</td>
+          <td>${u.no_part}</td>
+          <td>${u.material}</td>
+          <td>${u.costumer}</td>
+          </td>
+          <td>
+            <% if (canManage) { %>
+            <button
+    class="btn btn-warning btn-sm"
+    onclick="editData(${u.id_produk})">
+    Edit
+</button>
+            <button class="btn btn-danger btn-sm" onclick="removeData(${u.id_produk})">
+              Hapus
+            </button>
+             <% } %>
+            <button class="btn btn-success btn-sm" onclick="showDetail(${u.id_produk})">
+              Detail
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+
+    tableHTML += `</tbody></table>`;
+
+    $('#table-wrapper').html(tableHTML);
+
+    $('#example1').DataTable({
+      destroy: true,
+      responsive: true,
+      autoWidth: false
+    });
+
+  });
+}
+
+
+/* =======================
+   OPEN CREATE MODAL
+======================= */
+$('#btn-tambah').click(function () {
+
+  $('#formDokumen')[0].reset();
+  $('#id_produk').val('');
+  $('#btnCreate').show();
+  $('#btnUpdate').hide();
+  $('.text-muted').hide();
+
+  $('.modal-title').text('Tambah Produk');
+
+  $('#modal-default').modal('show');
+});
+/* =======================
+   EDIT DATA
+======================= */
+function editData(id) {
+
+
+    $.ajax({
+        url: '/produk/get/' + id,
+        type: 'GET',
+        success: function(data) {
+
+            $('#id_produk').val(data.id_produk);
+            $('#nama_produk').val(data.nama_produk);
+            $('#no_part').val(data.no_part);
+            $('#material').val(data.material);
+            $('#costumer').val(data.costumer);
+
+            $('#btnCreate').hide();
+            $('#btnUpdate').show();
+
+            $('.modal-title').text('Edit Produk');
+            $('#modal-default').modal('show');
+        },
+        error: function(xhr) {
+            alert('Gagal mengambil data');
+            console.log(xhr.responseText);
+        }
+    });
+}/* =======================
+   CREATE
+======================= */
+$('#btnCreate').click(function () {
+
+    let isValid = true;
+
+    // Validasi seluruh field required
+    $('#formDokumen')
+        .find('[required]')
+        .each(function () {
+
+            const value = $(this).val();
+
+            if (!value || value.toString().trim() === '') {
+
+                $(this).addClass('is-invalid');
+                isValid = false;
+
+            } else {
+
+                $(this).removeClass('is-invalid');
+
+            }
+
+        });
+
+    // Jika ada field kosong
+    if (!isValid) {
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Form Belum Lengkap',
+            text: 'Silakan lengkapi seluruh data terlebih dahulu'
+        });
+
+        return;
+    }
+
+    // Ambil data form
+    const data = {
+        nama_produk: $('#nama_produk').val(),
+        no_part: $('#no_part').val(),
+        material: $('#material').val(),
+        costumer: $('#costumer').val()
+    };
+
+    $.ajax({
+        url: '/produk/save',
+        type: 'POST',
+        data: data,
+
+        beforeSend: function () {
+
+            $('#btnCreate').prop('disabled', true);
+
+            Swal.fire({
+                title: 'Menyimpan...',
+                text: 'Mohon tunggu',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+        },
+
+        success: function (res) {
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: res.message || 'Data berhasil disimpan',
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+            $('#modal-default').modal('hide');
+
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open');
+    $('body').css('padding-right', '');
+
+
+            $('#formDokumen')[0].reset();
+
+            $('#formDokumen')
+                .find('.is-invalid')
+                .removeClass('is-invalid');
+
+            if (typeof loadData === 'function') {
+                loadData();
+            }
+
+        },
+
+        error: function (xhr) {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: xhr.responseJSON?.message || 'Terjadi kesalahan saat menyimpan'
+            });
+
+        },
+
+        complete: function () {
+
+            $('#btnCreate').prop('disabled', false);
+
+        }
+
+    });
+
+});/* =======================
+   UPDATE
+======================= */
+$('#btnUpdate').click(function () {
+
+    const data = {
+        id_produk: $('#id_produk').val(),
+        nama_produk: $('#nama_produk').val(),
+        no_part: $('#no_part').val(),
+        material: $('#material').val(),
+        costumer: $('#costumer').val()
+    };
+
+    console.log('Data Update:', data);
+
+    $.ajax({
+        url: '/produk/update',
+        type: 'PUT',
+        data: data,
+
+        beforeSend: function () {
+
+            Swal.fire({
+                title: 'Mengupdate...',
+                text: 'Mohon tunggu',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+        },
+
+        success: function (res) {
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: res.message
+            });
+
+            $('#modal-default').modal('hide');
+
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open');
+
+            loadData();
+
+        },
+
+        error: function (xhr) {
+
+            console.log(xhr.responseText);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: xhr.responseJSON?.message || 'Terjadi kesalahan'
+            });
+
+        }
+    });
+
+});
+
+/* =======================
+   DELETE
+======================= */
+function removeData(id) {
+
+  Swal.fire({
+    title: 'Yakin?',
+    text: 'Data akan dihapus',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Hapus'
+  }).then((result) => {
+
+    if (result.isConfirmed) {
+
+      $.ajax({
+        url: '/produk/delete/' + id,
+        type: 'DELETE',
+        success: function () {
+          Swal.fire('Terhapus', 'Data berhasil dihapus', 'success');
+          loadData();
+        }
+      });
+
+    }
+
+  });
+}
+function showDetail(id){
+
+  $.get('/produk/get/' + id, function(res){
+
+    Swal.fire({
+      title: 'Detail Produk',
+      html: `
+        <b>Nama Produk:</b> ${res.nama_produk}<br>
+        <b>No Part:</b> ${res.no_part}<br>
+        <b>Material:</b> ${res.material}<br>
+        <b>Costumer:</b> ${res.costumer}
+      `,
+      icon: 'info'
+    });
+
+  });
+
+}
+
+/* =======================
+   INIT
+======================= */
+$(document).ready(function () {
+  loadData();
+});
+
+</script>  
+
+

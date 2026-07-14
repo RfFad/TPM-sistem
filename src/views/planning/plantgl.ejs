@@ -1,0 +1,280 @@
+
+
+
+<%- include("../partials/header") %>
+<%- include("../partials/sideNavbar") %>
+
+<style>
+.planning-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.planning-table th,
+.planning-table td {
+    border: 1px solid #000 !important;
+    padding: 2px 4px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.planning-table thead th {
+    background: #fff;
+    font-weight: 700;
+}
+
+.planning-table td.text-left {
+    text-align: left !important;
+}
+
+.planning-table tbody tr:hover {
+    background: #f5f5f5;
+}
+
+.total-row {
+    background: #e9ecef;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.planning-table th:nth-child(1){ width:40px; }
+.planning-table th:nth-child(2){ width:55px; }
+.planning-table th:nth-child(3){ width:120px; }
+.planning-table th:nth-child(4){ width:120px; }
+.planning-table th:nth-child(5){ width:90px; }
+.planning-table th:nth-child(6){ width:50px; }
+.planning-table th:nth-child(7){ width:60px; }
+.planning-table th:nth-child(8),
+.planning-table th:nth-child(9),
+.planning-table th:nth-child(10),
+.planning-table th:nth-child(11),
+.planning-table th:nth-child(12){
+    width:90px;
+}
+.planning-table th:nth-child(13){
+    width:140px;
+}
+</style>
+
+<div class="content-wrapper">
+
+<section class="content-header">
+    <div class="container-fluid">
+
+        <div class="row mb-2">
+
+            <div class="col-sm-6">
+                <h1>Detail Planning</h1>
+            </div>
+
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <a href="/planning/archive">Archive Planning</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Detail
+                    </li>
+                </ol>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<section class="content">
+
+    <div class="container-fluid">
+
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="text-center mb-3">
+
+                    <h5 style="margin:0;">
+                        PT. TRIVINDO PRIMA MANDIRI
+                    </h5>
+
+                    <h4 style="margin:0;font-weight:bold;">
+                        PLANNING PRODUKSI HARIAN
+                    </h4>
+
+                    <small>
+                        Tanggal :
+                        <%= new Date(tgl).toLocaleDateString('id-ID', {
+                            day:'2-digit',
+                            month:'long',
+                            year:'numeric'
+                        }) %>
+                    </small>
+
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="table table-bordered planning-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th rowspan="2">MC</th>
+                                <th rowspan="2">TON</th>
+                                <th rowspan="2">NAMA PART</th>
+                                <th rowspan="2">CUSTOMER</th>
+                                <th rowspan="2">MATERIAL</th>
+                                <th rowspan="2">CAV</th>
+                                <th rowspan="2">CT</th>
+                                <th rowspan="2">TARGET/JAM</th>
+                                <th rowspan="2">TARGET/DAY</th>
+
+                                <th colspan="3">
+                                    QTY TARGET (SHIFT)
+                                </th>
+
+                                <th rowspan="2">
+                                    KETERANGAN
+                                </th>
+
+                            </tr>
+
+                            <tr>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>3</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <% if(data.length > 0){ %>
+
+                                <% data.forEach(row => { %>
+
+                                <tr>
+
+                                    <td>
+                                        <%= row.no_mc %>
+                                    </td>
+
+                                    <td>
+                                        <%= row.tonage %>T
+                                    </td>
+
+                                    <td class="text-left">
+                                        <b><%= row.nama_produk %></b>
+                                        <br>
+                                        <%= row.no_part %>
+                                    </td>
+
+                                    <td>
+                                        <%= row.costumer %>
+                                    </td>
+
+                                    <td>
+                                        <%= row.material %>
+                                    </td>
+
+                                    <td>
+                                        <%= row.cavity %>
+                                    </td>
+
+                                    <td>
+                                        <%= row.cycle_time %>
+                                    </td>
+
+                                    <td>
+                                        <%= Number(row.target_hour).toLocaleString('id-ID') %>
+                                    </td>
+
+                                    <td>
+                                        <%= Number(row.target_day).toLocaleString('id-ID') %>
+                                    </td>
+
+                                    <td>
+                                        <%= Number(row.shift_1).toLocaleString('id-ID') %>
+                                    </td>
+
+                                    <td>
+                                        <%= Number(row.shift_2).toLocaleString('id-ID') %>
+                                    </td>
+
+                                    <td>
+                                        <%= Number(row.shift_3).toLocaleString('id-ID') %>
+                                    </td>
+
+                                    <td>
+                                        <%= row.keterangan || '-' %>
+                                    </td>
+
+                                </tr>
+
+                                <% }) %>
+
+                            <% } else { %>
+
+                                <tr>
+                                    <td colspan="13">
+                                        Tidak ada data planning
+                                    </td>
+                                </tr>
+
+                            <% } %>
+
+                        </tbody>
+
+                        <tfoot>
+
+                            <tr class="total-row">
+
+                                <th colspan="7">
+                                    TOTAL
+                                </th>
+
+                                <th>
+                                    <%= Number(total.target_hour).toLocaleString('id-ID') %>
+                                </th>
+
+                                <th>
+                                    <%= Number(total.target_day).toLocaleString('id-ID') %>
+                                </th>
+
+                                <th>
+                                    <%= Number(total.shift_1).toLocaleString('id-ID') %>
+                                </th>
+
+                                <th>
+                                    <%= Number(total.shift_2).toLocaleString('id-ID') %>
+                                </th>
+
+                                <th>
+                                    <%= Number(total.shift_3).toLocaleString('id-ID') %>
+                                </th>
+
+                                <th></th>
+
+                            </tr>
+
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+```
+
+</div>
+
+<%- include("../partials/footer") %>

@@ -39,6 +39,14 @@
               </p>
             </a>
           </li>
+         <li class="nav-item has-treeview">
+    <a href="/planning/page" class="nav-link <%= active === 'planning' ? 'active' : '' %>">
+        <i class="nav-icon fas fa-calendar-alt"></i>
+        <p>
+            Planning
+        </p>
+    </a>
+</li>
           <% if (canManage) { %>
           <li class="nav-item has-treeview">
             <a href="/user/page" class="nav-link nav-link <%= active === 'user' ? 'active' : '' %>">
@@ -125,6 +133,14 @@
               </p>
             </a>
           </li>
+           <li class="nav-item">
+  <a href="/produk/page" class="nav-link <%= active === 'produk' ? 'active' : '' %>">
+    <i class="nav-icon fas fa-box"></i>
+    <p>
+      Produk
+    </p>
+  </a>
+</li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

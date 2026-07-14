@@ -93,24 +93,21 @@ exports.save = (req, res) => {
 // Detail
 exports.get = (req, res) => {
 
-    db.query(
-        'SELECT * FROM produk WHERE id_produk = ?',
-        [req.params.id],
-        (err, rows) => {
+  const id = req.params.id;
 
-            if (err) {
-                return res.status(500).json({
-                    success: false
-                });
-            }
+  db.query(
+    "SELECT * FROM produk WHERE id_produk = ?",
+    [id],
+    (err, rows) => {
 
-            res.json({
-                success: true,
-                data: rows[0]
-            });
+      if (err) {
+        console.error("GET BY ID ERROR:", err);
+        return res.status(500).json(err);
+      }
 
-        }
-    );
+      res.json(rows[0]);
+    }
+  );
 
 };
 
