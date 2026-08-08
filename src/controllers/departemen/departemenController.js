@@ -50,12 +50,32 @@ const canManage = ['admin', 'develop'].includes(req.user.role);
     canManage
   })
 }
-exports.mtn = (req, res) => {
+exports.qms = (req, res) => {
 const canManage = ['admin', 'develop'].includes(req.user.role);
-  res.render('departemen/mtn', {
-    tittle: "departemen mtn",
-    dept: "3",
-    active: "mtn",
+  res.render('departemen/qms', {
+    tittle: "departemen qms",
+    dept: "6",
+    active: "qms",
+    user: req.user,
+    canManage
+  })
+}
+exports.hr = (req, res) => {
+const canManage = ['admin', 'develop'].includes(req.user.role);
+  res.render('departemen/hr', {
+    tittle: "departemen hr",
+    dept: "5",
+    active: "hr",
+    user: req.user,
+    canManage
+  })
+}
+exports.engineering = (req, res) => {
+const canManage = ['admin', 'develop'].includes(req.user.role);
+  res.render('departemen/engineering', {
+    tittle: "departemen engineering",
+    dept: "7",
+    active: "engineering",
     user: req.user,
     canManage
   })
@@ -64,7 +84,7 @@ exports.ppic = (req, res) => {
 const canManage = ['admin', 'develop'].includes(req.user.role);
   res.render('departemen/ppic', {
     tittle: "departemen ppic",
-    dept: "5",
+    dept: "8",
     active: "ppic",
     user: req.user,
     canManage

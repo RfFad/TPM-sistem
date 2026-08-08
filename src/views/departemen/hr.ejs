@@ -3,27 +3,49 @@
 
 <div class="content-wrapper">
 
-  <!-- Header -->
+  <!-- Header Section -->
   <section class="content-header">
     <div class="container-fluid">
-      <div class="jumbotron bg-gradient-warning text-dark shadow rounded">
+      <div class="jumbotron bg-gradient-danger text-white shadow rounded">
         <h1 class="display-5 font-weight-bold">
-          <i class="fas fa-tools"></i> Departemen Mold Shop
+          <i class="fas fa-cogs"></i> Departemen HR (hr)
         </h1>
         <p class="lead mt-3">
-          Bertanggung jawab dalam pembuatan, perawatan, dan perbaikan mold untuk menjaga stabilitas proses produksi.
-        </p>
+         Menjaga qualitas dengan standart dan system yang terstruktur
+          </p>
       </div>
     </div>
   </section>
 
+  <!-- Tentang MTN -->
+  <!-- <section class="content">
+    <div class="container-fluid">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h4 class="font-weight-bold text-danger mb-3">
+            Tentang Departemen Maintenance
+          </h4>
+          <p style="text-align: justify;">
+            Departemen Maintenance (MTN) bertanggung jawab dalam memastikan seluruh mesin dan peralatan produksi 
+            beroperasi secara optimal dan efisien. Tim maintenance melakukan kegiatan preventive maintenance 
+            secara berkala untuk mencegah kerusakan, serta corrective maintenance ketika terjadi gangguan mesin.
+          </p>
+          <p style="text-align: justify;">
+            Dengan sistem monitoring dan analisa downtime, MTN berperan penting dalam menjaga kelancaran proses 
+            produksi, meminimalkan breakdown, serta meningkatkan umur pakai mesin dan peralatan produksi.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
   <!-- Data Dokumen Section -->
-  <section class="content mt-2">
+  <section class="content mt-4">
     <div class="container-fluid">
       <div class="card shadow border-0">
-        <div class="card-header bg-warning text-white">
+        <div class="card-header bg-danger text-white">
           <h5 class="mb-0">
-            <i class="fas fa-file"></i> Data Dokumen Mold Shop
+            <i class="fas fa-file"></i> Data Dokumen HR
           </h5>
         </div>
         <div class="card-body text-center">
@@ -35,68 +57,9 @@
     </div>
   </section>
 
-  <!-- Work Instruction -->
-  <!-- <section class="content mt-4">
-    <div class="container-fluid">
-      <div class="card shadow border-0">
-        <div class="card-header bg-warning">
-          <h5 class="mb-0"><i class="fas fa-book"></i> Work Instruction Mold Shop</h5>
-        </div>
-        <div class="card-body text-center">
-          <img src="/images/work-instruction-mold.jpg" 
-               class="img-fluid rounded shadow-sm mb-3"
-               style="max-height:400px; object-fit:cover;">
-          <p class="text-muted">
-            Prosedur perawatan dan perbaikan mold untuk menjaga kualitas hasil produksi.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section> -->
-
-  <!-- Aktivitas Mold Shop -->
-  <!-- <section class="content mt-4 pb-5">
-    <div class="container-fluid">
-      <h4 class="font-weight-bold text-warning mb-3">Aktivitas Mold Shop</h4>
-
-      <div class="row">
-
-        <div class="col-md-4">
-          <div class="card shadow-sm border-0">
-            <img src="/images/mold-1.jpg" class="card-img-top" style="height:220px; object-fit:cover;">
-            <div class="card-body">
-              <h6 class="font-weight-bold">Mold Maintenance</h6>
-              <p class="text-muted small">Perawatan rutin untuk menjaga presisi mold.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="card shadow-sm border-0">
-            <img src="/images/mold-2.jpg" class="card-img-top" style="height:220px; object-fit:cover;">
-            <div class="card-body">
-              <h6 class="font-weight-bold">Repair Process</h6>
-              <p class="text-muted small">Perbaikan mold yang mengalami kerusakan.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="card shadow-sm border-0">
-            <img src="/images/mold-3.jpg" class="card-img-top" style="height:220px; object-fit:cover;">
-            <div class="card-body">
-              <h6 class="font-weight-bold">Precision Machining</h6>
-              <p class="text-muted small">Proses machining untuk pembuatan mold baru.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section> -->
-
 </div>
- <!-- /.modal -->
+
+
 <div class="modal fade" id="modalDetail">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
@@ -214,14 +177,6 @@
             }
           </td>
           <td>
-            <% if (canManage) { %>
-            <button class="btn btn-warning btn-sm" onclick="editData(${u.id_doc})">
-              Edit
-            </button>
-            <button class="btn btn-danger btn-sm" onclick="removeData(${u.id_doc})">
-              Hapus
-            </button>
-             <% } %>
             <button class="btn btn-success btn-sm" onclick="showDetail(${u.id_doc})">
               Detail
             </button>
@@ -316,4 +271,4 @@ $(document).ready(function () {
   loadData();
 });
 
-</script>
+</script>               

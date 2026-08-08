@@ -9,6 +9,9 @@ router.get('/produksi', auth.isAuthenticated, role.checkRole(['develop', 'admin'
 router.get('/mold', auth.isAuthenticated, role.checkRole(['develop', 'admin', 'user']), departemenController.mold);
 router.get('/ppic', auth.isAuthenticated, role.checkRole(['develop', 'admin', 'user']), departemenController.ppic);
 router.get('/mtn', auth.isAuthenticated, role.checkRole(['develop', 'admin', 'user']), departemenController.mtn);
+router.get('/qms', auth.isAuthenticated, role.checkRole(['develop', 'admin', 'user']), departemenController.qms);
+
+
 router.get('/dept/:id_dept', auth.isAuthenticated, role.checkRole(['develop', 'admin', 'user']), departemenController.getByDepartemen);
 
 //router.get('/data', HomeController.dataTabel);

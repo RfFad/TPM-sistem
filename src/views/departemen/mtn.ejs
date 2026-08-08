@@ -202,6 +202,14 @@
             }
           </td>
           <td>
+            <% if (canManage) { %>
+            <button class="btn btn-warning btn-sm" onclick="editData(${u.id_doc})">
+              Edit
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="removeData(${u.id_doc})">
+              Hapus
+            </button>
+             <% } %>
             <button class="btn btn-success btn-sm" onclick="showDetail(${u.id_doc})">
               Detail
             </button>
@@ -271,7 +279,7 @@ if (res.revisi.length > 0) {
   });
 
 }
-// 🔥 UPDATED_AT dari tabel DOKUMEN
+//  UPDATED_AT dari tabel DOKUMEN
 if (d.updated_at) {
   $('#d_last_revisi').text(
     new Date(d.updated_at).toLocaleString('id-ID', {
