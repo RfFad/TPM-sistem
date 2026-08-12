@@ -10,6 +10,8 @@ router.get('/mold', auth.isAuthenticated, role.checkRole(['develop', 'admin', 'u
 router.get('/ppic', auth.isAuthenticated, role.checkRole(['develop', 'admin', 'user']), departemenController.ppic);
 router.get('/mtn', auth.isAuthenticated, role.checkRole(['develop', 'admin', 'user']), departemenController.mtn);
 router.get('/qms', auth.isAuthenticated, role.checkRole(['develop', 'admin', 'user']), departemenController.qms);
+router.get('/hr', auth.isAuthenticated, role.checkRole(['develop', 'admin', 'user']), departemenController.hr);
+router.get('/engineering', auth.isAuthenticated, role.checkRole(['develop', 'admin', 'user']), departemenController.engineering);
 
 
 router.get('/dept/:id_dept', auth.isAuthenticated, role.checkRole(['develop', 'admin', 'user']), departemenController.getByDepartemen);

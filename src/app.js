@@ -53,6 +53,9 @@ app.use('/planning', planning);
 
 const produk = require('./routes/produk/produkRoutes')
 app.use('/produk', produk);
+
+const auditRoutes = require('./routes/audit/auditRoutes')
+app.use('/audit', auditRoutes);
 /**
  * Server
  */
