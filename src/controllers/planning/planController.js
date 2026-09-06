@@ -50,18 +50,7 @@ exports.page = (req, res) => {
     });
 
 };
-exports.tabel = (req, res) => {
 
-    const canManage = ['admin', 'develop'].includes(req.user.role);
-
-    res.render('planning/planday', {
-        tittle: 'Planning',
-        active: 'planning',
-        canManage,
-        user: req.user
-    });
-
-};
 
 // Tampilkan data
 exports.show = (req, res) => {
@@ -360,7 +349,12 @@ AND p.tgl < CURDATE() + INTERVAL 1 DAY;
     });
     })
 }
-exports.dataplanDay= (req, res) => {
+
+
+exports.planDay = (req, res) => {
+
+    const canManage = ['admin', 'develop'].includes(req.user.role);
+
 
     const sql = `
         SELECT
@@ -368,11 +362,7 @@ exports.dataplanDay= (req, res) => {
             pr.nama_produk,
             pr.no_part,
             pr.material,
-            pr.costumer,
-
-            FLOOR(p.target_day / 3) AS shift_1,
-            FLOOR(p.target_day / 3) AS shift_2,
-            FLOOR(p.target_day / 3) AS shift_3
+            pr.costumer
 
         FROM planning p
 
@@ -387,68 +377,60 @@ exports.dataplanDay= (req, res) => {
     db.query(sql, (err, rows) => {
 
         if (err) {
-            return res.json({
-                success: false,
-                message: err.message
-            });
+            console.log('ERROR QUERY');
+            console.log(err);
+            return res.send(err);
         }
+
+       
 
         let total = {
             target_hour: 0,
             target_day: 0,
-            shift_1: 0,
-            shift_2: 0,
-            shift_3: 0
+            target_shift: 0
         };
 
         rows.forEach(item => {
 
             total.target_hour += Number(item.target_hour || 0);
             total.target_day += Number(item.target_day || 0);
-
-            total.shift_1 += Number(item.shift_1 || 0);
-            total.shift_2 += Number(item.shift_2 || 0);
-            total.shift_3 += Number(item.shift_3 || 0);
+            total.target_shift += Number(item.target_shift || 0);
 
         });
 
-        res.json({
-            success: true,
+        res.render('planning/planday', {
             data: rows,
-            total: total
+            total,
+            tittle: 'Planning',
+            active: 'planning',
+            canManage,
+            user: req.user
         });
 
     });
-}
-exports.archiveDetail = (req, res) => {
+};
+
+exports.archiveDetail  =  (req, res) => {
 
     const canManage = ['admin', 'develop'].includes(req.user.role);
 
     const { tgl } = req.params;
 
-    console.log('=================================');
-    console.log('Tanggal dari URL :', tgl);
-    console.log('Type             :', typeof tgl);
-    console.log('=================================');
+    
 
     const sql = `
         SELECT
-    p.*,
-    pr.nama_produk,
-    pr.no_part,
-    pr.material,
-    pr.costumer,
-    FLOOR(p.target_day / 3) AS shift_1,
-    FLOOR(p.target_day / 3) AS shift_2,
-    FLOOR(p.target_day / 3) AS shift_3
-FROM planning p
-LEFT JOIN produk pr
-    ON p.id_produk = pr.id_produk
-WHERE DATE(p.tgl) = ?
-ORDER BY p.no_mc ASC;
+            p.*,
+            pr.nama_produk,
+            pr.no_part,
+            pr.material,
+            pr.costumer
+        FROM planning p
+        LEFT JOIN produk pr
+            ON p.id_produk = pr.id_produk
+        WHERE DATE(p.tgl) = ?
+        ORDER BY p.no_mc ASC;
     `;
-
-    
 
     db.query(sql, [tgl], (err, rows) => {
 
@@ -458,31 +440,21 @@ ORDER BY p.no_mc ASC;
             return res.send(err);
         }
 
-        console.log('=================================');
-        console.log('Jumlah Data :', rows.length);
-        console.log('Data :');
-        console.log(rows);
-        console.log('=================================');
+       
 
         let total = {
             target_hour: 0,
             target_day: 0,
-            shift_1: 0,
-            shift_2: 0,
-            shift_3: 0
+            target_shift: 0
         };
 
         rows.forEach(item => {
 
             total.target_hour += Number(item.target_hour || 0);
             total.target_day += Number(item.target_day || 0);
-            total.shift_1 += Number(item.shift_1 || 0);
-            total.shift_2 += Number(item.shift_2 || 0);
-            total.shift_3 += Number(item.shift_3 || 0);
+            total.target_shift += Number(item.target_shift || 0);
 
         });
-
-       
 
         res.render('planning/plantgl', {
             data: rows,
@@ -495,7 +467,6 @@ ORDER BY p.no_mc ASC;
         });
 
     });
-
 };
 
 

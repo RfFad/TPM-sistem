@@ -56,6 +56,9 @@ app.use('/produk', produk);
 
 const auditRoutes = require('./routes/audit/auditRoutes')
 app.use('/audit', auditRoutes);
+
+const summaryRoutes = require('./routes/summary/summaryRoutes')
+app.use('/summary', summaryRoutes);
 /**
  * Server
  */
