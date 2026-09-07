@@ -56,6 +56,13 @@ app.use('/produk', produk);
 
 const auditRoutes = require('./routes/audit/auditRoutes')
 app.use('/audit', auditRoutes);
+
+const auditDokumenRoutes =
+    require('./routes/audit/auditDokumenRoutes');
+app.use(
+    '/audit-dokumen',
+    auditDokumenRoutes
+);
 /**
  * Server
  */
@@ -63,3 +70,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+

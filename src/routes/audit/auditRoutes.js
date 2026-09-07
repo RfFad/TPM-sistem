@@ -12,12 +12,20 @@ const role =
     require('../../middleware/role');
 
 
+// ======================================================
+// HALAMAN AUDIT
+// ======================================================
+
 router.get(
     '/',
     auth.isAuthenticated,
     auditController.index
 );
 
+
+// ======================================================
+// AUDIT BERDASARKAN CUSTOMER
+// ======================================================
 
 router.get(
     '/customer/:id_customer',
@@ -26,12 +34,20 @@ router.get(
 );
 
 
+// ======================================================
+// TAHUN AUDIT
+// ======================================================
+
 router.get(
     '/customer/:id_customer/years',
     auth.isAuthenticated,
     auditController.getYears
 );
 
+
+// ======================================================
+// AUDIT BERDASARKAN CUSTOMER + TAHUN
+// ======================================================
 
 router.get(
     '/customer/:id_customer/year/:tahun',
@@ -40,12 +56,20 @@ router.get(
 );
 
 
+// ======================================================
+// DETAIL AUDIT
+// ======================================================
+
 router.get(
     '/detail/:id_audit',
     auth.isAuthenticated,
     auditController.detail
 );
 
+
+// ======================================================
+// CREATE AUDIT
+// ======================================================
 
 router.post(
     '/create',
@@ -55,6 +79,10 @@ router.post(
 );
 
 
+// ======================================================
+// UPDATE AUDIT
+// ======================================================
+
 router.put(
     '/update/:id_audit',
     auth.isAuthenticated,
@@ -62,6 +90,10 @@ router.put(
     auditController.update
 );
 
+
+// ======================================================
+// DELETE AUDIT
+// ======================================================
 
 router.delete(
     '/delete/:id_audit',

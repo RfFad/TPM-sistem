@@ -1,667 +1,914 @@
 <%- include("../partials/header") %>
 <%- include("../partials/sideNavbar") %>
 
-<style>
-
-    .audit-page {
-        padding: 20px;
-    }
-
-    .audit-header {
-        margin-bottom: 25px;
-    }
-
-    .audit-header h3 {
-        font-weight: 700;
-        margin-bottom: 5px;
-    }
-
-    .audit-header p {
-        color: #6c757d;
-        margin-bottom: 0;
-    }
-
-
-    /* CUSTOMER */
-
-    .customer-grid {
-        display: grid;
-        grid-template-columns:
-            repeat(auto-fill, minmax(220px, 1fr));
-
-        gap: 18px;
-    }
-
-
-    .customer-card {
-
-        background: #fff;
-
-        border: 1px solid #e5e7eb;
-
-        border-radius: 12px;
-
-        padding: 20px;
-
-        cursor: pointer;
-
-        transition: all .2s ease;
-
-        box-shadow:
-            0 2px 8px rgba(0,0,0,.04);
-    }
-
-
-    .customer-card:hover {
-
-        transform: translateY(-3px);
-
-        box-shadow:
-            0 8px 20px rgba(0,0,0,.08);
-
-        border-color: #007bff;
-    }
-
-
-    .customer-icon {
-
-        width: 48px;
-        height: 48px;
-
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 10px;
-
-        background: #eaf3ff;
-
-        color: #007bff;
-
-        font-size: 20px;
-
-        margin-bottom: 15px;
-    }
-
-
-    .customer-name {
-
-        font-size: 17px;
-
-        font-weight: 700;
-
-        margin-bottom: 5px;
-    }
-
-
-    .customer-plant {
-
-        color: #6c757d;
-
-        font-size: 13px;
-    }
-
-
-    /* AUDIT SECTION */
-
-    #auditSection {
-        display: none;
-    }
-
-
-    .section-title {
-
-        font-size: 18px;
-
-        font-weight: 700;
-
-        margin-bottom: 15px;
-    }
-
-
-    .back-btn {
-
-        cursor: pointer;
-
-        color: #007bff;
-
-        font-size: 14px;
-
-        margin-bottom: 20px;
-
-        display: inline-block;
-    }
-
-
-    /* YEAR */
-
-    .year-tabs {
-
-        display: flex;
-
-        gap: 10px;
-
-        flex-wrap: wrap;
-
-        margin-bottom: 25px;
-    }
-
-
-    .year-tab {
-
-        border: 1px solid #dee2e6;
-
-        background: #fff;
-
-        border-radius: 8px;
-
-        padding: 8px 18px;
-
-        cursor: pointer;
-
-        font-weight: 600;
-
-        font-size: 14px;
-    }
-
-
-    .year-tab.active {
-
-        background: #007bff;
-
-        color: #fff;
-
-        border-color: #007bff;
-    }
-
-
-    /* AUDIT LIST */
-
-    .audit-list {
-
-        display: grid;
-
-        grid-template-columns:
-            repeat(auto-fill, minmax(280px, 1fr));
-
-        gap: 15px;
-    }
-
-
-    .audit-card {
-
-        background: #fff;
-
-        border: 1px solid #e5e7eb;
-
-        border-radius: 10px;
-
-        padding: 18px;
-
-        cursor: pointer;
-
-        transition: .2s;
-    }
-
-
-    .audit-card:hover {
-
-        border-color: #007bff;
-
-        box-shadow:
-            0 5px 15px rgba(0,0,0,.06);
-    }
-
-
-    .audit-date {
-
-        color: #007bff;
-
-        font-weight: 700;
-
-        font-size: 13px;
-
-        margin-bottom: 7px;
-    }
-
-
-    .audit-name {
-
-        font-size: 16px;
-
-        font-weight: 700;
-
-        margin-bottom: 10px;
-    }
-
-
-    .audit-info {
-
-        font-size: 13px;
-
-        color: #6c757d;
-
-        margin-bottom: 4px;
-    }
-
-
-    .audit-status {
-
-        display: inline-block;
-
-        padding: 4px 9px;
-
-        border-radius: 20px;
-
-        font-size: 11px;
-
-        margin-top: 10px;
-
-        background: #eaf3ff;
-
-        color: #007bff;
-    }
-
-
-    /* DETAIL */
-
-    #auditDetail {
-        display: none;
-
-        margin-top: 30px;
-    }
-
-
-    .detail-card {
-
-        background: #fff;
-
-        border: 1px solid #e5e7eb;
-
-        border-radius: 12px;
-
-        padding: 25px;
-    }
-
-
-    .detail-header {
-
-        display: flex;
-
-        justify-content: space-between;
-
-        align-items: flex-start;
-
-        margin-bottom: 25px;
-    }
-
-
-    .detail-title {
-
-        font-size: 21px;
-
-        font-weight: 700;
-
-        margin-bottom: 5px;
-    }
-
-
-    .detail-subtitle {
-
-        color: #6c757d;
-
-        font-size: 13px;
-    }
-
-
-    .detail-grid {
-
-        display: grid;
-
-        grid-template-columns:
-            repeat(4, 1fr);
-
-        gap: 15px;
-
-        margin-bottom: 25px;
-    }
-
-
-    .detail-item {
-
-        background: #f8f9fa;
-
-        border-radius: 8px;
-
-        padding: 13px;
-    }
-
-
-    .detail-label {
-
-        color: #6c757d;
-
-        font-size: 11px;
-
-        margin-bottom: 4px;
-    }
-
-
-    .detail-value {
-
-        font-weight: 600;
-
-        font-size: 14px;
-    }
-
-
-    @media(max-width: 768px) {
-
-        .detail-grid {
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-        }
-
-    }
-
-</style>
-
 
 <div class="content-wrapper">
 
-    <div class="audit-page">
 
-        <!-- HEADER -->
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
-        <div class="audit-header">
+    <section class="content-header">
 
-            <h3>
-                <i class="fas fa-clipboard-check mr-2"></i>
-                Audit Management
-            </h3>
+        <div class="container-fluid">
 
-            <p>
-                Kelola dan akses pelaksanaan audit berdasarkan customer.
-            </p>
+            <div class="audit-header">
 
-        </div>
+                <div class="audit-header-content">
 
-
-        <!-- CUSTOMER SECTION -->
-
-        <div id="customerSection">
-
-            <div class="section-title">
-
-                Customer
-
-            </div>
-
-
-            <div class="customer-grid">
-
-                <% customers.forEach(customer => { %>
-
-                    <div
-                        class="customer-card"
-                        onclick="
-                            selectCustomer(
-                                '<%= customer.id_customer %>',
-                                '<%= customer.nama_customer %>',
-                                '<%= customer.plant %>'
-                            )
-                        "
-                    >
-
-                        <div class="customer-icon">
-
-                            <i class="fas fa-building"></i>
-
-                        </div>
-
-
-                        <div class="customer-name">
-
-                            <%= customer.nama_customer %>
-
-                        </div>
-
-
-                        <div class="customer-plant">
-
-                            <i class="fas fa-industry mr-1"></i>
-
-                            <%= customer.plant || '-' %>
-
-                        </div>
-
+                    <div class="audit-header-icon">
+                        <i class="fas fa-clipboard-check"></i>
                     </div>
 
-                <% }) %>
-
-            </div>
-
-        </div>
-
-
-        <!-- AUDIT SECTION -->
-
-        <div id="auditSection">
-
-            <div
-                class="back-btn"
-                onclick="backToCustomer()"
-            >
-
-                <i class="fas fa-arrow-left mr-1"></i>
-
-                Kembali ke Customer
-
-            </div>
-
-
-            <div class="section-title">
-
-                <span id="selectedCustomer"></span>
-
-                <small
-                    id="selectedPlant"
-                    class="text-muted ml-2"
-                ></small>
-
-            </div>
-
-
-            <!-- YEAR -->
-
-            <div
-                class="year-tabs"
-                id="yearTabs"
-            ></div>
-
-
-            <!-- AUDIT LIST -->
-
-            <div
-                class="audit-list"
-                id="auditList"
-            ></div>
-
-
-            <!-- DETAIL -->
-
-            <div id="auditDetail">
-
-                <div class="detail-card">
-
-                    <div class="detail-header">
-
-                        <div>
-
-                            <div
-                                class="detail-title"
-                                id="detailAuditName"
-                            >
-                                -
-                            </div>
-
-                            <div
-                                class="detail-subtitle"
-                                id="detailAuditDate"
-                            >
-                                -
-                            </div>
-
-                        </div>
-
-                        <button
-                            class="btn btn-sm btn-outline-secondary"
-                            onclick="closeDetail()"
-                        >
-
-                            <i class="fas fa-times mr-1"></i>
-
-                            Tutup
-
-                        </button>
-
-                    </div>
-
-
-                    <div class="detail-grid">
-
-                        <div class="detail-item">
-
-                            <div class="detail-label">
-                                CUSTOMER
-                            </div>
-
-                            <div
-                                class="detail-value"
-                                id="detailCustomer"
-                            >
-                                -
-                            </div>
-
-                        </div>
-
-
-                        <div class="detail-item">
-
-                            <div class="detail-label">
-                                PLANT
-                            </div>
-
-                            <div
-                                class="detail-value"
-                                id="detailPlant"
-                            >
-                                -
-                            </div>
-
-                        </div>
-
-
-                        <div class="detail-item">
-
-                            <div class="detail-label">
-                                PIC
-                            </div>
-
-                            <div
-                                class="detail-value"
-                                id="detailPic"
-                            >
-                                -
-                            </div>
-
-                        </div>
-
-
-                        <div class="detail-item">
-
-                            <div class="detail-label">
-                                STATUS
-                            </div>
-
-                            <div
-                                class="detail-value"
-                                id="detailStatus"
-                            >
-                                -
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- DOCUMENT AREA -->
-
-                    <div class="section-title">
-
-                        Dokumen Audit
-
-                    </div>
-
-
-                    <div
-                        class="alert alert-light border"
-                    >
-
-                        <i class="fas fa-folder-open mr-2"></i>
-
-                        Preparation & Evidence
-
-                        <div
-                            class="text-muted mt-1"
-                            style="font-size:12px;"
-                        >
-
-                            Dokumen audit akan ditampilkan
-                            pada bagian ini.
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- RESULT -->
-
-                    <div class="section-title mt-4">
-
-                        Result
-
-                    </div>
-
-
-                    <div
-                        class="alert alert-light border"
-                    >
-
-                        <i class="fas fa-chart-bar mr-2"></i>
-
-                        Hasil Audit
-
-                        <div
-                            class="text-muted mt-1"
-                            style="font-size:12px;"
-                        >
-
-                            Fitur penilaian, temuan dan
-                            tindakan perbaikan akan
-                            dikembangkan pada bagian Result.
-
-                        </div>
+                    <div>
+
+                        <h1>
+                            Sistem Audit
+                        </h1>
+
+                        <p>
+                            Pengelolaan customer, pelaksanaan audit,
+                            dan dokumen evidence audit.
+                        </p>
 
                     </div>
 
                 </div>
 
             </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         CUSTOMER
+    ====================================================== -->
+
+    <section class="content">
+
+        <div class="container-fluid">
+
+            <div class="card shadow-sm border-0">
+
+
+                <div class="card-header bg-white">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h5 class="mb-1 font-weight-bold">
+
+                                <i class="fas fa-building text-info mr-2"></i>
+
+                                Customer Audit
+
+                            </h5>
+
+                            <small class="text-muted">
+
+                                Pilih customer untuk melihat
+                                pelaksanaan audit.
+
+                            </small>
+
+                        </div>
+
+                        <span class="customer-count">
+
+                            <%= customers ? customers.length : 0 %>
+                            Customer
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="card-body">
+
+                    <div class="row">
+
+
+                        <% if (customers && customers.length > 0) { %>
+
+
+                            <% customers.forEach(function(c) { %>
+
+                                <div
+                                    class="col-xl-3 col-lg-4 col-md-6 mb-3"
+                                >
+
+                                    <div
+                                        class="customer-card"
+                                        data-id="<%= c.id_customer %>"
+                                        data-name="<%= c.nama_customer %>"
+                                        data-plant="<%= c.plant || '-' %>"
+                                    >
+
+                                        <div class="customer-main">
+
+                                            <div class="customer-icon">
+
+                                                <i class="fas fa-building"></i>
+
+                                            </div>
+
+
+                                            <div class="customer-info">
+
+                                                <h6>
+
+                                                    <%= c.nama_customer %>
+
+                                                </h6>
+
+                                                <span>
+
+                                                    <i
+                                                        class="
+                                                            fas
+                                                            fa-map-marker-alt
+                                                            mr-1
+                                                        "
+                                                    ></i>
+
+                                                    <%= c.plant || '-' %>
+
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="customer-arrow">
+
+                                            <i
+                                                class="
+                                                    fas
+                                                    fa-chevron-right
+                                                "
+                                            ></i>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            <% }) %>
+
+
+                        <% } else { %>
+
+
+                            <div class="col-12">
+
+                                <div class="empty-state">
+
+                                    <i class="fas fa-building"></i>
+
+                                    <h6>
+                                        Belum ada customer aktif
+                                    </h6>
+
+                                    <p>
+                                        Silakan tambahkan customer terlebih dahulu.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                        <% } %>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         AREA CUSTOMER / AUDIT
+    ====================================================== -->
+
+    <section
+        class="content mt-4"
+        id="auditArea"
+        style="display:none;"
+    >
+
+        <div class="container-fluid">
+
+
+            <div class="card shadow-sm border-0">
+
+
+                <!-- HEADER -->
+
+                <div class="audit-area-header">
+
+                    <div>
+
+                        <div class="audit-area-title">
+
+                            <i class="fas fa-calendar-check mr-2"></i>
+
+                            Pelaksanaan Audit
+
+                        </div>
+
+                        <div
+                            class="audit-area-subtitle"
+                            id="selectedCustomerText"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="btnCloseAuditArea"
+                        class="btn btn-light btn-sm"
+                    >
+
+                        <i class="fas fa-times mr-1"></i>
+
+                        Tutup
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="card-body">
+
+
+                    <!-- =================================================
+                         PILIH TAHUN
+                    ================================================== -->
+
+                    <div class="section-block">
+
+                        <div class="section-heading">
+
+                            <div class="section-heading-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+
+                            <div>
+
+                                <h6>
+                                    Tahun Audit
+                                </h6>
+
+                                <small>
+                                    Pilih tahun untuk melihat
+                                    pelaksanaan audit.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="yearArea"
+                            class="year-area"
+                        >
+
+                            <div class="text-muted">
+                                Memuat tahun...
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         LIST PELAKSANAAN AUDIT
+                    ================================================== -->
+
+                    <div class="section-block">
+
+                        <div
+                            class="
+                                section-heading
+                                d-flex
+                                justify-content-between
+                                align-items-center
+                            "
+                        >
+
+                            <div class="d-flex align-items-center">
+
+                                <div class="section-heading-icon">
+                                    <i class="fas fa-list-alt"></i>
+                                </div>
+
+                                <div>
+
+                                    <h6>
+                                        Pelaksanaan Audit
+                                    </h6>
+
+                                    <small>
+                                        Pilih audit untuk melihat detail.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+                            <% if (canManage) { %>
+
+                                <button
+                                    type="button"
+                                    id="btnAddAudit"
+                                    class="btn btn-primary btn-sm"
+                                >
+
+                                    <i class="fas fa-plus mr-1"></i>
+
+                                    Tambah Audit
+
+                                </button>
+
+                            <% } %>
+
+                        </div>
+
+
+                        <div
+                            id="auditListArea"
+                            class="mt-3"
+                        >
+
+                            <div class="empty-state">
+
+                                <i class="fas fa-calendar-alt"></i>
+
+                                <h6>
+                                    Pilih tahun audit
+                                </h6>
+
+                                <p>
+                                    Pilih tahun untuk melihat
+                                    pelaksanaan audit.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         DETAIL AUDIT INLINE
+                    ================================================== -->
+
+                    <div
+                        id="auditDetailArea"
+                        style="display:none;"
+                    >
+
+                        <div class="detail-divider"></div>
+
+
+                        <div
+                            class="
+                                section-heading
+                                d-flex
+                                justify-content-between
+                                align-items-center
+                            "
+                        >
+
+                            <div class="d-flex align-items-center">
+
+                                <div class="section-heading-icon">
+                                    <i class="fas fa-file-signature"></i>
+                                </div>
+
+                                <div>
+
+                                    <h6>
+                                        Detail Pelaksanaan Audit
+                                    </h6>
+
+                                    <small>
+                                        Informasi audit yang dipilih.
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             INFORMASI AUDIT
+                        ================================================== -->
+
+                        <div class="audit-detail-card">
+
+                            <div class="audit-detail-top">
+
+                                <div>
+
+                                    <span class="detail-small-title">
+                                        NAMA AUDIT
+                                    </span>
+
+                                    <h3
+                                        id="detailNamaAudit"
+                                        class="detail-audit-name"
+                                    >
+                                        -
+                                    </h3>
+
+                                    <div
+                                        id="detailCustomer"
+                                        class="detail-customer"
+                                    >
+                                        -
+                                    </div>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span
+                                        id="detailStatus"
+                                        class="status-badge"
+                                    >
+                                        -
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="row mt-4">
+
+                                <div class="col-lg-4 col-md-6 mb-3">
+
+                                    <div class="detail-info-box">
+
+                                        <div class="detail-info-icon bg-info">
+
+                                            <i class="fas fa-calendar-day"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <small>
+                                                Tanggal Audit
+                                            </small>
+
+                                            <strong
+                                                id="detailTanggal"
+                                            >
+                                                -
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-lg-4 col-md-6 mb-3">
+
+                                    <div class="detail-info-box">
+
+                                        <div class="detail-info-icon bg-primary">
+
+                                            <i class="fas fa-user"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <small>
+                                                PIC / Auditor
+                                            </small>
+
+                                            <strong
+                                                id="detailPIC"
+                                            >
+                                                -
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-lg-4 col-md-6 mb-3">
+
+                                    <div class="detail-info-box">
+
+                                        <div class="detail-info-icon bg-success">
+
+                                            <i class="fas fa-file-alt"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <small>
+                                                Total Dokumen
+                                            </small>
+
+                                            <strong
+                                                id="totalDokumen"
+                                            >
+                                                0
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <% if (canManage) { %>
+
+                                <div class="detail-action">
+
+                                    <button
+                                        type="button"
+                                        id="btnEditAudit"
+                                        class="btn btn-warning btn-sm"
+                                    >
+
+                                        <i class="fas fa-edit mr-1"></i>
+
+                                        Edit Audit
+
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        id="btnDeleteAudit"
+                                        class="btn btn-danger btn-sm"
+                                    >
+
+                                        <i class="fas fa-trash mr-1"></i>
+
+                                        Hapus Audit
+
+                                    </button>
+
+                                </div>
+
+                            <% } %>
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             DOKUMEN AUDIT
+                        ================================================== -->
+
+                        <div class="document-card mt-4">
+
+
+                            <div class="document-header">
+
+                                <div>
+
+                                    <h5>
+
+                                        <i
+                                            class="
+                                                fas
+                                                fa-folder-open
+                                                mr-2
+                                            "
+                                        ></i>
+
+                                        Dokumen Audit
+
+                                    </h5>
+
+                                    <small>
+                                        Preparation & evidence
+                                        untuk pelaksanaan audit.
+                                    </small>
+
+                                </div>
+
+
+                                <% if (canManage) { %>
+
+                                    <button
+                                        type="button"
+                                        id="btnAddDocument"
+                                        class="btn btn-primary btn-sm"
+                                    >
+
+                                        <i class="fas fa-plus mr-1"></i>
+
+                                        Tambah Dokumen
+
+                                    </button>
+
+                                <% } %>
+
+                            </div>
+
+
+                            <div
+                                id="dokumenTableArea"
+                                class="document-body"
+                            >
+
+                                <div class="empty-state">
+
+                                    <i class="fas fa-spinner fa-spin"></i>
+
+                                    <p>
+                                        Memuat dokumen...
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+
+<!-- =========================================================
+     MODAL CREATE / EDIT AUDIT
+========================================================= -->
+
+<div
+    class="modal fade"
+    id="modalAudit"
+    tabindex="-1"
+    role="dialog"
+>
+
+    <div
+        class="modal-dialog modal-lg"
+        role="document"
+    >
+
+        <div class="modal-content">
+
+
+            <div class="modal-header bg-primary text-white">
+
+                <h5
+                    class="modal-title"
+                    id="modalAuditTitle"
+                >
+                    Tambah Pelaksanaan Audit
+                </h5>
+
+
+                <button
+                    type="button"
+                    class="close text-white"
+                    data-dismiss="modal"
+                >
+
+                    <span>
+                        &times;
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <form id="formAudit">
+
+                <div class="modal-body">
+
+
+                    <input
+                        type="hidden"
+                        id="auditId"
+                    />
+
+
+                    <input
+                        type="hidden"
+                        id="auditCustomerId"
+                    />
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Customer
+                        </label>
+
+                        <input
+                            type="text"
+                            id="auditCustomerName"
+                            class="form-control"
+                            readonly
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Nama Pelaksanaan Audit
+
+                            <span class="text-danger">
+                                *
+                            </span>
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="namaAudit"
+                            class="form-control"
+                            placeholder="Contoh: YPQ Verification"
+                            required
+                        />
+
+                    </div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Tanggal Audit
+
+                                    <span class="text-danger">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="tglAudit"
+                                    class="form-control"
+                                    required
+                                />
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    PIC / Auditor
+
+                                    <span class="text-danger">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="picAudit"
+                                    class="form-control"
+                                    placeholder="Nama PIC / Auditor"
+                                    required
+                                />
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select
+                            id="statusAudit"
+                            class="form-control"
+                        >
+
+                            <option value="PLAN">
+                                PLAN
+                            </option>
+
+                            <option value="OPEN">
+                                OPEN
+                            </option>
+
+                            <option value="CLOSE">
+                                CLOSE
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                    >
+
+                        Batal
+
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+
+                        <i class="fas fa-save mr-1"></i>
+
+                        Simpan
+
+                    </button>
+
+                </div>
+
+            </form>
+
 
         </div>
 
@@ -670,465 +917,4163 @@
 </div>
 
 
-<script>
 
-let selectedCustomerId = null;
+<!-- =========================================================
+     MODAL CREATE / EDIT DOKUMEN
+========================================================= -->
 
+<div
+    class="modal fade"
+    id="modalDokumen"
+    tabindex="-1"
+    role="dialog"
+>
 
-/*
-|--------------------------------------------------------------------------
-| PILIH CUSTOMER
-|--------------------------------------------------------------------------
-*/
+    <div
+        class="modal-dialog modal-lg"
+        role="document"
+    >
 
-function selectCustomer(
-    idCustomer,
-    namaCustomer,
-    plant
-) {
-
-    selectedCustomerId =
-        idCustomer;
-
-
-    $('#selectedCustomer')
-        .text(namaCustomer);
+        <div class="modal-content">
 
 
-    $('#selectedPlant')
-        .text(
-            plant
-                ? `• ${plant}`
-                : ''
-        );
+            <div class="modal-header bg-primary text-white">
+
+                <h5
+                    class="modal-title"
+                    id="modalDokumenTitle"
+                >
+
+                    Tambah Dokumen Audit
+
+                </h5>
 
 
-    $('#customerSection')
-        .hide();
+                <button
+                    type="button"
+                    class="close text-white"
+                    data-dismiss="modal"
+                >
+
+                    <span>
+                        &times;
+                    </span>
+
+                </button>
+
+            </div>
 
 
-    $('#auditSection')
-        .fadeIn(200);
+            <form
+                id="formDokumen"
+                enctype="multipart/form-data"
+            >
+
+                <div class="modal-body">
 
 
-    loadYears(idCustomer);
+                    <input
+                        type="hidden"
+                        id="dokumenId"
+                    />
+
+
+                    <input
+                        type="hidden"
+                        id="dokumenAuditId"
+                    />
+
+
+                    <div class="form-group">
+
+                        <label>
+
+                            No. Dokumen
+
+                            <span class="text-danger">
+                                *
+                            </span>
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="no_doc_aud"
+                            id="noDocAud"
+                            class="form-control"
+                            placeholder="Contoh: TPM-PM-PPIC-02"
+                            required
+                        />
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Nama Dokumen
+
+                            <span class="text-danger">
+                                *
+                            </span>
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="nama_doc_aud"
+                            id="namaDocAud"
+                            class="form-control"
+                            placeholder="Nama dokumen"
+                            required
+                        />
+
+                    </div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Kategori
+
+                                    <span class="text-danger">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <select
+                                    name="id_kategori"
+                                    id="kategoriDokumen"
+                                    class="form-control"
+                                    required
+                                >
+
+                                    <option value="">
+                                        -- Memuat kategori --
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Departemen
+
+                                    <span class="text-danger">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <select
+                                    name="id_dept"
+                                    id="deptDokumen"
+                                    class="form-control"
+                                    required
+                                >
+
+                                    <option value="">
+                                        -- Memuat departemen --
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            File Dokumen
+                        </label>
+
+
+                        <input
+                            type="file"
+                            name="file"
+                            id="fileDokumen"
+                            class="form-control"
+                        />
+
+
+                        <small
+                            id="currentFile"
+                            class="text-muted d-block mt-2"
+                        ></small>
+
+
+                        <small class="text-muted">
+
+                            Format:
+                            PDF, DOC, DOCX, XLS, XLSX,
+                            PPT, PPTX, JPG, JPEG, PNG.
+
+                            Maksimal 20 MB.
+
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                    >
+
+                        Batal
+
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+
+                        <i class="fas fa-save mr-1"></i>
+
+                        Simpan Dokumen
+
+                    </button>
+
+                </div>
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<%- include("../partials/footer") %>
+
+
+
+<style>
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.audit-header {
+    background: linear-gradient(
+        135deg,
+        #17a2b8,
+        #007bff
+    );
+
+    color: white;
+
+    padding: 28px 32px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, .12);
+}
+
+
+.audit-header-content {
+    display: flex;
+    align-items: center;
+}
+
+
+.audit-header-icon {
+    width: 60px;
+    height: 60px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,.15);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 28px;
+
+    margin-right: 18px;
+}
+
+
+.audit-header h1 {
+    margin: 0;
+
+    font-size: 30px;
+
+    font-weight: 700;
+}
+
+
+.audit-header p {
+    margin:
+        7px 0 0;
+
+    opacity: .9;
+}
+
+
+/* =========================================================
+   CUSTOMER
+========================================================= */
+
+.customer-count {
+    background: #eaf4ff;
+
+    color: #007bff;
+
+    font-size: 12px;
+
+    padding: 6px 11px;
+
+    border-radius: 20px;
+
+    font-weight: 600;
+}
+
+
+.customer-card {
+    min-height: 88px;
+
+    display: flex;
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 17px;
+
+    background: white;
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    transition:
+        all .2s ease;
+}
+
+
+.customer-card:hover {
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        #17a2b8;
+
+    box-shadow:
+        0 8px 20px
+        rgba(0, 0, 0, .08);
 
 }
 
 
-/*
-|--------------------------------------------------------------------------
-| LOAD TAHUN
-|--------------------------------------------------------------------------
-*/
+.customer-main {
+    display: flex;
+    align-items: center;
 
-function loadYears(idCustomer) {
+    min-width: 0;
+}
 
-    $('#yearTabs')
-        .html(`
-            <div class="text-muted">
-                <i class="fas fa-spinner fa-spin mr-1"></i>
-                Mengambil data tahun...
+
+.customer-icon {
+
+    width: 46px;
+    height: 46px;
+
+    flex: 0 0 46px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(23,162,184,.10);
+
+    color:
+        #17a2b8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+
+    margin-right: 12px;
+
+}
+
+
+.customer-info {
+    min-width: 0;
+}
+
+
+.customer-info h6 {
+
+    margin: 0 0 5px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    color: #343a40;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+}
+
+
+.customer-info span {
+
+    font-size: 12px;
+
+    color: #6c757d;
+
+}
+
+
+.customer-arrow {
+
+    color:
+        #adb5bd;
+
+    margin-left: 10px;
+
+}
+
+
+/* =========================================================
+   AUDIT AREA
+========================================================= */
+
+.audit-area-header {
+
+    background:
+        linear-gradient(
+            135deg,
+            #007bff,
+            #0062cc
+        );
+
+    color: white;
+
+    padding:
+        18px 22px;
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+}
+
+
+.audit-area-title {
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+}
+
+
+.audit-area-subtitle {
+
+    font-size: 12px;
+
+    margin-top: 4px;
+
+    opacity: .88;
+
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section-block {
+
+    margin-bottom: 30px;
+
+}
+
+
+.section-heading {
+
+    margin-bottom: 14px;
+
+}
+
+
+.section-heading-icon {
+
+    width: 35px;
+
+    height: 35px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(23,162,184,.10);
+
+    color:
+        #17a2b8;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-right: 10px;
+
+}
+
+
+.section-heading {
+
+    display: flex;
+
+    align-items: center;
+
+}
+
+
+.section-heading h6 {
+
+    margin:
+        0 0 3px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+}
+
+
+.section-heading small {
+
+    color:
+        #6c757d;
+
+    font-size: 12px;
+
+}
+
+
+/* =========================================================
+   YEAR
+========================================================= */
+
+.year-area {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+}
+
+
+.year-button {
+
+    min-width: 105px;
+
+    border-radius: 8px !important;
+
+    font-weight: 600;
+
+}
+
+
+.year-button.active {
+
+    background:
+        #007bff;
+
+    color: white;
+
+    box-shadow:
+        0 4px 10px
+        rgba(0,123,255,.2);
+
+}
+
+
+/* =========================================================
+   AUDIT CARD
+========================================================= */
+
+.audit-card {
+
+    background: white;
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius:
+        11px;
+
+    overflow: hidden;
+
+    transition:
+        all .2s ease;
+
+    height: 100%;
+
+}
+
+
+.audit-card:hover {
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        #007bff;
+
+    box-shadow:
+        0 8px 18px
+        rgba(0,0,0,.08);
+
+}
+
+
+.audit-card.selected {
+
+    border:
+        2px solid #007bff;
+
+    box-shadow:
+        0 6px 18px
+        rgba(0,123,255,.12);
+
+}
+
+
+.audit-card-body {
+
+    padding:
+        18px;
+
+}
+
+
+.audit-card-title {
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    color:
+        #343a40;
+
+    margin-bottom:
+        5px;
+
+}
+
+
+.audit-card-date {
+
+    color:
+        #6c757d;
+
+    font-size: 12px;
+
+}
+
+
+.audit-card-info {
+
+    margin-top:
+        15px;
+
+    font-size: 12px;
+
+    color:
+        #6c757d;
+
+}
+
+
+.audit-card-footer {
+
+    padding:
+        11px 18px;
+
+    background:
+        #f8f9fa;
+
+    border-top:
+        1px solid #eeeeee;
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+}
+
+
+.audit-view-text {
+
+    color:
+        #007bff;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-badge {
+
+    display: inline-block;
+
+    padding:
+        6px 11px;
+
+    border-radius:
+        20px;
+
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+    background:
+        #6c757d;
+
+    color:
+        white;
+
+}
+
+
+.status-plan {
+
+    background:
+        #ffc107;
+
+    color:
+        #212529;
+
+}
+
+
+.status-open {
+
+    background:
+        #28a745;
+
+}
+
+
+.status-close {
+
+    background:
+        #6c757d;
+
+}
+
+
+/* =========================================================
+   DETAIL
+========================================================= */
+
+.detail-divider {
+
+    border-top:
+        1px solid #dee2e6;
+
+    margin:
+        30px 0;
+
+}
+
+
+.audit-detail-card {
+
+    background:
+        #f8f9fa;
+
+    border:
+        1px solid #e4e7eb;
+
+    border-radius:
+        12px;
+
+    padding:
+        22px;
+
+}
+
+
+.audit-detail-top {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        flex-start;
+
+}
+
+
+.detail-small-title {
+
+    display: block;
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    color:
+        #6c757d;
+
+    letter-spacing:
+        .5px;
+
+}
+
+
+.detail-audit-name {
+
+    margin:
+        5px 0;
+
+    font-size:
+        22px;
+
+    font-weight:
+        700;
+
+    color:
+        #343a40;
+
+}
+
+
+.detail-customer {
+
+    color:
+        #6c757d;
+
+    font-size:
+        13px;
+
+}
+
+
+.detail-info-box {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    background:
+        white;
+
+    border:
+        1px solid #e9ecef;
+
+    border-radius:
+        10px;
+
+    padding:
+        13px;
+
+}
+
+
+.detail-info-icon {
+
+    width:
+        42px;
+
+    height:
+        42px;
+
+    border-radius:
+        8px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    color:
+        white;
+
+    margin-right:
+        11px;
+
+}
+
+
+.detail-info-box small {
+
+    display:
+        block;
+
+    font-size:
+        11px;
+
+    color:
+        #6c757d;
+
+    margin-bottom:
+        3px;
+
+}
+
+
+.detail-info-box strong {
+
+    display:
+        block;
+
+    font-size:
+        14px;
+
+    color:
+        #343a40;
+
+}
+
+
+.detail-action {
+
+    text-align:
+        right;
+
+}
+
+
+/* =========================================================
+   DOCUMENT
+========================================================= */
+
+.document-card {
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius:
+        12px;
+
+    overflow:
+        hidden;
+
+    background:
+        white;
+
+}
+
+
+.document-header {
+
+    padding:
+        17px 20px;
+
+    background:
+        #f8f9fa;
+
+    border-bottom:
+        1px solid #dee2e6;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+}
+
+
+.document-header h5 {
+
+    margin:
+        0 0 3px;
+
+    font-size:
+        15px;
+
+    font-weight:
+        700;
+
+}
+
+
+.document-header h5 i {
+
+    color:
+        #ffc107;
+
+}
+
+
+.document-header small {
+
+    font-size:
+        12px;
+
+    color:
+        #6c757d;
+
+}
+
+
+.document-body {
+
+    padding:
+        18px;
+
+}
+
+
+.document-file {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    min-width:
+        0;
+
+}
+
+
+.document-icon {
+
+    width:
+        38px;
+
+    height:
+        38px;
+
+    flex:
+        0 0 38px;
+
+    border-radius:
+        8px;
+
+    background:
+        #eaf3ff;
+
+    color:
+        #007bff;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    margin-right:
+        9px;
+
+}
+
+
+.document-name {
+
+    max-width:
+        220px;
+
+    overflow:
+        hidden;
+
+    white-space:
+        nowrap;
+
+    text-overflow:
+        ellipsis;
+
+    font-size:
+        12px;
+
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty-state {
+
+    text-align:
+        center;
+
+    padding:
+        45px 20px;
+
+    color:
+        #6c757d;
+
+}
+
+
+.empty-state i {
+
+    font-size:
+        38px;
+
+    color:
+        #adb5bd;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+.empty-state h6 {
+
+    font-weight:
+        700;
+
+    color:
+        #495057;
+
+}
+
+
+.empty-state p {
+
+    margin:
+        0;
+
+    font-size:
+        13px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width: 768px) {
+
+    .audit-header {
+
+        padding:
+            20px;
+
+    }
+
+
+    .audit-header h1 {
+
+        font-size:
+            23px;
+
+    }
+
+
+    .audit-header-icon {
+
+        width:
+            45px;
+
+        height:
+            45px;
+
+        font-size:
+            20px;
+
+    }
+
+
+    .audit-area-header {
+
+        align-items:
+            flex-start;
+
+        gap:
+            12px;
+
+    }
+
+
+    .audit-detail-top {
+
+        flex-direction:
+            column;
+
+        gap:
+            12px;
+
+    }
+
+
+    .document-header {
+
+        align-items:
+            flex-start;
+
+        gap:
+            12px;
+
+        flex-direction:
+            column;
+
+    }
+
+}
+
+</style>
+
+
+<script>
+
+/* =========================================================
+   PERMISSION
+========================================================= */
+
+window.auditCanManage =
+    <%- JSON.stringify(
+        typeof canManage !== 'undefined'
+            ? canManage
+            : false
+    ) %>;
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let selectedCustomerId = null;
+
+let selectedCustomerName = '';
+
+let selectedCustomerPlant = '';
+
+let selectedAuditId = null;
+
+let selectedAuditData = null;
+
+
+/* =========================================================
+   CUSTOMER
+========================================================= */
+
+$(document).on(
+    'click',
+    '.customer-card',
+    function () {
+
+        selectedCustomerId =
+            $(this).data('id');
+
+        selectedCustomerName =
+            $(this).data('name');
+
+        selectedCustomerPlant =
+            $(this).data('plant');
+
+
+        selectedAuditId = null;
+
+        selectedAuditData = null;
+
+
+        $('#selectedCustomerText')
+            .text(
+                selectedCustomerName +
+                ' | ' +
+                selectedCustomerPlant
+            );
+
+
+        $('#auditArea')
+            .stop(true, true)
+            .slideDown(250);
+
+
+        $('#auditDetailArea')
+            .hide();
+
+
+        $('#yearArea').html(`
+
+            <div class="text-muted py-2">
+
+                <i class="fas fa-spinner fa-spin mr-2"></i>
+
+                Memuat tahun audit...
+
             </div>
+
         `);
 
+
+        $('#auditListArea').html(`
+
+            <div class="empty-state">
+
+                <i class="fas fa-spinner fa-spin"></i>
+
+                <p>
+                    Memuat data audit...
+                </p>
+
+            </div>
+
+        `);
+
+
+        loadYears(
+            selectedCustomerId
+        );
+
+
+        $('html, body')
+            .animate({
+
+                scrollTop:
+                    $('#auditArea')
+                    .offset()
+                    .top - 70
+
+            }, 350);
+
+    }
+);
+
+
+/* =========================================================
+   CLOSE CUSTOMER AREA
+========================================================= */
+
+$('#btnCloseAuditArea')
+    .on(
+        'click',
+        function () {
+
+            $('#auditArea')
+                .slideUp(200);
+
+            selectedCustomerId = null;
+
+            selectedAuditId = null;
+
+            selectedAuditData = null;
+
+        }
+    );
+
+
+/* =========================================================
+   LOAD YEARS
+========================================================= */
+
+function loadYears(
+    idCustomer
+) {
 
     $.ajax({
 
         url:
-            `/audit/customer/${idCustomer}/years`,
+            '/audit/customer/' +
+            idCustomer +
+            '/years',
 
-        method: 'GET',
+        type:
+            'GET',
 
-        success: function(response) {
+        dataType:
+            'json',
 
-            if (!response.success) {
+        success:
+            function (res) {
 
-                return;
+                if (!res.success) {
 
-            }
+                    $('#yearArea').html(`
+                        <div class="alert alert-danger">
+                            ${escapeHtml(
+                                res.message ||
+                                'Gagal mengambil tahun audit'
+                            )}
+                        </div>
+                    `);
+
+                    return;
+
+                }
 
 
-            const years =
-                response.data;
+                const years =
+                    res.data || [];
 
 
-            $('#yearTabs').empty();
+                if (
+                    years.length === 0
+                ) {
+
+                    $('#yearArea').html(`
+
+                        <span class="text-muted">
+
+                            Belum ada tahun audit.
+
+                        </span>
+
+                    `);
 
 
-            if (years.length === 0) {
+                    $('#auditListArea').html(`
 
-                $('#yearTabs').html(`
-                    <div class="text-muted">
-                        Belum ada data audit.
+                        <div class="empty-state">
+
+                            <i class="fas fa-calendar-times"></i>
+
+                            <h6>
+                                Belum ada pelaksanaan audit
+                            </h6>
+
+                            <p>
+                                Belum terdapat pelaksanaan audit
+                                untuk customer ini.
+                            </p>
+
+                        </div>
+
+                    `);
+
+                    return;
+
+                }
+
+
+                let html = '';
+
+
+                years.forEach(
+                    function(item, index) {
+
+                        html += `
+
+                            <button
+
+                                type="button"
+
+                                class="
+                                    btn
+                                    btn-outline-primary
+                                    year-button
+                                    ${
+                                        index === 0
+                                            ? 'active'
+                                            : ''
+                                    }
+                                "
+
+                                data-year="${item.tahun}"
+
+                            >
+
+                                <i
+                                    class="
+                                        fas
+                                        fa-calendar-alt
+                                        mr-1
+                                    "
+                                ></i>
+
+                                ${item.tahun}
+
+                            </button>
+
+                        `;
+
+                    }
+                );
+
+
+                $('#yearArea')
+                    .html(html);
+
+
+                loadAuditYear(
+                    idCustomer,
+                    years[0].tahun
+                );
+
+            },
+
+        error:
+            function (xhr) {
+
+                console.error(
+                    xhr.responseText
+                );
+
+
+                $('#yearArea').html(`
+
+                    <div class="alert alert-danger">
+
+                        Gagal mengambil tahun audit.
+
                     </div>
+
                 `);
 
-                $('#auditList').empty();
-
-                return;
-
             }
-
-
-            years.forEach(function(item, index) {
-
-                $('#yearTabs').append(`
-
-                    <div
-                        class="year-tab
-                        ${index === 0 ? 'active' : ''}"
-                        onclick="
-                            selectYear(
-                                ${item.tahun},
-                                this
-                            )
-                        "
-                    >
-
-                        ${item.tahun}
-
-                    </div>
-
-                `);
-
-            });
-
-
-            // tampilkan tahun terbaru
-            loadAuditByYear(
-                years[0].tahun
-            );
-
-        },
-
-        error: function() {
-
-            Swal.fire(
-                'Error',
-                'Gagal mengambil tahun audit.',
-                'error'
-            );
-
-        }
 
     });
 
 }
 
 
-/*
-|--------------------------------------------------------------------------
-| PILIH TAHUN
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   CLICK YEAR
+========================================================= */
 
-function selectYear(
-    tahun,
-    element
+$(document).on(
+    'click',
+    '.year-button',
+    function () {
+
+        $('.year-button')
+            .removeClass('active');
+
+
+        $(this)
+            .addClass('active');
+
+
+        const tahun =
+            $(this).data('year');
+
+
+        loadAuditYear(
+            selectedCustomerId,
+            tahun
+        );
+
+    }
+);
+
+
+/* =========================================================
+   LOAD AUDIT
+========================================================= */
+
+function loadAuditYear(
+    idCustomer,
+    tahun
 ) {
 
-    $('.year-tab')
-        .removeClass('active');
+    selectedAuditId = null;
+
+    selectedAuditData = null;
 
 
-    $(element)
-        .addClass('active');
+    $('#auditDetailArea')
+        .hide();
 
 
-    loadAuditByYear(tahun);
+    $('#auditListArea').html(`
+
+        <div class="text-center text-muted py-4">
+
+            <i class="fas fa-spinner fa-spin mr-2"></i>
+
+            Memuat pelaksanaan audit tahun
+            ${tahun}...
+
+        </div>
+
+    `);
+
+
+    $.ajax({
+
+        url:
+            '/audit/customer/' +
+            idCustomer +
+            '/year/' +
+            tahun,
+
+        type:
+            'GET',
+
+        dataType:
+            'json',
+
+
+        success:
+            function (res) {
+
+                if (!res.success) {
+
+                    $('#auditListArea').html(`
+
+                        <div class="alert alert-danger">
+
+                            ${escapeHtml(
+                                res.message ||
+                                'Gagal mengambil data audit'
+                            )}
+
+                        </div>
+
+                    `);
+
+                    return;
+
+                }
+
+
+                const data =
+                    res.data || [];
+
+
+                if (
+                    data.length === 0
+                ) {
+
+                    $('#auditListArea').html(`
+
+                        <div class="empty-state">
+
+                            <i class="fas fa-calendar-times"></i>
+
+                            <h6>
+                                Tidak ada pelaksanaan audit
+                            </h6>
+
+                            <p>
+                                Tidak terdapat audit pada
+                                tahun ${tahun}.
+                            </p>
+
+                        </div>
+
+                    `);
+
+                    return;
+
+                }
+
+
+                let html = `
+                    <div class="row">
+                `;
+
+
+                data.forEach(
+                    function(a) {
+
+                        let statusClass =
+                            'status-badge';
+
+
+                        if (
+                            a.status === 'PLAN'
+                        ) {
+
+                            statusClass +=
+                                ' status-plan';
+
+                        }
+
+
+                        if (
+                            a.status === 'OPEN'
+                        ) {
+
+                            statusClass +=
+                                ' status-open';
+
+                        }
+
+
+                        if (
+                            a.status === 'CLOSE'
+                        ) {
+
+                            statusClass +=
+                                ' status-close';
+
+                        }
+
+
+                        html += `
+
+                            <div
+                                class="
+                                    col-xl-4
+                                    col-lg-6
+                                    mb-3
+                                "
+                            >
+
+                                <div
+                                    class="audit-card"
+                                    data-audit-id="${a.id_audit}"
+                                >
+
+                                    <div class="audit-card-body">
+
+                                        <div
+                                            class="
+                                                d-flex
+                                                justify-content-between
+                                                align-items-start
+                                            "
+                                        >
+
+                                            <div class="pr-2">
+
+                                                <div class="audit-card-title">
+
+                                                    ${escapeHtml(
+                                                        a.nama_audit ||
+                                                        '-'
+                                                    )}
+
+                                                </div>
+
+
+                                                <div class="audit-card-date">
+
+                                                    <i
+                                                        class="
+                                                            far
+                                                            fa-calendar-alt
+                                                            mr-1
+                                                        "
+                                                    ></i>
+
+                                                    ${formatTanggal(
+                                                        a.tgl_audit
+                                                    )}
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <span
+                                                class="${statusClass}"
+                                            >
+
+                                                ${escapeHtml(
+                                                    a.status ||
+                                                    '-'
+                                                )}
+
+                                            </span>
+
+                                        </div>
+
+
+                                        <div class="audit-card-info">
+
+                                            <div class="mb-2">
+
+                                                <i
+                                                    class="
+                                                        fas
+                                                        fa-user
+                                                        text-primary
+                                                        mr-2
+                                                    "
+                                                ></i>
+
+                                                <strong>
+                                                    PIC:
+                                                </strong>
+
+                                                ${escapeHtml(
+                                                    a.pic ||
+                                                    '-'
+                                                )}
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <i
+                                                    class="
+                                                        fas
+                                                        fa-building
+                                                        text-info
+                                                        mr-2
+                                                    "
+                                                ></i>
+
+                                                ${escapeHtml(
+                                                    a.nama_customer ||
+                                                    selectedCustomerName
+                                                )}
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="audit-card-footer">
+
+                                        <span class="audit-view-text">
+
+                                            <i
+                                                class="
+                                                    fas
+                                                    fa-eye
+                                                    mr-1
+                                                "
+                                            ></i>
+
+                                            Lihat Detail Audit
+
+                                        </span>
+
+
+                                        ${
+                                            window.auditCanManage
+                                            ?
+                                            `
+                                            <div>
+
+                                                <button
+                                                    type="button"
+                                                    class="
+                                                        btn
+                                                        btn-warning
+                                                        btn-sm
+                                                        btn-edit-audit-card
+                                                        mr-1
+                                                    "
+                                                    data-id="${a.id_audit}"
+                                                    title="Edit Audit"
+                                                >
+
+                                                    <i class="fas fa-edit"></i>
+
+                                                </button>
+
+
+                                                <button
+                                                    type="button"
+                                                    class="
+                                                        btn
+                                                        btn-danger
+                                                        btn-sm
+                                                        btn-delete-audit-card
+                                                    "
+                                                    data-id="${a.id_audit}"
+                                                    title="Hapus Audit"
+                                                >
+
+                                                    <i class="fas fa-trash"></i>
+
+                                                </button>
+
+                                            </div>
+                                            `
+                                            :
+                                            ''
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                );
+
+
+                html += `
+                    </div>
+                `;
+
+
+                $('#auditListArea')
+                    .html(html);
+
+            },
+
+
+        error:
+            function (xhr) {
+
+                console.error(
+                    xhr.responseText
+                );
+
+
+                $('#auditListArea').html(`
+
+                    <div class="alert alert-danger">
+
+                        Gagal mengambil data
+                        pelaksanaan audit.
+
+                    </div>
+
+                `);
+
+            }
+
+    });
 
 }
 
 
-/*
-|--------------------------------------------------------------------------
-| LOAD AUDIT
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   DETAIL AUDIT
+   INLINE, TIDAK MODAL
+========================================================= */
 
-function loadAuditByYear(tahun) {
+$(document).on(
+    'click',
+    '.audit-card',
+    function (e) {
 
-    $('#auditList').html(`
-        <div class="text-muted py-3">
-            <i class="fas fa-spinner fa-spin mr-1"></i>
-            Mengambil data audit...
+        /*
+         * Jika tombol edit / delete diklik,
+         * jangan membuka detail.
+         */
+
+        if (
+            $(e.target).closest(
+                '.btn-edit-audit-card'
+            ).length ||
+            $(e.target).closest(
+                '.btn-delete-audit-card'
+            ).length
+        ) {
+
+            return;
+
+        }
+
+
+        const idAudit =
+            $(this).data('audit-id');
+
+
+        openAuditDetail(
+            idAudit
+        );
+
+    }
+);
+
+
+/* =========================================================
+   OPEN AUDIT DETAIL
+========================================================= */
+
+function openAuditDetail(
+    idAudit
+) {
+
+    selectedAuditId =
+        idAudit;
+
+
+    $('.audit-card')
+        .removeClass('selected');
+
+
+    $(
+        '.audit-card[data-audit-id="' +
+        idAudit +
+        '"]'
+    )
+        .addClass('selected');
+
+
+    $('#auditDetailArea')
+        .show();
+
+
+    $('#detailNamaAudit')
+        .text(
+            'Memuat detail audit...'
+        );
+
+
+    $('#detailCustomer')
+        .text('-');
+
+
+    $('#detailTanggal')
+        .text('-');
+
+
+    $('#detailPIC')
+        .text('-');
+
+
+    $('#detailStatus')
+        .text('-')
+        .removeClass(
+            'status-plan',
+            'status-open',
+            'status-close'
+        );
+
+
+    $('#totalDokumen')
+        .text('0');
+
+
+    $('#dokumenTableArea')
+        .html(`
+
+            <div class="empty-state">
+
+                <i class="fas fa-spinner fa-spin"></i>
+
+                <p class="mt-3">
+                    Memuat dokumen...
+                </p>
+
+            </div>
+
+        `);
+
+
+    $.ajax({
+
+        url:
+            '/audit/detail/' +
+            idAudit,
+
+        type:
+            'GET',
+
+        dataType:
+            'json',
+
+
+        success:
+            function(res) {
+
+                if (!res.success) {
+
+                    Swal.fire(
+                        'Gagal',
+                        res.message ||
+                        'Gagal mengambil detail audit',
+                        'error'
+                    );
+
+                    return;
+
+                }
+
+
+                const a =
+                    res.data;
+
+
+                selectedAuditData =
+                    a;
+
+
+                $('#detailNamaAudit')
+                    .text(
+                        a.nama_audit ||
+                        '-'
+                    );
+
+
+                $('#detailCustomer')
+                    .text(
+
+                        (a.nama_customer ||
+                        '-') +
+
+                        ' | ' +
+
+                        (a.plant ||
+                        '-')
+
+                    );
+
+
+                $('#detailTanggal')
+                    .text(
+                        formatTanggal(
+                            a.tgl_audit
+                        )
+                    );
+
+
+                $('#detailPIC')
+                    .text(
+                        a.pic ||
+                        '-'
+                    );
+
+
+                setStatus(
+                    $('#detailStatus'),
+                    a.status
+                );
+
+
+                loadDokumenAudit(
+                    idAudit
+                );
+
+
+                $('html, body')
+                    .animate({
+
+                        scrollTop:
+                            $('#auditDetailArea')
+                            .offset()
+                            .top - 75
+
+                    }, 350);
+
+            },
+
+
+        error:
+            function(xhr) {
+
+                console.error(
+                    xhr.responseText
+                );
+
+
+                Swal.fire(
+                    'Error',
+                    'Gagal mengambil detail audit.',
+                    'error'
+                );
+
+            }
+
+    });
+
+}
+
+
+/* =========================================================
+   LOAD DOKUMEN AUDIT
+========================================================= */
+
+function loadDokumenAudit(idAudit) {
+
+    $('#dokumenTableArea').html(`
+        <div class="text-center text-muted py-4">
+
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+
+            <p class="mt-3 mb-0">
+                Memuat dokumen audit...
+            </p>
+
         </div>
     `);
 
 
-    $('#auditDetail')
-        .hide();
-
-
     $.ajax({
 
         url:
-            `/audit/customer/${selectedCustomerId}/year/${tahun}`,
+            '/audit-dokumen/' + idAudit,
 
-        method: 'GET',
+        type:
+            'GET',
 
-        success: function(response) {
+        dataType:
+            'json',
 
-            if (!response.success) {
-                return;
+        success:
+            function(res) {
+
+                if (!res.success) {
+
+                    $('#totalDokumen')
+                        .text('0');
+
+                    $('#dokumenTableArea').html(`
+
+                        <div class="alert alert-danger">
+
+                            <i class="fas fa-exclamation-circle mr-1"></i>
+
+                            ${escapeHtml(
+                                res.message ||
+                                'Gagal mengambil dokumen audit'
+                            )}
+
+                        </div>
+
+                    `);
+
+                    return;
+                }
+
+
+                const data =
+                    res.data || [];
+
+
+                $('#totalDokumen')
+                    .text(data.length);
+
+
+                /* ==========================================
+                   TIDAK ADA DATA
+                ========================================== */
+
+                if (data.length === 0) {
+
+                    $('#dokumenTableArea').html(`
+
+                        <div class="empty-state">
+
+                            <i class="
+                                fas
+                                fa-folder-open
+                                fa-3x
+                            "></i>
+
+                            <h6>
+                                Belum ada dokumen audit
+                            </h6>
+
+                            <p>
+                                Belum terdapat dokumen
+                                untuk audit ini.
+                            </p>
+
+                        </div>
+
+                    `);
+
+                    return;
+                }
+
+
+                /* ==========================================
+                   TABLE
+                ========================================== */
+
+                let html = `
+
+                    <div class="table-responsive">
+
+                        <table
+                            id="tableDokumenAudit"
+                            class="
+                                table
+                                table-bordered
+                                table-hover
+                                table-striped
+                                w-100
+                            "
+                        >
+
+                            <thead>
+
+                                <tr>
+
+                                    <th width="50">
+                                        No
+                                    </th>
+
+                                    <th>
+                                        No. Dokumen
+                                    </th>
+
+                                    <th>
+                                        Nama Dokumen
+                                    </th>
+
+                                    <th>
+                                        Kategori
+                                    </th>
+
+                                    <th>
+                                        Departemen
+                                    </th>
+
+                                    <th>
+                                        File
+                                    </th>
+
+                                    <th
+                                        width="140"
+                                        class="text-center"
+                                    >
+                                        Aksi
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                `;
+
+
+                data.forEach(
+                    function(d, index) {
+
+                        let extension = '';
+
+                        if (d.file) {
+
+                            extension =
+                                d.file
+                                    .split('.')
+                                    .pop()
+                                    .toLowerCase();
+
+                        }
+
+
+                        let icon =
+                            'fa-file-alt';
+
+
+                        if (
+                            extension === 'pdf'
+                        ) {
+
+                            icon =
+                                'fa-file-pdf';
+
+                        }
+
+                        else if (
+
+                            [
+                                'doc',
+                                'docx'
+                            ].includes(extension)
+
+                        ) {
+
+                            icon =
+                                'fa-file-word';
+
+                        }
+
+                        else if (
+
+                            [
+                                'xls',
+                                'xlsx'
+                            ].includes(extension)
+
+                        ) {
+
+                            icon =
+                                'fa-file-excel';
+
+                        }
+
+                        else if (
+
+                            [
+                                'ppt',
+                                'pptx'
+                            ].includes(extension)
+
+                        ) {
+
+                            icon =
+                                'fa-file-powerpoint';
+
+                        }
+
+                        else if (
+
+                            [
+                                'jpg',
+                                'jpeg',
+                                'png'
+                            ].includes(extension)
+
+                        ) {
+
+                            icon =
+                                'fa-file-image';
+
+                        }
+
+
+                        html += `
+
+                            <tr>
+
+                                <td class="text-center">
+
+                                    ${index + 1}
+
+                                </td>
+
+
+                                <td>
+
+                                    <strong>
+
+                                        ${escapeHtml(
+                                            d.no_doc_aud ||
+                                            '-'
+                                        )}
+
+                                    </strong>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span
+                                        class="document-name"
+                                    >
+
+                                        ${escapeHtml(
+                                            d.nama_doc_aud ||
+                                            '-'
+                                        )}
+
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span
+                                        class="
+                                            badge
+                                            badge-info
+                                        "
+                                    >
+
+                                        ${escapeHtml(
+                                            d.nama_kategori ||
+                                            '-'
+                                        )}
+
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    ${escapeHtml(
+                                        d.nama_dept ||
+                                        '-'
+                                    )}
+
+                                </td>
+
+
+                                <td>
+
+                                    ${
+                                        d.file
+                                        ?
+
+                                        `
+                                        <div
+                                            class="
+                                                document-file
+                                            "
+                                        >
+
+                                            <div
+                                                class="
+                                                    document-icon
+                                                "
+                                            >
+
+                                                <i
+                                                    class="
+                                                        fas
+                                                        ${icon}
+                                                    "
+                                                ></i>
+
+                                            </div>
+
+                                            <span
+                                                class="document-name"
+                                                title="${escapeHtml(
+                                                    d.file
+                                                )}"
+                                            >
+
+                                                ${escapeHtml(
+                                                    d.file
+                                                )}
+
+                                            </span>
+
+                                        </div>
+                                        `
+
+                                        :
+
+                                        `
+                                        <span
+                                            class="text-muted"
+                                        >
+                                            Tidak ada file
+                                        </span>
+                                        `
+                                    }
+
+                                </td>
+
+
+                                <td
+                                    class="text-center"
+                                >
+
+                                    ${
+                                        d.file
+                                        ?
+
+                                        `
+
+                                        <!-- BUKA -->
+
+                                    
+
+
+                                        <!-- DOWNLOAD -->
+
+                                        <a
+                                            href="/audit-dokumen/file/${d.id_doc_aud}/download"
+                                            class="
+                                                btn
+                                                btn-success
+                                                btn-sm
+                                                mr-1
+                                            "
+                                            title="Download"
+                                        >
+
+                                            <i
+                                                class="
+                                                    fas
+                                                    fa-download
+                                                "
+                                            ></i>
+
+                                        </a>
+
+                                        `
+
+                                        :
+
+                                        ''
+                                    }
+
+
+                                    ${
+                                        window.auditCanManage
+                                        ?
+
+                                        `
+
+                                        <!-- EDIT -->
+
+                                        <button
+                                            type="button"
+                                            class="
+                                                btn
+                                                btn-warning
+                                                btn-sm
+                                                mr-1
+                                                btn-edit-dokumen
+                                            "
+                                            data-id="${d.id_doc_aud}"
+                                            title="Edit"
+                                        >
+
+                                            <i
+                                                class="
+                                                    fas
+                                                    fa-edit
+                                                "
+                                            ></i>
+
+                                        </button>
+
+
+                                        <!-- DELETE -->
+
+                                        <button
+                                            type="button"
+                                            class="
+                                                btn
+                                                btn-danger
+                                                btn-sm
+                                                btn-delete-dokumen
+                                            "
+                                            data-id="${d.id_doc_aud}"
+                                            title="Hapus"
+                                        >
+
+                                            <i
+                                                class="
+                                                    fas
+                                                    fa-trash
+                                                "
+                                            ></i>
+
+                                        </button>
+
+                                        `
+
+                                        :
+
+                                        ''
+                                    }
+
+                                </td>
+
+                            </tr>
+
+                        `;
+
+                    }
+                );
+
+
+                html += `
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                `;
+
+
+                $('#dokumenTableArea')
+                    .html(html);
+
+
+                /* ==========================================
+                   DATATABLE
+                ========================================== */
+
+                $('#tableDokumenAudit')
+                    .DataTable({
+
+                        destroy: true,
+
+                        responsive: true,
+
+                        autoWidth: false,
+
+                        pageLength: 10,
+
+                        lengthMenu: [
+                            [10, 25, 50, 100],
+                            [10, 25, 50, 100]
+                        ],
+
+                        searching: true,
+
+                        ordering: true,
+
+                        paging: true,
+
+                        info: true,
+
+                        language: {
+
+                            lengthMenu:
+                                'Show _MENU_ entries',
+
+                            search:
+                                'Search:',
+
+                            zeroRecords:
+                                'Data tidak ditemukan',
+
+                            info:
+                                'Showing _START_ to _END_ of _TOTAL_ entries',
+
+                            infoEmpty:
+                                'Showing 0 to 0 of 0 entries',
+
+                            infoFiltered:
+                                '(filtered from _MAX_ total entries)',
+
+                            paginate: {
+
+                                previous:
+                                    'Previous',
+
+                                next:
+                                    'Next'
+
+                            }
+
+                        }
+
+                    });
+
+            },
+
+
+        error:
+            function(xhr) {
+
+                console.error(
+                    'DOKUMEN ERROR:',
+                    xhr.responseText
+                );
+
+
+                $('#totalDokumen')
+                    .text('0');
+
+
+                $('#dokumenTableArea')
+                    .html(`
+
+                        <div
+                            class="
+                                alert
+                                alert-danger
+                            "
+                        >
+
+                            <i
+                                class="
+                                    fas
+                                    fa-exclamation-circle
+                                    mr-1
+                                "
+                            ></i>
+
+                            Gagal mengambil dokumen audit.
+
+                        </div>
+
+                    `);
+
             }
-
-
-            renderAudit(
-                response.data
-            );
-
-        },
-
-        error: function() {
-
-            Swal.fire(
-                'Error',
-                'Gagal mengambil data audit.',
-                'error'
-            );
-
-        }
 
     });
 
 }
 
 
-/*
-|--------------------------------------------------------------------------
-| RENDER AUDIT
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   TAMBAH AUDIT
+========================================================= */
 
-function renderAudit(data) {
+$('#btnAddAudit')
+    .on(
+        'click',
+        function () {
 
-    const container =
-        $('#auditList');
+            if (!selectedCustomerId) {
+
+                Swal.fire(
+                    'Perhatian',
+                    'Pilih customer terlebih dahulu.',
+                    'warning'
+                );
+
+                return;
+
+            }
 
 
-    container.empty();
+            $('#formAudit')[0]
+                .reset();
 
 
-    if (!data.length) {
+            $('#auditId')
+                .val('');
 
-        container.html(`
 
-            <div
-                class="text-center text-muted py-5"
-            >
+            $('#auditCustomerId')
+                .val(
+                    selectedCustomerId
+                );
 
-                <i
-                    class="fas fa-calendar-times fa-3x mb-3"
-                ></i>
 
-                <div>
-                    Belum ada pelaksanaan audit
-                    pada tahun ini.
-                </div>
+            $('#auditCustomerName')
+                .val(
+                    selectedCustomerName
+                );
 
-            </div>
 
-        `);
+            $('#modalAuditTitle')
+                .text(
+                    'Tambah Pelaksanaan Audit'
+                );
+
+
+            $('#modalAudit')
+                .modal('show');
+
+        }
+    );
+
+
+/* =========================================================
+   EDIT AUDIT
+========================================================= */
+
+$('#btnEditAudit')
+    .on(
+        'click',
+        function () {
+
+            if (!selectedAuditData) {
+
+                Swal.fire(
+                    'Perhatian',
+                    'Pilih audit terlebih dahulu.',
+                    'warning'
+                );
+
+                return;
+
+            }
+
+
+            openEditAudit(
+                selectedAuditData
+            );
+
+        }
+    );
+
+
+function openEditAudit(a) {
+
+    $('#auditId')
+        .val(
+            a.id_audit
+        );
+
+
+    $('#auditCustomerId')
+        .val(
+            a.id_customer
+        );
+
+
+    $('#auditCustomerName')
+        .val(
+            a.nama_customer ||
+            '-'
+        );
+
+
+    $('#namaAudit')
+        .val(
+            a.nama_audit ||
+            ''
+        );
+
+
+    $('#tglAudit')
+        .val(
+            a.tgl_audit
+                ? String(
+                    a.tgl_audit
+                ).substring(
+                    0,
+                    10
+                )
+                : ''
+        );
+
+
+    $('#picAudit')
+        .val(
+            a.pic ||
+            ''
+        );
+
+
+    $('#statusAudit')
+        .val(
+            a.status ||
+            'PLAN'
+        );
+
+
+    $('#modalAuditTitle')
+        .text(
+            'Edit Pelaksanaan Audit'
+        );
+
+
+    $('#modalAudit')
+        .modal('show');
+
+}
+
+
+/* =========================================================
+   EDIT AUDIT DARI CARD
+========================================================= */
+
+$(document).on(
+    'click',
+    '.btn-edit-audit-card',
+    function (e) {
+
+        e.stopPropagation();
+
+
+        const id =
+            $(this).data('id');
+
+
+        $.get(
+            '/audit/detail/' + id,
+            function(res) {
+
+                if (!res.success) {
+
+                    Swal.fire(
+                        'Gagal',
+                        res.message,
+                        'error'
+                    );
+
+                    return;
+
+                }
+
+
+                openEditAudit(
+                    res.data
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   DELETE AUDIT DARI CARD
+========================================================= */
+
+$(document).on(
+    'click',
+    '.btn-delete-audit-card',
+    function (e) {
+
+        e.stopPropagation();
+
+
+        deleteAudit(
+            $(this).data('id')
+        );
+
+    }
+);
+
+
+/* =========================================================
+   DELETE SELECTED AUDIT
+========================================================= */
+
+$('#btnDeleteAudit')
+    .on(
+        'click',
+        function () {
+
+            deleteAudit(
+                selectedAuditId
+            );
+
+        }
+    );
+
+
+function deleteAudit(
+    idAudit
+) {
+
+    if (!idAudit) {
+
+        Swal.fire(
+            'Perhatian',
+            'Pilih audit terlebih dahulu.',
+            'warning'
+        );
 
         return;
 
     }
 
 
-    data.forEach(function(audit) {
+    Swal.fire({
 
-        container.append(`
+        title:
+            'Hapus pelaksanaan audit?',
 
-            <div
-                class="audit-card"
-                onclick="
-                    showAuditDetail(
-                        ${audit.id_audit}
-                    )
-                "
-            >
+        text:
+            'Data audit akan dihapus.',
 
-                <div class="audit-date">
+        icon:
+            'warning',
 
-                    <i class="far fa-calendar-alt mr-1"></i>
+        showCancelButton:
+            true,
 
-                    ${audit.tanggal_format}
+        confirmButtonText:
+            'Ya, Hapus',
 
-                </div>
+        cancelButtonText:
+            'Batal',
 
+        confirmButtonColor:
+            '#dc3545'
 
-                <div class="audit-name">
+    }).then(
+        function(result) {
 
-                    ${audit.nama_audit}
-
-                </div>
-
-
-                <div class="audit-info">
-
-                    <i class="fas fa-user mr-1"></i>
-
-                    PIC:
-                    ${audit.pic || '-'}
-
-                </div>
-
-
-                <span class="audit-status">
-
-                    ${audit.status || '-'}
-
-                </span>
-
-            </div>
-
-        `);
-
-    });
-
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| DETAIL AUDIT
-|--------------------------------------------------------------------------
-*/
-
-function showAuditDetail(idAudit) {
-
-    $('#auditDetail')
-        .show();
-
-
-    $('html, body')
-        .animate({
-
-            scrollTop:
-                $('#auditDetail')
-                    .offset()
-                    .top - 80
-
-        }, 300);
-
-
-    $('#detailAuditName')
-        .text('Loading...');
-
-
-    $.ajax({
-
-        url:
-            `/audit/detail/${idAudit}`,
-
-        method: 'GET',
-
-        success: function(response) {
-
-            if (!response.success) {
+            if (
+                !result.isConfirmed
+            ) {
 
                 return;
 
             }
 
 
-            const audit =
-                response.data;
+            $.ajax({
+
+                url:
+                    '/audit/delete/' +
+                    idAudit,
+
+                type:
+                    'DELETE',
+
+                success:
+                    function(res) {
+
+                        if (!res.success) {
+
+                            Swal.fire(
+                                'Gagal',
+                                res.message ||
+                                'Gagal menghapus audit',
+                                'error'
+                            );
+
+                            return;
+
+                        }
 
 
-            $('#detailAuditName')
-                .text(
-                    audit.nama_audit
-                );
+                        $('#auditDetailArea')
+                            .hide();
 
 
-            $('#detailAuditDate')
-                .text(
-                    audit.tanggal_format
-                );
+                        selectedAuditId =
+                            null;
+
+                        selectedAuditData =
+                            null;
 
 
-            $('#detailCustomer')
-                .text(
-                    audit.nama_customer
-                );
+                        Swal.fire({
+
+                            icon:
+                                'success',
+
+                            title:
+                                'Berhasil',
+
+                            text:
+                                res.message,
+
+                            timer:
+                                1300,
+
+                            showConfirmButton:
+                                false
+
+                        });
 
 
-            $('#detailPlant')
-                .text(
-                    audit.plant || '-'
-                );
+                        loadAudit(
+                            selectedCustomerId
+                        );
+
+                    },
 
 
-            $('#detailPic')
-                .text(
-                    audit.pic || '-'
-                );
+                error:
+                    function(xhr) {
+
+                        console.error(
+                            xhr.responseText
+                        );
 
 
-            $('#detailStatus')
-                .text(
-                    audit.status || '-'
-                );
+                        Swal.fire(
+                            'Gagal',
+                            xhr.responseJSON?.message ||
+                            'Gagal menghapus audit',
+                            'error'
+                        );
 
-        },
+                    }
 
-        error: function() {
-
-            Swal.fire(
-                'Error',
-                'Gagal mengambil detail audit.',
-                'error'
-            );
+            });
 
         }
+    );
+
+}
+
+
+/* =========================================================
+   SUBMIT AUDIT
+========================================================= */
+
+$('#formAudit')
+    .on(
+        'submit',
+        function(e) {
+
+            e.preventDefault();
+
+
+            const id =
+                $('#auditId')
+                .val();
+
+
+            const payload = {
+
+                id_customer:
+                    $('#auditCustomerId')
+                    .val(),
+
+                nama_audit:
+                    $('#namaAudit')
+                    .val(),
+
+                tgl_audit:
+                    $('#tglAudit')
+                    .val(),
+
+                pic:
+                    $('#picAudit')
+                    .val(),
+
+                status:
+                    $('#statusAudit')
+                    .val()
+
+            };
+
+
+            const url =
+                id
+                    ? '/audit/update/' + id
+                    : '/audit/create';
+
+
+            const method =
+                id
+                    ? 'PUT'
+                    : 'POST';
+
+
+            $.ajax({
+
+                url:
+                    url,
+
+                type:
+                    method,
+
+                contentType:
+                    'application/json',
+
+                data:
+                    JSON.stringify(
+                        payload
+                    ),
+
+
+                success:
+                    function(res) {
+
+                        if (!res.success) {
+
+                            Swal.fire(
+                                'Gagal',
+                                res.message ||
+                                'Gagal menyimpan audit',
+                                'error'
+                            );
+
+                            return;
+
+                        }
+
+
+                        $('#modalAudit')
+                            .modal('hide');
+
+
+                        Swal.fire({
+
+                            icon:
+                                'success',
+
+                            title:
+                                'Berhasil',
+
+                            text:
+                                res.message,
+
+                            timer:
+                                1300,
+
+                            showConfirmButton:
+                                false
+
+                        });
+
+
+                        loadAudit(
+                            selectedCustomerId
+                        );
+
+                    },
+
+
+                error:
+                    function(xhr) {
+
+                        console.error(
+                            xhr.responseText
+                        );
+
+
+                        Swal.fire(
+                            'Gagal',
+                            xhr.responseJSON?.message ||
+                            'Terjadi kesalahan server',
+                            'error'
+                        );
+
+                    }
+
+            });
+
+        }
+    );
+
+
+/* =========================================================
+   TAMBAH DOKUMEN
+========================================================= */
+
+$('#btnAddDocument')
+    .on(
+        'click',
+        function () {
+
+            if (!selectedAuditId) {
+
+                Swal.fire(
+                    'Perhatian',
+                    'Pilih pelaksanaan audit terlebih dahulu.',
+                    'warning'
+                );
+
+                return;
+
+            }
+
+
+            $('#formDokumen')[0]
+                .reset();
+
+
+            $('#dokumenId')
+                .val('');
+
+
+            $('#dokumenAuditId')
+                .val(
+                    selectedAuditId
+                );
+
+
+            $('#currentFile')
+                .text('');
+
+
+            $('#modalDokumenTitle')
+                .text(
+                    'Tambah Dokumen Audit'
+                );
+
+
+            loadMasterDokumen();
+
+
+            $('#modalDokumen')
+                .modal('show');
+
+        }
+    );
+
+
+/* =========================================================
+   MASTER KATEGORI + DEPARTEMEN
+========================================================= */
+
+function loadMasterDokumen(
+    selectedKategori = '',
+    selectedDept = ''
+) {
+
+    $('#kategoriDokumen')
+        .html(`
+
+            <option value="">
+                Memuat kategori...
+            </option>
+
+        `);
+
+
+    $('#deptDokumen')
+        .html(`
+
+            <option value="">
+                Memuat departemen...
+            </option>
+
+        `);
+
+
+    $.ajax({
+
+        url:
+            '/audit-dokumen/master',
+
+        type:
+            'GET',
+
+        dataType:
+            'json',
+
+
+        success:
+            function(res) {
+
+                if (!res.success) {
+
+                    Swal.fire(
+                        'Gagal',
+                        res.message ||
+                        'Gagal mengambil master data',
+                        'error'
+                    );
+
+                    return;
+
+                }
+
+
+                let kategoriHtml = `
+
+                    <option value="">
+                        -- Pilih Kategori --
+                    </option>
+
+                `;
+
+
+                (res.kategori || [])
+                    .forEach(
+                        function(item) {
+
+                            const selected =
+                                String(
+                                    item.id_kategori
+                                ) ===
+                                String(
+                                    selectedKategori
+                                )
+                                    ? 'selected'
+                                    : '';
+
+
+                            kategoriHtml += `
+
+                                <option
+                                    value="${item.id_kategori}"
+                                    ${selected}
+                                >
+
+                                    ${escapeHtml(
+                                        item.nama_kategori
+                                    )}
+
+                                </option>
+
+                            `;
+
+                        }
+                    );
+
+
+                $('#kategoriDokumen')
+                    .html(
+                        kategoriHtml
+                    );
+
+
+                let deptHtml = `
+
+                    <option value="">
+                        -- Pilih Departemen --
+                    </option>
+
+                `;
+
+
+                (res.departemen || [])
+                    .forEach(
+                        function(item) {
+
+                            const selected =
+                                String(
+                                    item.id_dept
+                                ) ===
+                                String(
+                                    selectedDept
+                                )
+                                    ? 'selected'
+                                    : '';
+
+
+                            deptHtml += `
+
+                                <option
+                                    value="${item.id_dept}"
+                                    ${selected}
+                                >
+
+                                    ${escapeHtml(
+                                        item.nama_dept
+                                    )}
+
+                                </option>
+
+                            `;
+
+                        }
+                    );
+
+
+                $('#deptDokumen')
+                    .html(
+                        deptHtml
+                    );
+
+            },
+
+
+        error:
+            function(xhr) {
+
+                console.error(
+                    xhr.responseText
+                );
+
+
+                $('#kategoriDokumen')
+                    .html(`
+
+                        <option value="">
+                            Gagal memuat kategori
+                        </option>
+
+                    `);
+
+
+                $('#deptDokumen')
+                    .html(`
+
+                        <option value="">
+                            Gagal memuat departemen
+                        </option>
+
+                    `);
+
+            }
 
     });
 
 }
 
 
-/*
-|--------------------------------------------------------------------------
-| CLOSE DETAIL
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   EDIT DOKUMEN
+========================================================= */
 
-function closeDetail() {
+$(document).on(
+    'click',
+    '.btn-edit-dokumen',
+    function () {
 
-    $('#auditDetail')
-        .slideUp(150);
+        const id =
+            $(this).data('id');
+
+
+        $.get(
+            '/audit-dokumen/detail/' + id,
+
+            function(res) {
+
+                if (!res.success) {
+
+                    Swal.fire(
+                        'Gagal',
+                        res.message ||
+                        'Dokumen tidak ditemukan',
+                        'error'
+                    );
+
+                    return;
+
+                }
+
+
+                const d =
+                    res.data;
+
+
+                $('#dokumenId')
+                    .val(
+                        d.id_doc_aud
+                    );
+
+
+                $('#dokumenAuditId')
+                    .val(
+                        d.id_audit
+                    );
+
+
+                $('#noDocAud')
+                    .val(
+                        d.no_doc_aud ||
+                        ''
+                    );
+
+
+                $('#namaDocAud')
+                    .val(
+                        d.nama_doc_aud ||
+                        ''
+                    );
+
+
+                $('#fileDokumen')
+                    .val('');
+
+
+                if (d.file) {
+
+                    $('#currentFile')
+                        .html(`
+
+                            <i
+                                class="
+                                    fas
+                                    fa-file
+                                    mr-1
+                                "
+                            ></i>
+
+                            File saat ini:
+
+                            <strong>
+
+                                ${escapeHtml(
+                                    d.file
+                                )}
+
+                            </strong>
+
+                        `);
+
+                } else {
+
+                    $('#currentFile')
+                        .text(
+                            'Belum ada file.'
+                        );
+
+                }
+
+
+                loadMasterDokumen(
+
+                    d.id_kategori,
+
+                    d.id_dept
+
+                );
+
+
+                $('#modalDokumenTitle')
+                    .text(
+                        'Edit Dokumen Audit'
+                    );
+
+
+                $('#modalDokumen')
+                    .modal('show');
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   SUBMIT DOKUMEN
+========================================================= */
+
+$('#formDokumen')
+    .on(
+        'submit',
+        function(e) {
+
+            e.preventDefault();
+
+
+            const id =
+                $('#dokumenId')
+                .val();
+
+
+            const auditId =
+                $('#dokumenAuditId')
+                .val();
+
+
+            if (!auditId) {
+
+                Swal.fire(
+                    'Perhatian',
+                    'ID audit tidak ditemukan.',
+                    'warning'
+                );
+
+                return;
+
+            }
+
+
+            const formData =
+                new FormData(
+                    this
+                );
+
+
+            formData.set(
+                'id_audit',
+                auditId
+            );
+
+
+            const url =
+                id
+                    ? '/audit-dokumen/' + id
+                    : '/audit-dokumen';
+
+
+            const method =
+                id
+                    ? 'PUT'
+                    : 'POST';
+
+
+            $.ajax({
+
+                url:
+                    url,
+
+                type:
+                    method,
+
+                data:
+                    formData,
+
+                processData:
+                    false,
+
+                contentType:
+                    false,
+
+
+                success:
+                    function(res) {
+
+                        if (!res.success) {
+
+                            Swal.fire(
+                                'Gagal',
+                                res.message ||
+                                'Gagal menyimpan dokumen',
+                                'error'
+                            );
+
+                            return;
+
+                        }
+
+
+                        $('#modalDokumen')
+                            .modal('hide');
+
+
+                        Swal.fire({
+
+                            icon:
+                                'success',
+
+                            title:
+                                'Berhasil',
+
+                            text:
+                                res.message,
+
+                            timer:
+                                1300,
+
+                            showConfirmButton:
+                                false
+
+                        });
+
+
+                        loadDokumenAudit(
+                            selectedAuditId
+                        );
+
+                    },
+
+
+                error:
+                    function(xhr) {
+
+                        console.error(
+                            xhr.responseText
+                        );
+
+
+                        Swal.fire(
+                            'Gagal',
+                            xhr.responseJSON?.message ||
+                            'Gagal menyimpan dokumen',
+                            'error'
+                        );
+
+                    }
+
+            });
+
+        }
+    );
+
+
+/* =========================================================
+   DELETE DOKUMEN
+========================================================= */
+
+$(document).on(
+    'click',
+    '.btn-delete-dokumen',
+    function () {
+
+        const id =
+            $(this).data('id');
+
+
+        Swal.fire({
+
+            title:
+                'Hapus dokumen?',
+
+            text:
+                'Data dokumen dan file akan dihapus.',
+
+            icon:
+                'warning',
+
+            showCancelButton:
+                true,
+
+            confirmButtonText:
+                'Ya, Hapus',
+
+            cancelButtonText:
+                'Batal',
+
+            confirmButtonColor:
+                '#dc3545'
+
+        }).then(
+            function(result) {
+
+                if (
+                    !result.isConfirmed
+                ) {
+
+                    return;
+
+                }
+
+
+                $.ajax({
+
+                    url:
+                        '/audit-dokumen/' +
+                        id,
+
+                    type:
+                        'DELETE',
+
+
+                    success:
+                        function(res) {
+
+                            if (!res.success) {
+
+                                Swal.fire(
+                                    'Gagal',
+                                    res.message ||
+                                    'Gagal menghapus dokumen',
+                                    'error'
+                                );
+
+                                return;
+
+                            }
+
+
+                            Swal.fire({
+
+                                icon:
+                                    'success',
+
+                                title:
+                                    'Berhasil',
+
+                                text:
+                                    res.message,
+
+                                timer:
+                                    1300,
+
+                                showConfirmButton:
+                                    false
+
+                            });
+
+
+                            loadDokumenAudit(
+                                selectedAuditId
+                            );
+
+                        },
+
+
+                    error:
+                        function(xhr) {
+
+                            console.error(
+                                xhr.responseText
+                            );
+
+
+                            Swal.fire(
+                                'Gagal',
+                                xhr.responseJSON?.message ||
+                                'Gagal menghapus dokumen',
+                                'error'
+                            );
+
+                        }
+
+                });
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   FORMAT TANGGAL
+========================================================= */
+
+function formatTanggal(
+    tanggal
+) {
+
+    if (!tanggal) {
+
+        return '-';
+
+    }
+
+
+    const date =
+        new Date(
+            tanggal
+        );
+
+
+    if (
+        isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return '-';
+
+    }
+
+
+    return date.toLocaleDateString(
+        'id-ID',
+        {
+
+            timeZone:
+                'Asia/Jakarta',
+
+            day:
+                '2-digit',
+
+            month:
+                'long',
+
+            year:
+                'numeric'
+
+        }
+    );
 
 }
 
 
-/*
-|--------------------------------------------------------------------------
-| BACK CUSTOMER
-|--------------------------------------------------------------------------
-*/
+/* =========================================================
+   STATUS
+========================================================= */
 
-function backToCustomer() {
+function setStatus(
+    element,
+    status
+) {
 
-    selectedCustomerId = null;
-
-
-    $('#auditSection')
-        .hide();
-
-
-    $('#auditDetail')
-        .hide();
+    element
+        .removeClass(
+            'status-plan',
+            'status-open',
+            'status-close'
+        );
 
 
-    $('#customerSection')
-        .fadeIn(200);
+    const value =
+        String(
+            status || '-'
+        ).toUpperCase();
+
+
+    element
+        .text(
+            value
+        );
+
+
+    if (
+        value === 'PLAN'
+    ) {
+
+        element.addClass(
+            'status-plan'
+        );
+
+    }
+
+
+    if (
+        value === 'OPEN'
+    ) {
+
+        element.addClass(
+            'status-open'
+        );
+
+    }
+
+
+    if (
+        value === 'CLOSE'
+    ) {
+
+        element.addClass(
+            'status-close'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ''
+    )
+
+        .replace(
+            /&/g,
+            '&amp;'
+        )
+
+        .replace(
+            /</g,
+            '&lt;'
+        )
+
+        .replace(
+            />/g,
+            '&gt;'
+        )
+
+        .replace(
+            /"/g,
+            '&quot;'
+        )
+
+        .replace(
+            /'/g,
+            '&#039;'
+        );
 
 }
 
 </script>
-
-
-<%- include("../partials/footer") %>

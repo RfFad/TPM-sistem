@@ -1,10 +1,9 @@
 const db = require('../../config/database');
 
-/*
-|--------------------------------------------------------------------------
-| HALAMAN UTAMA AUDIT
-|--------------------------------------------------------------------------
-*/
+
+// ======================================================
+// HALAMAN UTAMA AUDIT
+// ======================================================
 
 exports.index = (req, res) => {
 
@@ -15,28 +14,36 @@ exports.index = (req, res) => {
             plant,
             status
         FROM customer
-        WHERE status = 1
+        WHERE status = 'AKTIF'
         ORDER BY nama_customer ASC
     `;
 
     db.query(sql, (err, customers) => {
 
         if (err) {
-            console.error('Error get customer:', err);
 
-            return res.status(500).send(
-                'Gagal mengambil data customer'
-            );
+            console.error(err);
+
+            return res.status(500).send('Database error');
+
         }
 
-        const canManage = ['admin', 'develop'].includes(req.user.role);
+        const canManage =
+            ['admin', 'develop'].includes(req.user.role);
 
         res.render('audit/index', {
+
+            title: 'Audit',
             tittle: 'Audit',
+
             active: 'audit',
-            user: req.user,
+
             customers: customers,
-            canManage: canManage
+
+            canManage: canManage,
+
+            user: req.user
+
         });
 
     });
@@ -44,11 +51,9 @@ exports.index = (req, res) => {
 };
 
 
-/*
-|--------------------------------------------------------------------------
-| GET AUDIT BERDASARKAN CUSTOMER
-|--------------------------------------------------------------------------
-*/
+// ======================================================
+// AUDIT BERDASARKAN CUSTOMER
+// ======================================================
 
 exports.getAuditByCustomer = (req, res) => {
 
@@ -58,25 +63,18 @@ exports.getAuditByCustomer = (req, res) => {
         SELECT
             a.id_audit,
             a.id_customer,
-            c.nama_customer,
-            c.plant,
-
             a.nama_audit,
             a.tgl_audit,
-            DATE_FORMAT(
-                a.tgl_audit,
-                '%d %M %Y'
-            ) AS tanggal_format,
-
-            YEAR(a.tgl_audit) AS tahun,
-
             a.pic,
-            a.status
+            a.status,
+
+            c.nama_customer,
+            c.plant
 
         FROM audit a
 
         LEFT JOIN customer c
-            ON c.id_customer = a.id_customer
+            ON a.id_customer = c.id_customer
 
         WHERE a.id_customer = ?
 
@@ -90,10 +88,7 @@ exports.getAuditByCustomer = (req, res) => {
 
             if (err) {
 
-                console.error(
-                    'Error get audit:',
-                    err
-                );
+                console.error(err);
 
                 return res.status(500).json({
                     success: false,
@@ -113,11 +108,9 @@ exports.getAuditByCustomer = (req, res) => {
 };
 
 
-/*
-|--------------------------------------------------------------------------
-| GET TAHUN AUDIT
-|--------------------------------------------------------------------------
-*/
+// ======================================================
+// TAHUN AUDIT
+// ======================================================
 
 exports.getYears = (req, res) => {
 
@@ -141,10 +134,7 @@ exports.getYears = (req, res) => {
 
             if (err) {
 
-                console.error(
-                    'Error get audit years:',
-                    err
-                );
+                console.error(err);
 
                 return res.status(500).json({
                     success: false,
@@ -164,11 +154,9 @@ exports.getYears = (req, res) => {
 };
 
 
-/*
-|--------------------------------------------------------------------------
-| GET AUDIT BERDASARKAN CUSTOMER + TAHUN
-|--------------------------------------------------------------------------
-*/
+// ======================================================
+// AUDIT CUSTOMER + TAHUN
+// ======================================================
 
 exports.getAuditByYear = (req, res) => {
 
@@ -181,47 +169,34 @@ exports.getAuditByYear = (req, res) => {
         SELECT
             a.id_audit,
             a.id_customer,
-
-            c.nama_customer,
-            c.plant,
-
             a.nama_audit,
             a.tgl_audit,
-
-            DATE_FORMAT(
-                a.tgl_audit,
-                '%d %M %Y'
-            ) AS tanggal_format,
-
             a.pic,
-            a.status
+            a.status,
+
+            c.nama_customer,
+            c.plant
 
         FROM audit a
 
         LEFT JOIN customer c
-            ON c.id_customer = a.id_customer
+            ON a.id_customer = c.id_customer
 
-        WHERE
-            a.id_customer = ?
-            AND YEAR(a.tgl_audit) = ?
+        WHERE a.id_customer = ?
+
+        AND YEAR(a.tgl_audit) = ?
 
         ORDER BY a.tgl_audit DESC
     `;
 
     db.query(
         sql,
-        [
-            id_customer,
-            tahun
-        ],
+        [id_customer, tahun],
         (err, result) => {
 
             if (err) {
 
-                console.error(
-                    'Error get audit by year:',
-                    err
-                );
+                console.error(err);
 
                 return res.status(500).json({
                     success: false,
@@ -241,11 +216,9 @@ exports.getAuditByYear = (req, res) => {
 };
 
 
-/*
-|--------------------------------------------------------------------------
-| DETAIL AUDIT
-|--------------------------------------------------------------------------
-*/
+// ======================================================
+// DETAIL AUDIT
+// ======================================================
 
 exports.detail = (req, res) => {
 
@@ -255,25 +228,18 @@ exports.detail = (req, res) => {
         SELECT
             a.id_audit,
             a.id_customer,
-
-            c.nama_customer,
-            c.plant,
-
             a.nama_audit,
             a.tgl_audit,
-
-            DATE_FORMAT(
-                a.tgl_audit,
-                '%d %M %Y'
-            ) AS tanggal_format,
-
             a.pic,
-            a.status
+            a.status,
+
+            c.nama_customer,
+            c.plant
 
         FROM audit a
 
         LEFT JOIN customer c
-            ON c.id_customer = a.id_customer
+            ON a.id_customer = c.id_customer
 
         WHERE a.id_audit = ?
 
@@ -287,10 +253,7 @@ exports.detail = (req, res) => {
 
             if (err) {
 
-                console.error(
-                    'Error get audit detail:',
-                    err
-                );
+                console.error(err);
 
                 return res.status(500).json({
                     success: false,
@@ -319,11 +282,9 @@ exports.detail = (req, res) => {
 };
 
 
-/*
-|--------------------------------------------------------------------------
-| CREATE AUDIT
-|--------------------------------------------------------------------------
-*/
+// ======================================================
+// CREATE AUDIT
+// ======================================================
 
 exports.create = (req, res) => {
 
@@ -339,26 +300,28 @@ exports.create = (req, res) => {
     if (
         !id_customer ||
         !nama_audit ||
-        !tgl_audit
+        !tgl_audit ||
+        !pic ||
+        !status
     ) {
 
         return res.status(400).json({
             success: false,
-            message: 'Customer, nama audit dan tanggal audit wajib diisi'
+            message: 'Data audit belum lengkap'
         });
 
     }
 
 
     const sql = `
-        INSERT INTO audit (
+        INSERT INTO audit
+        (
             id_customer,
             nama_audit,
             tgl_audit,
             pic,
             status
         )
-
         VALUES (?, ?, ?, ?, ?)
     `;
 
@@ -369,17 +332,14 @@ exports.create = (req, res) => {
             id_customer,
             nama_audit,
             tgl_audit,
-            pic || null,
-            status || 'Planning'
+            pic,
+            status
         ],
         (err, result) => {
 
             if (err) {
 
-                console.error(
-                    'Error create audit:',
-                    err
-                );
+                console.error(err);
 
                 return res.status(500).json({
                     success: false,
@@ -401,11 +361,9 @@ exports.create = (req, res) => {
 };
 
 
-/*
-|--------------------------------------------------------------------------
-| UPDATE AUDIT
-|--------------------------------------------------------------------------
-*/
+// ======================================================
+// UPDATE AUDIT
+// ======================================================
 
 exports.update = (req, res) => {
 
@@ -423,7 +381,9 @@ exports.update = (req, res) => {
     if (
         !id_customer ||
         !nama_audit ||
-        !tgl_audit
+        !tgl_audit ||
+        !pic ||
+        !status
     ) {
 
         return res.status(400).json({
@@ -454,22 +414,29 @@ exports.update = (req, res) => {
             id_customer,
             nama_audit,
             tgl_audit,
-            pic || null,
-            status || 'Planning',
+            pic,
+            status,
             id_audit
         ],
-        (err) => {
+        (err, result) => {
 
             if (err) {
 
-                console.error(
-                    'Error update audit:',
-                    err
-                );
+                console.error(err);
 
                 return res.status(500).json({
                     success: false,
                     message: 'Gagal mengubah audit'
+                });
+
+            }
+
+
+            if (result.affectedRows === 0) {
+
+                return res.status(404).json({
+                    success: false,
+                    message: 'Data audit tidak ditemukan'
                 });
 
             }
@@ -486,15 +453,14 @@ exports.update = (req, res) => {
 };
 
 
-/*
-|--------------------------------------------------------------------------
-| DELETE AUDIT
-|--------------------------------------------------------------------------
-*/
+// ======================================================
+// DELETE AUDIT
+// ======================================================
 
 exports.delete = (req, res) => {
 
     const { id_audit } = req.params;
+
 
     const sql = `
         DELETE FROM audit
@@ -505,18 +471,25 @@ exports.delete = (req, res) => {
     db.query(
         sql,
         [id_audit],
-        (err) => {
+        (err, result) => {
 
             if (err) {
 
-                console.error(
-                    'Error delete audit:',
-                    err
-                );
+                console.error(err);
 
                 return res.status(500).json({
                     success: false,
                     message: 'Gagal menghapus audit'
+                });
+
+            }
+
+
+            if (result.affectedRows === 0) {
+
+                return res.status(404).json({
+                    success: false,
+                    message: 'Data audit tidak ditemukan'
                 });
 
             }
