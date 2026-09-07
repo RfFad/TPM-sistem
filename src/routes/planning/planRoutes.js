@@ -60,17 +60,12 @@ router.get(
     role.checkRole(['ppic', 'develop']),
     planningController.planHariIni
 );
-router.get(
-    '/tabel',
-    auth.isAuthenticated,
-    role.checkRole(['ppic', 'develop']),
-    planningController.tabel
-);
+
 router.get(
     '/dataplanday',
     auth.isAuthenticated,
     role.checkRole(['ppic', 'develop']),
-    planningController.dataplanDay
+    planningController.planDay
 );
 router.get(
     '/dataplan/:tgl',

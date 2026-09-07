@@ -39,6 +39,37 @@
     font-size: 11px;
 }
 
+   
+@media print {
+
+    body * {
+        visibility: hidden;
+    }
+
+    #printArea,
+    #printArea * {
+        visibility: visible;
+    }
+
+    #printArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    #actionButtons,
+    .btn-summary,
+    #summaryInputArea,
+    footer {
+        display: none !important;
+    }
+
+}
+
+
 .planning-table th:nth-child(1){ width:40px; }
 .planning-table th:nth-child(2){ width:55px; }
 .planning-table th:nth-child(3){ width:120px; }
@@ -89,7 +120,7 @@
 
     <div class="container-fluid">
 
-        <div class="card">
+        <div id="printArea" class="card">
 
             <div class="card-body">
 
@@ -139,7 +170,7 @@
                                 <th rowspan="2">
                                     KETERANGAN
                                 </th>
-
+                                <th rowspan="2" class = "isi-summary d-none">SUMMARY</th>
                             </tr>
 
                             <tr>
@@ -197,21 +228,37 @@
                                     </td>
 
                                     <td>
-                                        <%= Number(row.shift_1).toLocaleString('id-ID') %>
+                                        <%= Number(row.target_shift).toLocaleString('id-ID') %>
                                     </td>
 
                                     <td>
-                                        <%= Number(row.shift_2).toLocaleString('id-ID') %>
+                                        <%= Number(row.target_shift).toLocaleString('id-ID') %>
                                     </td>
 
                                     <td>
-                                        <%= Number(row.shift_3).toLocaleString('id-ID') %>
+                                        <%= Number(row.target_shift).toLocaleString('id-ID') %>
                                     </td>
 
                                     <td>
                                         <%= row.keterangan || '-' %>
                                     </td>
+                                    <td class = "isi-summary d-none">
+                                       <button
+    type="button"
+    class="btn btn-primary btn-sm btn-summary"
 
+    data-id="<%= row.id_plan %>"
+
+    data-part="<%= row.nama_produk %>"
+    data-shift="<%= row.target_shift %>"
+
+    data-mc="<%= row.no_mc %>">
+
+    <i class="fas fa-chart-bar"></i>
+    Summary
+
+</button>
+                                    </td>
                                 </tr>
 
                                 <% }) %>
@@ -219,7 +266,7 @@
                             <% } else { %>
 
                                 <tr>
-                                    <td colspan="13">
+                                    <td colspan="14">
                                         Tidak ada data planning
                                     </td>
                                 </tr>
@@ -245,18 +292,500 @@
                                 </th>
 
                                 <th>
-                                    <%= Number(total.shift_1).toLocaleString('id-ID') %>
+                                    <%=  Number(total.target_shift).toLocaleString()%>
                                 </th>
 
                                 <th>
-                                    <%= Number(total.shift_2).toLocaleString('id-ID') %>
+                                    <%=  Number(total.target_shift).toLocaleString()%>
                                 </th>
 
                                 <th>
-                                    <%= Number(total.shift_3).toLocaleString('id-ID') %>
+                                    <%=  Number(total.target_shift).toLocaleString()%>
                                 </th>
 
                                 <th></th>
+                                <th class="isi-summary d-none"></th>
+
+                            </tr>
+
+                        </tfoot>
+
+                    </table>
+                    <div id="actionButtons"class="mt-3 d-flex justify-content-between align-items-center">
+
+<!-- KIRI -->
+<div>
+    <a 
+    href="/summary/page/<%= new Date(tgl).toLocaleDateString('id-ID').split('/').reverse().join('-') %>"
+    class="btn btn-info"
+>
+    <i class="fas fa-chart-bar mr-1"></i>
+    Lihat Summary
+</a>
+
+    <button
+        type="button"
+        class="btn btn-success"
+        id="btnIsiSummary">
+        <i class="fas fa-edit mr-1"></i>
+        Isi Summary
+    </button>
+    
+    <a href="javascript:history.back()" class="btn btn-secondary">
+    <i class="fas fa-arrow-left mr-1"></i>
+    Kembali
+</a>
+</div>
+
+
+<!-- KANAN -->
+<div>
+    <button
+        type="button"
+        class="btn btn-secondary"
+        id="btnPrint">
+        <i class="fas fa-print mr-1"></i>
+        Print
+    </button>
+</div>
+
+
+</div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</div>
+<!-- =====================================================
+     MODAL SUMMARY
+===================================================== -->
+
+<div
+    class="modal fade"
+    id="modalSummary"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true">
+
+    <div
+        class="modal-dialog modal-xl"
+        role="document">
+
+        <div class="modal-content">
+
+
+            <!-- HEADER -->
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Summary Planning
+                </h5>
+
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal">
+
+                    <span>&times;</span>
+
+                </button>
+
+            </div>
+
+
+            <!-- BODY -->
+
+            <div class="modal-body">
+
+
+                <!-- INFORMASI PLANNING -->
+
+                <div class="row mb-3">
+
+                    <div class="col-md-4">
+
+                        <label>
+                            ID Planning
+                        </label>
+
+                        <input
+                            type="text"
+                            id="summaryIdPlan"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <label>
+                            Nama Part
+                        </label>
+
+                        <input
+                            type="text"
+                            id="summaryNamaPart"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <label>
+                            MC
+                        </label>
+
+                        <input
+                            type="text"
+                            id="summaryMC"
+                            class="form-control"
+                            readonly>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TABEL SUMMARY -->
+
+                <div class="table-responsive">
+
+                    <table
+                        class="table table-bordered table-sm">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Shift
+                                </th>
+
+                                <th>
+                                    Target
+                                </th>
+
+                                <th>
+                                    Actual
+                                </th>
+
+                                <th>
+                                    Downtime
+                                </th>
+
+                                <th>
+                                    Target Efektif
+                                </th>
+
+                                <th>
+                                    Minus
+                                </th>
+
+                                <th>
+                                    Achievement
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            <% for(let shift = 1; shift <= 3; shift++){ %>
+
+                            <tr>
+
+                                <td
+                                    class="text-center font-weight-bold">
+
+                                    Shift <%= shift %>
+
+                                    <input
+                                        type="hidden"
+                                        id="idSummary<%= shift %>">
+
+                                </td>
+
+
+                                <td>
+
+                                    <input
+                                        type="text"
+                                        id="targetShift<%= shift %>"
+                                        class="form-control form-control-sm text-center"
+                                        readonly>
+
+                                </td>
+
+
+                                <td>
+
+                                    <input
+                                        type="number"
+                                        id="actualShift<%= shift %>"
+                                        class="form-control form-control-sm actual-input"
+                                        data-shift="<%= shift %>"
+                                        min="0"
+                                        value="0">
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="input-group input-group-sm">
+
+                                        <input
+                                            type="number"
+                                            id="downtimeShift<%= shift %>"
+                                            class="form-control downtime-input"
+                                            data-shift="<%= shift %>"
+                                            min="0"
+                                            value="0">
+
+                                        <div
+                                            class="input-group-append">
+
+                                            <span
+                                                class="input-group-text">
+
+                                                menit
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span
+                                        id="effectiveTargetShift<%= shift %>"
+                                        class="font-weight-bold">
+
+                                        0
+
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span
+                                        id="minusShift<%= shift %>">
+
+                                        0
+
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span
+                                        id="achievementShift<%= shift %>"
+                                        class="font-weight-bold">
+
+                                        0%
+
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <select
+                                        id="statusShift<%= shift %>"
+                                        class="form-control form-control-sm status-select"
+                                        data-shift="<%= shift %>">
+
+                                        <option value="Running" selected>
+                                            Running
+                                        </option>
+                                        <option value="Pending">
+                                            Pending
+                                        </option>
+
+
+                                        <option value="Finish">
+                                            Finish
+                                        </option>
+
+                                    </select>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- DETAIL KENDALA -->
+
+                            <tr
+                                id="detailKendalaRow<%= shift %>"
+                                class="detail-kendala-row"
+                                style="display:none;">
+
+                                <td colspan="8">
+
+                                    <div class="row">
+
+                                        <div class="col-md-4">
+
+                                            <label>
+                                                Kendala Shift <%= shift %>
+                                            </label>
+
+                                            <select
+                                                id="kendalaShift<%= shift %>"
+                                                class="form-control form-control-sm">
+
+                                                <option value="">
+                                                    -- Pilih Kendala --
+                                                </option>
+
+                                                <option value="MC Stop">
+                                                    MC Stop
+                                                </option>
+
+                                                <option value="Material">
+                                                    Material
+                                                </option>
+
+                                                <option value="Quality">
+                                                    Quality
+                                                </option>
+
+                                                <option value="Setup">
+                                                    Setup
+                                                </option>
+
+                                                <option value="Maintenance">
+                                                    Maintenance
+                                                </option>
+
+                                                <option value="Operator">
+                                                    Operator
+                                                </option>
+
+                                                <option value="Lainnya">
+                                                    Lainnya
+                                                </option>
+
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="col-md-8">
+
+                                            <label>
+                                                Keterangan
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                id="keteranganShift<%= shift %>"
+                                                class="form-control form-control-sm"
+                                                placeholder="Keterangan kendala...">
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            <% } %>
+
+                        </tbody>
+
+
+                        <tfoot>
+
+                            <tr
+                                class="font-weight-bold">
+
+                                <td>
+                                    TOTAL
+                                </td>
+
+                                <td>
+
+                                    <span id="totalTarget">
+                                        0
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <span id="totalActual">
+                                        0
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <span id="totalDowntime">
+                                        0
+                                    </span>
+
+                                    menit
+
+                                </td>
+
+                                <td>
+
+                                    <span id="totalEffectiveTarget">
+                                        0
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <span id="totalMinus">
+                                        0
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <span id="totalAchievement">
+                                        0%
+                                    </span>
+
+                                </td>
+
+                               <td></td>
 
                             </tr>
 
@@ -268,13 +797,929 @@
 
             </div>
 
+
+            <!-- FOOTER -->
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal">
+
+                    Tutup
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="btnSaveSummary"
+                    class="btn btn-primary">
+
+                    <i class="fas fa-save"></i>
+
+                    Simpan Summary
+
+                </button>
+
+            </div>
+
         </div>
 
     </div>
 
-</section>
-```
-
 </div>
-
 <%- include("../partials/footer") %>
+<script>
+    let currentPlanId = null;
+    
+    let currentTargetHour = 0;
+    
+    let currentTargetShift = 0;
+
+
+$('#btnIsiSummary').click(function (){
+    $('.isi-summary').toggleClass('d-none').fadeIn(500);
+})  
+
+$('#btnIsiSummary').click(function () {
+
+    //$('.isi-summary').toggleClass('d-none');
+
+    if ($('.isi-summary').hasClass('d-none')) {
+
+        $(this).text('Tampilkan Detail');
+
+    } else {
+
+        $(this).text('Sembunyikan Detail');
+
+    }
+
+});
+$('.status-select').each(function () {
+
+    $(this).val('Running');
+
+    const shift = $(this).data('shift');
+
+    $('#detailKendalaRow' + shift).hide();
+    $('#kendalaShift' + shift).val('');
+
+});
+
+$(document).on(
+    'input',
+    '.actual-input, .downtime-input',
+    function () {
+
+        const shift =
+            $(this).data('shift');
+
+
+        calculateShift(shift);
+
+        calculateTotal();
+
+    }
+);
+
+
+function formatNumber(number) {
+
+    return Number(number || 0)
+        .toLocaleString('id-ID');
+
+}
+
+function calculateShift(shift) {
+
+    const target =
+        Number(
+            $('#targetShift' + shift).val()
+        ) || 0;
+
+
+    const actual =
+        Number(
+            $('#actualShift' + shift).val()
+        ) || 0;
+
+
+    const downtime =
+        Number(
+            $('#downtimeShift' + shift).val()
+        ) || 0;
+
+
+    // ==========================================
+    // TARGET YANG HILANG KARENA DOWNTIME
+    // ==========================================
+
+    const targetLoss =
+        currentTargetHour *
+        (downtime / 60);
+
+
+    // ==========================================
+    // TARGET EFEKTIF
+    // ==========================================
+
+    const effectiveTarget =
+        Math.max(
+            target - targetLoss,
+            0
+        );
+
+
+    // ==========================================
+    // MINUS
+    // ==========================================
+
+    const minus =
+        Math.max(
+            effectiveTarget - actual,
+            0
+        );
+
+
+    // ==========================================
+    // ACHIEVEMENT
+    // ==========================================
+
+    let achievement = 0;
+
+
+    if (effectiveTarget > 0) {
+
+        achievement =
+            (
+                actual /
+                effectiveTarget
+            ) * 100;
+
+    }
+
+
+    // ==========================================
+    // TAMPILKAN
+    // ==========================================
+
+    $('#effectiveTargetShift' + shift)
+        .text(
+            formatNumber(
+                Math.round(effectiveTarget)
+            )
+        );
+
+
+    $('#minusShift' + shift)
+        .text(
+            formatNumber(
+                Math.round(minus)
+            )
+        );
+
+
+    $('#achievementShift' + shift)
+        .text(
+            achievement.toFixed(2) + '%'
+        );
+
+}
+
+function calculateTotal() {
+
+    let totalTarget = 0;
+
+    let totalActual = 0;
+
+    let totalDowntime = 0;
+
+    let totalEffectiveTarget = 0;
+
+    let totalMinus = 0;
+
+
+    for (
+        let shift = 1;
+        shift <= 3;
+        shift++
+    ) {
+
+        const target =
+            Number(
+                $('#targetShift' + shift).val()
+            ) || 0;
+
+
+        const actual =
+            Number(
+                $('#actualShift' + shift).val()
+            ) || 0;
+
+
+        const downtime =
+            Number(
+                $('#downtimeShift' + shift).val()
+            ) || 0;
+
+
+        const targetLoss =
+            currentTargetHour *
+            (downtime / 60);
+
+
+        const effectiveTarget =
+            Math.max(
+                target - targetLoss,
+                0
+            );
+
+
+        const minus =
+            Math.max(
+                effectiveTarget - actual,
+                0
+            );
+
+
+        totalTarget += target;
+
+        totalActual += actual;
+
+        totalDowntime += downtime;
+
+        totalEffectiveTarget +=
+            effectiveTarget;
+
+        totalMinus += minus;
+
+    }
+
+
+    let achievement = 0;
+
+
+    if (
+        totalEffectiveTarget > 0
+    ) {
+
+        achievement =
+            (
+                totalActual /
+                totalEffectiveTarget
+            ) * 100;
+
+    }
+
+
+    $('#totalTarget')
+        .text(
+            formatNumber(
+                Math.round(totalTarget)
+            )
+        );
+
+
+    $('#totalActual')
+        .text(
+            formatNumber(
+                Math.round(totalActual)
+            )
+        );
+
+
+    $('#totalDowntime')
+        .text(
+            formatNumber(totalDowntime)
+        );
+
+
+    $('#totalEffectiveTarget')
+        .text(
+            formatNumber(
+                Math.round(
+                    totalEffectiveTarget
+                )
+            )
+        );
+
+
+    $('#totalMinus')
+        .text(
+            formatNumber(
+                Math.round(totalMinus)
+            )
+        );
+
+
+    $('#totalAchievement')
+        .text(
+            achievement.toFixed(2)
+            + '%'
+        );
+
+}
+$(document).on(
+    'change',
+    '.status-select',
+    function () {
+
+        const shift =
+            $(this).data('shift');
+
+
+        const status =
+            $(this).val();
+
+
+        if (status === 'Pending') {
+
+            $('#detailKendalaRow' + shift)
+                .show();
+
+        } else {
+
+            $('#detailKendalaRow' + shift)
+                .hide();
+
+
+            $('#kendalaShift' + shift)
+                .val('');
+
+        }
+
+    }
+);
+$(document).on(
+    'click',
+    '.btn-summary',
+    function () {
+
+        const button =
+            $(this);
+
+
+        currentPlanId =
+            button.data('id');
+
+
+        if (!currentPlanId) {
+
+            alert(
+                'ID Planning tidak ditemukan'
+            );
+
+            return;
+
+        }
+
+
+        $('#summaryIdPlan')
+            .val(currentPlanId);
+
+
+        $('#summaryNamaPart')
+            .val(
+                button.data('part') || '-'
+            );
+
+
+        $('#summaryMC')
+            .val(
+                button.data('mc') || '-'
+            );
+
+
+        // =====================================
+        // RESET
+        // =====================================
+
+        for (
+            let shift = 1;
+            shift <= 3;
+            shift++
+        ) {
+
+            $('#idSummary' + shift)
+                .val('');
+
+            $('#actualShift' + shift)
+                .val(0);
+
+            $('#downtimeShift' + shift)
+                .val(0);
+
+            $('#statusShift' + shift)
+                .val('Pending');
+
+            $('#kendalaShift' + shift)
+                .val('');
+
+            $('#keteranganShift' + shift)
+                .val('');
+
+            $('#detailKendalaRow' + shift)
+                .hide();
+
+        }
+
+
+        // =====================================
+        // AJAX GET
+        // =====================================
+
+        $.ajax({
+
+            url:
+                '/summary/summary-planning/plan/'
+                + currentPlanId,
+
+            type: 'GET',
+
+            dataType: 'json',
+
+
+            success: function (response) {
+
+                console.log(
+                    'SUMMARY RESPONSE:',
+                    response
+                );
+
+
+                if (!response.success) {
+
+                    alert(
+                        response.message
+                    );
+
+                    return;
+
+                }
+
+
+                // =================================
+                // DATA PLANNING
+                // =================================
+
+                currentTargetHour =
+                    Number(
+                        response.planning.target_hour
+                    ) || 0;
+
+
+                currentTargetShift =
+                    Number(
+                        response.planning.target_shift
+                    ) || 0;
+
+
+                // =================================
+                // TARGET SEMUA SHIFT
+                // =================================
+
+                for (
+                    let shift = 1;
+                    shift <= 3;
+                    shift++
+                ) {
+
+                    $('#targetShift' + shift)
+                        .val(
+                            currentTargetShift
+                        );
+
+                }
+
+
+                // =================================
+                // DATA SUMMARY
+                // =================================
+
+                if (
+                    response.data &&
+                    response.data.length > 0
+                ) {
+
+                    response.data.forEach(
+                        function (item) {
+
+                            const shift =
+                                Number(
+                                    item.shift
+                                );
+
+
+                            $('#idSummary' + shift)
+                                .val(
+                                    item.id_summary
+                                );
+
+
+                            $('#actualShift' + shift)
+                                .val(
+                                    item.actual_qty
+                                );
+
+
+                            $('#downtimeShift' + shift)
+                                .val(
+                                    item.downtime_minute
+                                );
+
+
+                            $('#statusShift' + shift)
+                                .val(
+                                    item.status
+                                );
+
+
+                            $('#kendalaShift' + shift)
+                                .val(
+                                    item.kendala
+                                );
+
+
+                            $('#keteranganShift' + shift)
+                                .val(
+                                    item.keterangan
+                                );
+
+
+                            if (
+                                item.status ===
+                                'Pending'
+                            ) {
+
+                                $('#detailKendalaRow' + shift)
+                                    .show();
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                // =================================
+                // HITUNG
+                // =================================
+
+                for (
+                    let shift = 1;
+                    shift <= 3;
+                    shift++
+                ) {
+
+                    calculateShift(shift);
+
+                }
+
+
+                calculateTotal();
+
+
+                // =================================
+                // BUKA MODAL
+                // =================================
+
+                $('#modalSummary')
+                    .modal('show');
+
+            },
+
+
+            error: function (xhr) {
+
+                console.error(
+                    'GET SUMMARY ERROR:',
+                    xhr
+                );
+
+
+                console.error(
+                    'RESPONSE:',
+                    xhr.responseText
+                );
+
+
+                alert(
+                    'Gagal mengambil data Summary. '
+                    + 'Status: '
+                    + xhr.status
+                );
+
+            }
+
+        });
+
+    }
+);
+$('#btnSaveSummary').on(
+    'click',
+    function () {
+
+        const button =
+            $(this);
+
+
+        button
+            .prop('disabled', true)
+            .html(
+                '<i class="fas fa-spinner fa-spin"></i> Menyimpan...'
+            );
+
+
+        const shifts = [
+            1,
+            2,
+            3
+        ];
+
+
+        saveShift(
+            shifts,
+            0,
+            button
+        );
+
+    }
+);
+function saveShift(
+    shifts,
+    index,
+    button
+) {
+
+    // =========================================
+    // SEMUA SHIFT SELESAI
+    // =========================================
+
+    if (
+        index >= shifts.length
+    ) {
+
+        button
+            .prop('disabled', false)
+            .html(
+                '<i class="fas fa-save"></i> Simpan Summary'
+            );
+
+
+        alert(
+            'Summary berhasil disimpan'
+        );
+
+
+        $('#modalSummary')
+            .modal('hide');
+
+
+        return;
+
+    }
+
+
+    const shift =
+        shifts[index];
+
+
+    const idSummary =
+        $('#idSummary' + shift)
+            .val();
+
+
+    const actual =
+        $('#actualShift' + shift)
+            .val();
+
+
+    const downtime =
+        $('#downtimeShift' + shift)
+            .val();
+
+
+    const status =
+        $('#statusShift' + shift)
+            .val();
+
+
+    const kendala =
+        $('#kendalaShift' + shift)
+            .val();
+
+
+    const keterangan =
+        $('#keteranganShift' + shift)
+            .val();
+
+
+    // =========================================
+    // TENTUKAN INSERT / UPDATE
+    // =========================================
+
+    if (idSummary) {
+
+        // UPDATE
+
+        $.ajax({
+
+            url:
+                '/summary/summary-planning/update',
+
+            type: 'PUT',
+
+            dataType: 'json',
+
+            data: {
+
+                id_summary:
+                    idSummary,
+
+                actual_qty:
+                    actual,
+
+                downtime_minute:
+                    downtime,
+
+                status:
+                    status,
+
+                kendala:
+                    kendala,
+
+                keterangan:
+                    keterangan
+
+            },
+
+
+            success: function (response) {
+
+                if (!response.success) {
+
+                    button
+                        .prop('disabled', false)
+                        .html(
+                            '<i class="fas fa-save"></i> Simpan Summary'
+                        );
+
+
+                    alert(
+                        response.message
+                    );
+
+                    return;
+
+                }
+
+
+                // LANJUT SHIFT BERIKUTNYA
+
+                saveShift(
+                    shifts,
+                    index + 1,
+                    button
+                );
+
+            },
+
+
+            error: function (xhr) {
+
+                console.error(
+                    xhr.responseText
+                );
+
+
+                button
+                    .prop('disabled', false)
+                    .html(
+                        '<i class="fas fa-save"></i> Simpan Summary'
+                    );
+
+
+                alert(
+                    'Gagal update Shift '
+                    + shift
+                );
+
+            }
+
+        });
+
+    }
+
+    else {
+
+        // INSERT
+
+        $.ajax({
+
+            url:
+                '/summary/summary-planning/save',
+
+            type: 'POST',
+
+            dataType: 'json',
+
+            data: {
+
+                id_plan:
+                    currentPlanId,
+
+                shift:
+                    shift,
+
+                actual_qty:
+                    actual,
+
+                downtime_minute:
+                    downtime,
+
+                status:
+                    status,
+
+                kendala:
+                    kendala,
+
+                keterangan:
+                    keterangan
+
+            },
+
+
+            success: function (response) {
+
+                if (!response.success) {
+
+                    button
+                        .prop('disabled', false)
+                        .html(
+                            '<i class="fas fa-save"></i> Simpan Summary'
+                        );
+
+
+                    alert(
+                        response.message
+                    );
+
+                    return;
+
+                }
+
+
+                // Simpan ID SUMMARY
+
+                $('#idSummary' + shift)
+                    .val(
+                        response.id_summary
+                    );
+
+
+                // LANJUT SHIFT
+
+                saveShift(
+                    shifts,
+                    index + 1,
+                    button
+                );
+
+            },
+
+
+            error: function (xhr) {
+
+                console.error(
+                    xhr.responseText
+                );
+
+
+                button
+                    .prop('disabled', false)
+                    .html(
+                        '<i class="fas fa-save"></i> Simpan Summary'
+                    );
+
+
+                alert(
+                    'Gagal menyimpan Shift '
+                    + shift
+                );
+
+            }
+
+        });
+
+    }
+
+}
+ $('#btnLihatSummary').on('click', function () { window.location.href = '/summary-planning'; });
+ $('#btnIsiSummary').on('click', function () { 
+$('.summary-input').toggle(); }); 
+$('#btnPrint').on('click', function () { window.print(); });
+</script>

@@ -1,0 +1,1520 @@
+<%- include("../partials/header") %>
+<%- include("../partials/sideNavbar") %>
+<div class="content-wrapper">
+ <section class="content">
+
+<div class="row mb-3">
+
+    <div class="col-md-3">
+
+        <label>Search</label>
+
+        <input
+            type="text"
+            id="searchSummary"
+            class="form-control"
+            placeholder="Cari MC / Part / Customer..."
+        >
+
+    </div>
+
+
+    <div class="col-md-2">
+
+        <label>MC</label>
+
+        <select
+            id="filterMC"
+            class="form-control"
+        >
+
+            <option value="">
+                Semua MC
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="col-md-2">
+
+        <label>Shift</label>
+
+        <select
+            id="filterShift"
+            class="form-control"
+        >
+
+            <option value="">
+                Semua Shift
+            </option>
+
+            <option value="1">
+                Shift 1
+            </option>
+
+            <option value="2">
+                Shift 2
+            </option>
+
+            <option value="3">
+                Shift 3
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="col-md-2">
+
+        <label>Status</label>
+
+        <select
+            id="filterStatus"
+            class="form-control"
+        >
+
+            <option value="">
+                Semua Status
+            </option>
+
+            <option value="Running">
+                Running
+            </option>
+
+            <option value="Pending">
+                Pending
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="col-md-2 d-flex align-items-end">
+
+        <button
+            type="button"
+            id="btnResetFilter"
+            class="btn btn-secondary w-100"
+        >
+
+            <i class="fas fa-sync"></i>
+            Reset
+
+        </button>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="small-box bg-info">
+
+            <div class="inner">
+
+                <h3 id="totalTarget">
+                    0
+                </h3>
+
+                <p>TOTAL TARGET</p>
+
+            </div>
+
+            <div class="icon">
+                <i class="fas fa-bullseye"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="small-box bg-success">
+
+            <div class="inner">
+
+                <h3 id="totalActual">
+                    0
+                </h3>
+
+                <p>TOTAL AKTUAL</p>
+
+            </div>
+
+            <div class="icon">
+                <i class="fas fa-box"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="small-box bg-danger">
+
+            <div class="inner">
+
+                <h3 id="totalMinus">
+                    0
+                </h3>
+
+                <p>TOTAL MINUS</p>
+
+            </div>
+
+            <div class="icon">
+                <i class="fas fa-arrow-down"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="small-box bg-warning">
+
+            <div class="inner">
+
+                <h3 id="totalAchievement">
+                    0%
+                </h3>
+
+                <p>ACHIEVEMENT</p>
+
+            </div>
+
+            <div class="icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-4">
+
+        <div class="info-box">
+
+            <span class="info-box-icon bg-danger">
+
+                <i class="fas fa-stopwatch"></i>
+
+            </span>
+
+            <div class="info-box-content">
+
+                <span class="info-box-text">
+                    TOTAL DOWNTIME
+                </span>
+
+                <span
+                    class="info-box-number"
+                    id="totalDowntime"
+                >
+                    0 Menit
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="info-box">
+
+            <span class="info-box-icon bg-warning">
+
+                <i class="fas fa-pause"></i>
+
+            </span>
+
+            <div class="info-box-content">
+
+                <span class="info-box-text">
+                    PENDING
+                </span>
+
+                <span
+                    class="info-box-number"
+                    id="totalPending"
+                >
+                    0 Shift
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+        <div class="info-box">
+
+            <span class="info-box-icon bg-success">
+
+                <i class="fas fa-play"></i>
+
+            </span>
+
+            <div class="info-box-content">
+
+                <span class="info-box-text">
+                    RUNNING
+                </span>
+
+                <span
+                    class="info-box-number"
+                    id="totalRunning"
+                >
+                    0 Shift
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h3 class="card-title">
+                    Target vs Aktual
+                </h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas
+                    id="targetActualChart"
+                    style="height:300px;"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-6">
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h3 class="card-title">
+                    Achievement per MC
+                </h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas
+                    id="achievementChart"
+                    style="height:300px;"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h3 class="card-title">
+            Detail Summary Planning
+        </h3>
+
+    </div>
+
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table
+                class="table table-bordered table-sm"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>MC</th>
+
+                        <th>NAMA PART</th>
+
+                        <th>CUSTOMER</th>
+
+                        <th>SHIFT</th>
+
+                        <th>TARGET</th>
+
+                        <th>AKTUAL</th>
+
+                        <th>MINUS</th>
+
+                        <th>ACHIEVEMENT</th>
+
+                        <th>STATUS</th>
+
+                        <th>PROBLEM / KENDALA</th>
+
+                        <th>STOP<br>(MENIT)</th>
+
+                        <th>KETERANGAN</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="summaryTable">
+
+                </tbody>
+
+
+                <tfoot>
+
+                    <tr class="font-weight-bold">
+
+                        <th colspan="4">
+                            TOTAL
+                        </th>
+
+                        <th id="footerTarget">
+                            0
+                        </th>
+
+                        <th id="footerActual">
+                            0
+                        </th>
+
+                        <th id="footerMinus">
+                            0
+                        </th>
+
+                        <th id="footerAchievement">
+                            0%
+                        </th>
+
+                        <th></th>
+
+                        <th></th>
+
+                        <th id="footerDowntime">
+                            0
+                        </th>
+
+                        <th></th>
+
+                    </tr>
+
+                </tfoot>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+</section>
+</div>
+<%- include("../partials/footer") %>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    // =====================================================
+    // VARIABLE
+    // =====================================================
+
+    let summaryData = [];
+
+    let targetActualChart = null;
+
+    let achievementChart = null;
+
+
+    // =====================================================
+    // DOCUMENT READY
+    // =====================================================
+
+    $(document).ready(function () {
+
+        loadSummary();
+
+    });
+
+
+    // =====================================================
+    // LOAD SUMMARY
+    // =====================================================
+
+    function loadSummary() {
+
+        const id_plan =
+            `<%= new Date(planning.tgl).toLocaleDateString('id-ID').split('/').reverse().join('-') %>`;
+
+
+        $.ajax({
+
+            url:
+                '/summary/summary-planning/data/' + id_plan,
+
+            type: 'GET',
+
+            dataType: 'json',
+
+            success: function (response) {
+
+                if (!response.success) {
+
+                    alert(
+                        response.message
+                    );
+
+                    return;
+
+                }
+
+
+                // Simpan data asli
+
+                summaryData =
+                    response.data || [];
+
+
+                // Isi filter MC
+
+                loadMCFilter(
+                    summaryData
+                );
+
+
+                // Tampilkan tabel
+
+                renderSummary(
+                    summaryData
+                );
+
+
+                // Hitung total
+
+                updateTotalFromData(
+                    summaryData
+                );
+
+
+                // Tampilkan diagram
+
+                renderCharts(
+                    summaryData
+                );
+
+            },
+
+
+            error: function (xhr) {
+
+                console.error(
+                    'SUMMARY ERROR:',
+                    xhr.responseText
+                );
+
+
+                alert(
+                    'Gagal mengambil data Summary'
+                );
+
+            }
+
+        });
+
+    }
+
+
+    // =====================================================
+    // LOAD FILTER MC
+    // =====================================================
+
+    function loadMCFilter(data) {
+
+        const mcList = [];
+
+
+        data.forEach(
+            function (row) {
+
+                const mc =
+                    String(
+                        row.no_mc || ''
+                    );
+
+
+                if (
+                    mc &&
+                    !mcList.includes(mc)
+                ) {
+
+                    mcList.push(mc);
+
+                }
+
+            }
+        );
+
+
+        // Urutkan MC
+
+        mcList.sort(
+            function (a, b) {
+
+                return (
+                    Number(a) -
+                    Number(b)
+                );
+
+            }
+        );
+
+
+        let html =
+            '<option value="">Semua MC</option>';
+
+
+        mcList.forEach(
+            function (mc) {
+
+                html += `
+
+                    <option value="${mc}">
+                        MC ${mc}
+                    </option>
+
+                `;
+
+            }
+        );
+
+
+        $('#filterMC')
+            .html(html);
+
+    }
+
+
+    // =====================================================
+    // FILTER MC
+    // SHIFT
+    // STATUS
+    // =====================================================
+
+    $('#filterMC, #filterShift, #filterStatus')
+        .on(
+            'change',
+            function () {
+
+                applyFilter();
+
+            }
+        );
+
+
+    // =====================================================
+    // SEARCH
+    // =====================================================
+
+    $('#searchSummary')
+        .on(
+            'keyup',
+            function () {
+
+                applyFilter();
+
+            }
+        );
+
+
+    // =====================================================
+    // APPLY FILTER
+    // =====================================================
+
+    function applyFilter() {
+
+        const mc =
+            $('#filterMC').val();
+
+
+        const shift =
+            $('#filterShift').val();
+
+
+        const status =
+            $('#filterStatus').val();
+
+
+        const search =
+            $('#searchSummary')
+                .val()
+                .toLowerCase()
+                .trim();
+
+
+        const filtered =
+            summaryData.filter(
+                function (row) {
+
+
+                    // =========================
+                    // FILTER MC
+                    // =========================
+
+                    const matchMC =
+                        !mc ||
+                        String(
+                            row.no_mc
+                        ) === mc;
+
+
+                    // =========================
+                    // FILTER SHIFT
+                    // =========================
+
+                    const matchShift =
+                        !shift ||
+                        String(
+                            row.shift
+                        ) === shift;
+
+
+                    // =========================
+                    // FILTER STATUS
+                    // =========================
+
+                    const matchStatus =
+                        !status ||
+                        row.status === status;
+
+
+                    // =========================
+                    // SEARCH
+                    // =========================
+
+                    const text = `
+
+                        ${row.no_mc || ''}
+                        ${row.nama_produk || ''}
+                        ${row.no_part || ''}
+                        ${row.costumer || ''}
+                        ${row.material || ''}
+                        ${row.kendala || ''}
+                        ${row.keterangan || ''}
+
+                    `.toLowerCase();
+
+
+                    const matchSearch =
+                        !search ||
+                        text.includes(search);
+
+
+                    return (
+                        matchMC &&
+                        matchShift &&
+                        matchStatus &&
+                        matchSearch
+                    );
+
+                }
+            );
+
+
+        // Render hasil filter
+
+        renderSummary(
+            filtered
+        );
+
+
+        // Update dashboard
+
+        updateTotalFromData(
+            filtered
+        );
+
+
+        // Update diagram
+
+        renderCharts(
+            filtered
+        );
+
+    }
+
+
+    // =====================================================
+    // RESET FILTER
+    // =====================================================
+
+    $('#btnResetFilter')
+        .on(
+            'click',
+            function () {
+
+                $('#filterMC')
+                    .val('');
+
+                $('#filterShift')
+                    .val('');
+
+                $('#filterStatus')
+                    .val('');
+
+                $('#searchSummary')
+                    .val('');
+
+
+                renderSummary(
+                    summaryData
+                );
+
+
+                updateTotalFromData(
+                    summaryData
+                );
+
+
+                renderCharts(
+                    summaryData
+                );
+
+            }
+        );
+
+
+    // =====================================================
+    // RENDER TABLE
+    // =====================================================
+
+    function renderSummary(data) {
+
+        let html = '';
+
+
+        // =========================
+        // TIDAK ADA DATA
+        // =========================
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+
+            html = `
+
+                <tr>
+
+                    <td
+                        colspan="12"
+                        class="text-center"
+                    >
+
+                        Tidak ada data Summary
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+
+        // =========================
+        // ADA DATA
+        // =========================
+
+        else {
+
+            data.forEach(
+                function (row) {
+
+                    const status =
+                        row.status || 'Running';
+
+
+                    const achievement =
+                        Number(
+                            row.achievement || 0
+                        );
+
+
+                    html += `
+
+                        <tr>
+
+                            <!-- MC -->
+
+                            <td>
+                                ${row.no_mc || '-'}
+                            </td>
+
+
+                            <!-- PART -->
+
+                            <td class="text-left">
+
+                                <b>
+                                    ${row.nama_produk || '-'}
+                                </b>
+
+                                <br>
+
+                                ${row.no_part || '-'}
+
+                            </td>
+
+
+                            <!-- CUSTOMER -->
+
+                            <td>
+                                ${row.costumer || '-'}
+                            </td>
+
+
+                            <!-- SHIFT -->
+
+                            <td>
+                                ${row.shift || '-'}
+                            </td>
+
+
+                            <!-- TARGET -->
+
+                            <td>
+
+                                ${formatNumber(
+                                    row.target
+                                )}
+
+                            </td>
+
+
+                            <!-- AKTUAL -->
+
+                            <td>
+
+                                ${formatNumber(
+                                    row.actual
+                                )}
+
+                            </td>
+
+
+                            <!-- MINUS -->
+
+                            <td>
+
+                                ${formatNumber(
+                                    row.minus
+                                )}
+
+                            </td>
+
+
+                            <!-- ACHIEVEMENT -->
+
+                            <td>
+
+                                ${achievement.toFixed(2)}%
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                ${
+                                    status === 'Pending'
+
+                                    ?
+
+                                    '<span class="badge badge-warning">Pending</span>'
+
+                                    :
+
+                                    '<span class="badge badge-success">Running</span>'
+                                }
+
+                            </td>
+
+
+                            <!-- KENDALA -->
+
+                            <td class="text-left">
+
+                                ${
+                                    status === 'Pending'
+
+                                    ?
+
+                                    (
+                                        row.kendala || '-'
+                                    )
+
+                                    :
+
+                                    '-'
+                                }
+
+                            </td>
+
+
+                            <!-- DOWNTIME -->
+
+                            <td>
+
+                                ${
+                                    status === 'Pending'
+
+                                    ?
+
+                                    formatNumber(
+                                        row.downtime
+                                    )
+
+                                    :
+
+                                    '0'
+                                }
+
+                            </td>
+
+
+                            <!-- KETERANGAN -->
+
+                            <td class="text-left">
+
+                                ${
+                                    row.keterangan || '-'
+                                }
+
+                            </td>
+
+
+                        </tr>
+
+                    `;
+
+                }
+            );
+
+        }
+
+
+        $('#summaryTable')
+            .html(html);
+
+    }
+
+
+    // =====================================================
+    // UPDATE TOTAL / DASHBOARD
+    // =====================================================
+
+    function updateTotalFromData(data) {
+
+        let target = 0;
+
+        let actual = 0;
+
+        let downtime = 0;
+
+        let pending = 0;
+
+        let running = 0;
+
+
+        // =========================
+        // HITUNG
+        // =========================
+
+        data.forEach(
+            function (row) {
+
+                target +=
+                    Number(
+                        row.target || 0
+                    );
+
+
+                actual +=
+                    Number(
+                        row.actual || 0
+                    );
+
+
+                downtime +=
+                    Number(
+                        row.downtime || 0
+                    );
+
+
+                if (
+                    row.status === 'Pending'
+                ) {
+
+                    pending++;
+
+                }
+                else {
+
+                    running++;
+
+                }
+
+            }
+        );
+
+
+        // =========================
+        // MINUS
+        // =========================
+
+        const minus =
+            actual - target;
+
+
+        // =========================
+        // ACHIEVEMENT
+        // =========================
+
+        let achievement = 0;
+
+
+        if (target > 0) {
+
+            achievement =
+                (
+                    actual /
+                    target
+                ) * 100;
+
+        }
+
+
+        // =========================
+        // DASHBOARD
+        // =========================
+
+        $('#totalTarget')
+            .text(
+                formatNumber(target)
+            );
+
+
+        $('#totalActual')
+            .text(
+                formatNumber(actual)
+            );
+
+
+        $('#totalMinus')
+            .text(
+                formatNumber(minus)
+            );
+
+
+        $('#totalAchievement')
+            .text(
+                achievement.toFixed(2)
+                + '%'
+            );
+
+
+        $('#totalDowntime')
+            .text(
+                formatNumber(downtime)
+                + ' Menit'
+            );
+
+
+        $('#totalPending')
+            .text(
+                pending
+                + ' Shift'
+            );
+
+
+        $('#totalRunning')
+            .text(
+                running
+                + ' Shift'
+            );
+
+
+        // =========================
+        // FOOTER TABLE
+        // =========================
+
+        $('#footerTarget')
+            .text(
+                formatNumber(target)
+            );
+
+
+        $('#footerActual')
+            .text(
+                formatNumber(actual)
+            );
+
+
+        $('#footerMinus')
+            .text(
+                formatNumber(minus)
+            );
+
+
+        $('#footerAchievement')
+            .text(
+                achievement.toFixed(2)
+                + '%'
+            );
+
+
+        $('#footerDowntime')
+            .text(
+                formatNumber(downtime)
+            );
+
+    }
+
+
+    // =====================================================
+    // CHART
+    // =====================================================
+
+    function renderCharts(data) {
+
+        const mcData = {};
+
+
+        // =========================
+        // KELOMPOKKAN BERDASARKAN MC
+        // =========================
+
+        data.forEach(
+            function (row) {
+
+                const mc =
+                    String(
+                        row.no_mc || '-'
+                    );
+
+
+                if (!mcData[mc]) {
+
+                    mcData[mc] = {
+
+                        target: 0,
+
+                        actual: 0
+
+                    };
+
+                }
+
+
+                mcData[mc].target +=
+                    Number(
+                        row.target || 0
+                    );
+
+
+                mcData[mc].actual +=
+                    Number(
+                        row.actual || 0
+                    );
+
+            }
+        );
+
+
+        const labels =
+            Object.keys(mcData);
+
+
+        const targets =
+            labels.map(
+                function (mc) {
+
+                    return mcData[mc].target;
+
+                }
+            );
+
+
+        const actuals =
+            labels.map(
+                function (mc) {
+
+                    return mcData[mc].actual;
+
+                }
+            );
+
+
+        // =================================================
+        // CHART TARGET VS AKTUAL
+        // =================================================
+
+        if (
+            targetActualChart
+        ) {
+
+            targetActualChart.destroy();
+
+        }
+
+
+        const targetActualCanvas =
+            document.getElementById(
+                'targetActualChart'
+            );
+
+
+        if (
+            targetActualCanvas
+        ) {
+
+            targetActualChart =
+                new Chart(
+                    targetActualCanvas,
+                    {
+
+                        type: 'bar',
+
+                        data: {
+
+                            labels: labels,
+
+                            datasets: [
+
+                                {
+
+                                    label:
+                                        'Target',
+
+                                    data:
+                                        targets
+
+                                },
+
+                                {
+
+                                    label:
+                                        'Aktual',
+
+                                    data:
+                                        actuals
+
+                                }
+
+                            ]
+
+                        },
+
+                        options: {
+
+                            responsive: true,
+
+                            maintainAspectRatio: false,
+
+                            scales: {
+
+                                y: {
+
+                                    beginAtZero:
+                                        true
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                );
+
+        }
+
+
+        // =================================================
+        // ACHIEVEMENT PER MC
+        // =================================================
+
+        const achievements =
+            labels.map(
+                function (mc) {
+
+                    const target =
+                        mcData[mc].target;
+
+
+                    const actual =
+                        mcData[mc].actual;
+
+
+                    if (
+                        target <= 0
+                    ) {
+
+                        return 0;
+
+                    }
+
+
+                    return (
+                        actual /
+                        target
+                    ) * 100;
+
+                }
+            );
+
+
+        // =========================
+        // HAPUS CHART LAMA
+        // =========================
+
+        if (
+            achievementChart
+        ) {
+
+            achievementChart.destroy();
+
+        }
+
+
+        const achievementCanvas =
+            document.getElementById(
+                'achievementChart'
+            );
+
+
+        if (
+            achievementCanvas
+        ) {
+
+            achievementChart =
+                new Chart(
+                    achievementCanvas,
+                    {
+
+                        type: 'bar',
+
+                        data: {
+
+                            labels: labels,
+
+                            datasets: [
+
+                                {
+
+                                    label:
+                                        'Achievement (%)',
+
+                                    data:
+                                        achievements
+
+                                }
+
+                            ]
+
+                        },
+
+                        options: {
+
+                            responsive: true,
+
+                            maintainAspectRatio: false,
+
+                            scales: {
+
+                                y: {
+
+                                    beginAtZero:
+                                        true,
+
+                                    max: 100
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+                );
+
+        }
+
+    }
+
+
+    // =====================================================
+    // FORMAT ANGKA INDONESIA
+    // =====================================================
+
+    function formatNumber(number) {
+
+        return Number(
+            number || 0
+        ).toLocaleString(
+            'id-ID'
+        );
+
+    }
+
+</script>

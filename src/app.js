@@ -57,12 +57,17 @@ app.use('/produk', produk);
 const auditRoutes = require('./routes/audit/auditRoutes')
 app.use('/audit', auditRoutes);
 
+
 const auditDokumenRoutes =
     require('./routes/audit/auditDokumenRoutes');
 app.use(
     '/audit-dokumen',
     auditDokumenRoutes
 );
+
+const summaryRoutes = require('./routes/summary/summaryRoutes')
+app.use('/summary', summaryRoutes);
+
 /**
  * Server
  */

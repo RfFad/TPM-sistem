@@ -35,7 +35,7 @@
 
     <div class="col-md-3">
 
-    <a href="/planning/tabel" class="text-white" style="text-decoration:none;">
+    <a href="/planning/dataplanday" class="text-white" style="text-decoration:none;">
 
         <div class="small-box bg-info">
 
@@ -289,196 +289,389 @@ class="table table-bordered table-striped">
 
 <!-- MODAL -->
 <div class="modal fade" id="modal-default">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
 
-<div class="modal-dialog modal-xl">
+            <!-- HEADER -->
+            <div class="modal-header bg-primary text-white">
+                <h4 class="modal-title">
+                    <i class="fas fa-industry mr-2"></i>
+                    Form Planning Produksi
+                </h4>
 
-<div class="modal-content">
+                <button
+                    type="button"
+                    class="close text-white"
+                    data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
 
-<div class="modal-header bg-primary">
+            <!-- BODY -->
+            <div class="modal-body">
 
-<h4 class="modal-title">
-Form Planning Produksi
-</h4>
+                <form id="formPlanning">
 
-<button
-type="button"
-class="close text-white"
-data-dismiss="modal">
+                    <input
+                        type="hidden"
+                        id="id_plan"
+                        name="id_plan">
 
-<span>&times;</span>
+                    <!-- DATA PRODUKSI -->
+                    <div class="card card-outline card-primary mb-3">
 
-</button>
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-cogs mr-2"></i>
+                                Data Produksi
+                            </h5>
+                        </div>
 
+                        <div class="card-body">
+
+                            <div class="row">
+
+                                <div class="col-md-5 mb-3">
+                                    <label>
+                                        Produk
+                                        <span class="text-danger">*</span>
+                                    </label>
+
+                                    <select
+                                        name="id_produk"
+                                        id="id_produk"
+                                        class="form-control select2"
+                                        style="width:100%;">
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3 mb-3">
+                                    <label>Tanggal</label>
+
+                                    <input
+                                        type="date"
+                                        name="tgl"
+                                        id="tgl"
+                                        class="form-control">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label>No Mesin</label>
+
+                                    <input
+                                        type="text"
+                                        name="no_mc"
+                                        id="no_mc"
+                                        class="form-control">
+                                </div>
+
+                                <div class="col-md-2 mb-3">
+                                    <label>Tonage</label>
+
+                                    <input
+                                        type="number"
+                                        name="tonage"
+                                        id="tonage"
+                                        class="form-control">
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <!-- PARAMETER MESIN -->
+                    <div class="card card-outline card-info mb-3">
+
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-sliders-h mr-2"></i>
+                                Parameter Mesin
+                            </h5>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="row">
+
+                                <div class="col-md-4 mb-3">
+                                    <label>Cycle Time (detik)</label>
+
+                                    <div class="input-group">
+                                        <input
+                                            type="number"
+                                            name="cycle_time"
+                                            id="cycle_time"
+                                            class="form-control"
+                                            min="1"
+                                            step="0.01">
+
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                detik
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label>Cavity</label>
+
+                                    <input
+                                        type="number"
+                                        name="cavity"
+                                        id="cavity"
+                                        class="form-control"
+                                        min="1">
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label>Waktu / Shift</label>
+
+                                    <div class="input-group">
+                                        <input
+                                            type="number"
+                                            class="form-control"
+                                            value="7"
+                                            readonly>
+
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                Jam
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <!-- TARGET PRODUKSI -->
+                   <div class="card card-outline card-success mb-3">
+
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-chart-line mr-2"></i>
+            Target Produksi
+        </h5>
+
+        <span class="float-right text-muted">
+            <small>
+                Otomatis / Manual
+            </small>
+        </span>
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-md-4 mb-3">
+                <label>Target / Jam</label>
+
+                <div class="input-group">
+                    <input
+                        type="number"
+                        name="target_hour"
+                        id="target_hour"
+                        class="form-control"
+                        min="0">
+
+                    <div class="input-group-append">
+                        <span class="input-group-text">
+                            pcs
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-4 mb-3">
+                <label>Target / Shift</label>
+
+                <div class="input-group">
+                    <input
+                        type="number"
+                        name="target_shift"
+                        id="target_shift"
+                        class="form-control"
+                        min="0">
+
+                    <div class="input-group-append">
+                        <span class="input-group-text">
+                            pcs
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-4 mb-3">
+                <label>Target / Hari</label>
+
+                <div class="input-group">
+                    <input
+                        type="number"
+                        name="target_day"
+                        id="target_day"
+                        class="form-control"
+                        min="0">
+
+                    <div class="input-group-append">
+                        <span class="input-group-text">
+                            pcs
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="alert alert-info mb-0">
+            <i class="fas fa-info-circle mr-1"></i>
+            Target akan dihitung otomatis berdasarkan
+            <strong>Cycle Time</strong> dan <strong>Cavity</strong>.
+            Hasilnya tetap dapat diubah secara manual.
+        </div>
+
+    </div>
 </div>
 
-<div class="modal-body">
 
-<form id="formPlanning">
+                    <!-- KETERANGAN -->
+                    <div class="card card-outline card-secondary">
 
-<input
-type="hidden"
-id="id_plan"
-name="id_plan">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-sticky-note mr-2"></i>
+                                Keterangan
+                            </h5>
+                        </div>
 
-<div class="row">
+                        <div class="card-body">
 
-<div class="col-md-4">
+                            <input
+                                type="text"
+                                name="keterangan"
+                                id="keterangan"
+                                class="form-control"
+                                placeholder="Masukkan keterangan jika diperlukan">
 
-<label>Produk</label>
+                        </div>
+                    </div>
 
-<select
-name="id_produk"
-id="id_produk"
-class="form-control select2">
+                </form>
 
-</select>
+            </div>
 
-</div>
+            <!-- FOOTER -->
+            <div class="modal-footer bg-light">
 
-<div class="col-md-2">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal">
+                    <i class="fas fa-times mr-1"></i>
+                    Batal
+                </button>
 
-<label>Tanggal</label>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="btnCreate">
+                    <i class="fas fa-save mr-1"></i>
+                    Simpan
+                </button>
 
-<input
-type="date"
-name="tgl"
-id="tgl"
-class="form-control">
+                <button
+                    type="button"
+                    class="btn btn-warning"
+                    id="btnUpdate"
+                    style="display:none">
+                    <i class="fas fa-edit mr-1"></i>
+                    Update
+                </button>
 
-</div>
+            </div>
 
-<div class="col-md-2">
-
-<label>No Mesin</label>
-
-<input
-type="text"
-name="no_mc"
-id="no_mc"
-class="form-control">
-
-</div>
-
-<div class="col-md-2">
-
-<label>Tonage</label>
-
-<input
-type="number"
-name="tonage"
-id="tonage"
-class="form-control">
-
-</div>
-
-<div class="col-md-2">
-
-<label>Cycle Time</label>
-
-<input
-type="number"
-name="cycle_time"
-id="cycle_time"
-class="form-control">
-
-</div>
-
-<div class="col-md-2">
-
-<label>Cavity</label>
-
-<input
-type="number"
-name="cavity"
-id="cavity"
-class="form-control">
-
-</div>
-
-<div class="col-md-2">
-
-<label>Target Shift</label>
-
-<input
-type="number"
-name="target_shift"
-id="target_shift"
-class="form-control">
-
-</div>
-
-<div class="col-md-2">
-
-<label>Target Hour</label>
-
-<input
-type="number"
-name="target_hour"
-id="target_hour"
-class="form-control">
-
-</div>
-
-<div class="col-md-2">
-
-<label>Target Day</label>
-
-<input
-type="number"
-name="target_day"
-id="target_day"
-class="form-control">
-
-</div>
-
-<div class="col-md-4">
-
-<label>Keterangan</label>
-
-<input
-type="text"
-name="keterangan"
-id="keterangan"
-class="form-control">
-
-</div>
-
-</div>
-
-</form>
-
-</div>
-
-<div class="modal-footer">
-
-<button
-class="btn btn-primary"
-id="btnCreate">
-
-Simpan
-
-</button>
-
-<button
-class="btn btn-warning"
-id="btnUpdate"
-style="display:none">
-
-Update
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
+        </div>
+    </div>
 </div>
 
 <%- include("../partials/footer") %>
 <script>
+function hitungTarget() {
 
+    let cycleTime = parseFloat($('#cycle_time').val()) || 0;
+    let cavity = parseFloat($('#cavity').val()) || 0;
+
+    const jamPerShift = 7;
+    const jumlahShift = 3;
+
+    if (cycleTime <= 0 || cavity <= 0) {
+
+        $('#target_hour').val('');
+        $('#target_shift').val('');
+        $('#target_day').val('');
+
+        return;
+    }
+
+    // Target per jam
+    let targetHour =
+        (3600 / cycleTime) * cavity;
+
+    // Target per shift
+    let targetShift =
+        targetHour * jamPerShift;
+
+    // Target per hari
+    let targetDay =
+        targetShift * jumlahShift;
+
+    $('#target_hour').val(
+        Math.floor(targetHour)
+    );
+
+    $('#target_shift').val(
+        Math.floor(targetShift)
+    );
+
+    $('#target_day').val(
+        Math.floor(targetDay)
+    );
+}
+
+
+// Hitung ketika Cycle Time berubah
+$('#cycle_time').on('input', function () {
+    hitungTarget();
+});
+
+
+// Hitung ketika Cavity berubah
+$('#cavity').on('input', function () {
+    hitungTarget();
+});
+$('#id_produk').on('change', function () {
+
+    let option = $(this).find('option:selected');
+
+    let cycleTime =
+        option.data('cycle-time');
+
+    let cavity =
+        option.data('cavity');
+
+    $('#cycle_time').val(cycleTime);
+    $('#cavity').val(cavity);
+
+    hitungTarget();
+});
 $(document).ready(function () {
 
     setDefaultTanggal();
@@ -677,8 +870,9 @@ function editData(id) {
 
             // jika menggunakan Select2
         $('#id_produk').trigger('change');
-
-            $('#tgl').val(data.tgl?.substring(0,10));
+const tgl = new Date(data.tgl);
+tgl.setMinutes(tgl.getMinutes() - tgl.getTimezoneOffset());
+$('#tgl').val(tgl.toISOString().split('T')[0]);
 
             $('#no_mc').val(data.no_mc);
 
