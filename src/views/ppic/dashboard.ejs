@@ -1,0 +1,104 @@
+<%- include('partials/header', { title: title, active: active }) %>
+<%- include('partials/filterbar') %>
+
+<div id="pageContent" class="position-relative">
+  <div id="loading" class="loading-overlay d-none"><div class="spinner-border text-primary"></div></div>
+
+  <!-- KPI -->
+  <div class="row g-3 mb-3">
+    <div class="col-6 col-xl-3"><div class="card kpi"><div class="card-body">
+      <div class="kpi-icon bg-primary-soft"><i class="bi bi-speedometer2"></i></div>
+      <div><div class="kpi-label">OEE</div><div class="kpi-value" id="kOee">-</div><div class="kpi-delta" id="dOee"></div></div>
+    </div></div></div>
+    <div class="col-6 col-xl-3"><div class="card kpi"><div class="card-body">
+      <div class="kpi-icon bg-info-soft"><i class="bi bi-clock-history"></i></div>
+      <div><div class="kpi-label">Availability</div><div class="kpi-value" id="kA">-</div><div class="kpi-delta" id="dA"></div></div>
+    </div></div></div>
+    <div class="col-6 col-xl-3"><div class="card kpi"><div class="card-body">
+      <div class="kpi-icon bg-purple-soft"><i class="bi bi-lightning-charge"></i></div>
+      <div><div class="kpi-label">Performance</div><div class="kpi-value" id="kP">-</div><div class="kpi-delta" id="dP"></div></div>
+    </div></div></div>
+    <div class="col-6 col-xl-3"><div class="card kpi"><div class="card-body">
+      <div class="kpi-icon bg-success-soft"><i class="bi bi-patch-check"></i></div>
+      <div><div class="kpi-label">Quality</div><div class="kpi-value" id="kQ">-</div><div class="kpi-delta" id="dQ"></div></div>
+    </div></div></div>
+
+    <div class="col-6 col-xl-3"><div class="card kpi"><div class="card-body">
+      <div class="kpi-icon bg-primary-soft"><i class="bi bi-boxes"></i></div>
+      <div><div class="kpi-label">Total Produksi (pcs)</div><div class="kpi-value" id="kTotal">-</div><div class="kpi-delta" id="dTotal"></div></div>
+    </div></div></div>
+    <div class="col-6 col-xl-3"><div class="card kpi"><div class="card-body">
+      <div class="kpi-icon bg-success-soft"><i class="bi bi-check2-circle"></i></div>
+      <div><div class="kpi-label">Total OK (pcs)</div><div class="kpi-value" id="kOk">-</div><div class="kpi-delta" id="dOk"></div></div>
+    </div></div></div>
+    <div class="col-6 col-xl-3"><div class="card kpi"><div class="card-body">
+      <div class="kpi-icon bg-danger-soft"><i class="bi bi-x-octagon"></i></div>
+      <div><div class="kpi-label">Total NG (pcs)</div><div class="kpi-value" id="kNg">-</div><div class="kpi-delta" id="dNg"></div></div>
+    </div></div></div>
+    <div class="col-6 col-xl-3"><div class="card kpi"><div class="card-body">
+      <div class="kpi-icon bg-warning-soft"><i class="bi bi-stopwatch"></i></div>
+      <div><div class="kpi-label">Downtime (jam)</div><div class="kpi-value" id="kDt">-</div><div class="kpi-delta" id="dDt"></div></div>
+    </div></div></div>
+  </div>
+
+  <!-- Gauge + tren OEE -->
+  <div class="row g-3 mb-3">
+    <div class="col-lg-4"><div class="card h-100"><div class="card-header">OEE Periode Ini</div><div class="card-body">
+      <div class="chart-box" style="height:200px"><canvas id="cGauge"></canvas></div>
+      <div class="apq mt-3">
+        <div class="apq-row"><span>Availability</span><div class="progress"><div class="progress-bar bg-info" id="bA"></div></div><strong id="tA"></strong></div>
+        <div class="apq-row"><span>Performance</span><div class="progress"><div class="progress-bar bg-purple" id="bP"></div></div><strong id="tP"></strong></div>
+        <div class="apq-row"><span>Quality</span><div class="progress"><div class="progress-bar bg-success" id="bQ"></div></div><strong id="tQ"></strong></div>
+      </div>
+    </div></div></div>
+    <div class="col-lg-8"><div class="card h-100"><div class="card-header">Tren OEE Harian</div><div class="card-body">
+      <div class="chart-box" style="height:320px"><canvas id="cTrend"></canvas></div>
+    </div></div></div>
+  </div>
+
+  <!-- Output harian + shift -->
+  <div class="row g-3 mb-3">
+    <div class="col-lg-8"><div class="card h-100"><div class="card-header">Output Harian (OK vs NG) &amp; % NG</div><div class="card-body">
+      <div class="chart-box" style="height:300px"><canvas id="cOutput"></canvas></div>
+    </div></div></div>
+    <div class="col-lg-4"><div class="card h-100"><div class="card-header">Output per Shift</div><div class="card-body">
+      <div class="chart-box" style="height:300px"><canvas id="cShift"></canvas></div>
+    </div></div></div>
+  </div>
+
+  <!-- Mesin + part -->
+  <div class="row g-3 mb-3">
+    <div class="col-lg-6"><div class="card h-100"><div class="card-header">OEE per Mesin</div><div class="card-body">
+      <div class="chart-box" style="height:320px"><canvas id="cMesin"></canvas></div>
+    </div></div></div>
+    <div class="col-lg-6"><div class="card h-100"><div class="card-header">Top 10 Part (Output)</div><div class="card-body">
+      <div class="chart-box" style="height:320px"><canvas id="cPart"></canvas></div>
+    </div></div></div>
+  </div>
+
+  <!-- Pareto NG + downtime -->
+  <div class="row g-3 mb-3">
+    <div class="col-lg-7"><div class="card h-100"><div class="card-header">Pareto Jenis NG (Top 10)</div><div class="card-body">
+      <div class="chart-box" style="height:320px"><canvas id="cNg"></canvas></div>
+    </div></div></div>
+    <div class="col-lg-5"><div class="card h-100"><div class="card-header">Downtime per Kategori (jam)</div><div class="card-body">
+      <div class="chart-box" style="height:320px"><canvas id="cDt"></canvas></div>
+    </div></div></div>
+  </div>
+
+  <!-- Tabel per mesin -->
+  <div class="card mb-4">
+    <div class="card-header">Ringkasan per Mesin</div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0" id="tblMesin">
+        <thead><tr>
+          <th>Mesin</th><th>Brand</th><th class="text-end">Produksi</th><th class="text-end">% NG</th>
+          <th class="text-end">Downtime (jam)</th><th class="text-end">A</th><th class="text-end">P</th><th class="text-end">Q</th><th class="text-end">OEE</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer', { script: 'dashboard', charts: true }) %>

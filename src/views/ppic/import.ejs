@@ -1,0 +1,76 @@
+<%- include('partials/header', { title: title, active: active }) %>
+
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="card mb-3">
+      <div class="card-header">1 · Pilih file Excel</div>
+      <div class="card-body">
+        <label class="drop-zone" id="dropZone" for="fileInput">
+          <i class="bi bi-cloud-arrow-up"></i>
+          <div class="fw-semibold" id="dropTitle">Klik atau seret file .xlsx ke sini</div>
+          <div class="small text-muted">Sheet <strong>LAPORAN</strong> akan dibaca otomatis (maks 25 MB)</div>
+          <input type="file" id="fileInput" accept=".xlsx" hidden>
+        </label>
+        <button class="btn btn-primary mt-3" id="btnPreview" type="button" disabled>
+          <i class="bi bi-search"></i> Periksa File
+        </button>
+      </div>
+    </div>
+
+    <div class="card mb-3 d-none" id="previewCard">
+      <div class="card-header">2 · Pratinjau &amp; simpan</div>
+      <div class="card-body">
+        <div class="row g-2 mb-3" id="previewStats"></div>
+
+        <div class="table-responsive mb-3">
+          <table class="table table-sm small mb-0" id="tblSample">
+            <thead><tr><th>Baris</th><th>Tgl</th><th>Mesin</th><th>Part</th><th class="text-end">OK</th><th class="text-end">NG</th><th class="text-end">Plan</th><th class="text-end">DT</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div id="warnBox" class="alert alert-warning d-none">
+          <div class="d-flex justify-content-between align-items-center">
+            <strong id="warnTitle"></strong>
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#warnList">Lihat</button>
+          </div>
+          <div class="collapse mt-2" id="warnList"><ul class="small mb-0" id="warnItems"></ul></div>
+        </div>
+
+        <div class="row g-3 align-items-end">
+          <div class="col-6 col-md-4">
+            <label class="form-label small mb-1">Bulan data</label>
+            <select class="form-select" id="selBulan"></select>
+          </div>
+          <div class="col-6 col-md-3">
+            <label class="form-label small mb-1">Tahun</label>
+            <input type="number" class="form-control" id="inTahun" min="2000" max="2100">
+          </div>
+          <div class="col-12 col-md-5">
+            <label class="form-label small mb-1">Jika periode sudah ada</label>
+            <select class="form-select" id="selMode">
+              <option value="timpa">Timpa data bulan tersebut</option>
+              <option value="tambah">Tambahkan saja</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-text mb-3">Kolom tanggal di Excel hanya berisi angka hari (1–31), jadi bulan &amp; tahun ditentukan di sini.</div>
+        <button class="btn btn-success" id="btnCommit" type="button"><i class="bi bi-database-check"></i> Simpan ke Database</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card">
+      <div class="card-header">Riwayat Import</div>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0 small" id="tblHistory">
+          <thead><tr><th>File</th><th>Periode</th><th class="text-end">Baris</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer', { script: 'import' }) %>

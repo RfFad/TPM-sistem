@@ -25,6 +25,10 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.use((req, res, next) => {
+  res.locals.oeeTarget = (parseFloat(process.env.OEE_TARGET) || 85) / 100;
+  next();
+});
 /**
  * Routes
  */
@@ -67,6 +71,9 @@ app.use(
 
 const summaryRoutes = require('./routes/summary/summaryRoutes')
 app.use('/summary', summaryRoutes);
+
+app.use('/ppic', require('./routes/ppic/web'));
+app.use('/api', require('./routes/ppic/api'));
 
 /**
  * Server

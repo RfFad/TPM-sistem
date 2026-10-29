@@ -4,13 +4,19 @@ exports.page = (req, res) => {
 
     const tgl = req.params.tgl;
 
-    const canManage =
-        ['ppic', 'develop'].includes(req.user.role);
-
+    const canManage = ['admin', 'develop'].includes(req.user.role);
 
     const sql = `
         SELECT
-            p.*,
+            p.id_plan,
+            p.tgl,
+            p.no_mc,
+            p.tonage,
+            p.cycle_time,
+            p.cavity,
+            p.target_day,
+            p.target_hour,
+            p.target_shift,
 
             pr.nama_produk,
             pr.no_part,
@@ -20,65 +26,42 @@ exports.page = (req, res) => {
         FROM planning p
 
         LEFT JOIN produk pr
-            ON pr.id_produk = p.id_produk
+            ON p.id_produk = pr.id_produk
 
-        WHERE p.tgl = ?
+        WHERE DATE(p.tgl) = ?
+
+        ORDER BY p.no_mc ASC
     `;
 
+    db.query(sql, [tgl], (err, rows) => {
 
-    db.query(
-        sql,
-        [tgl],
-        (err, rows) => {
+        if (err) {
 
-            if (err) {
+            console.error('SUMMARY PAGE ERROR:', err);
 
-                console.error(
-                    'SUMMARY PAGE ERROR:',
-                    err
-                );
-
-                return res.status(500)
-                    .send(
-                        'Gagal mengambil planning'
-                    );
-
-            }
-
-
-            if (rows.length === 0) {
-
-                return res.status(404)
-                    .send(
-                        'Planning tidak ditemukan'
-                    );
-
-            }
-
-
-            res.render(
-                'summary/index',
-                {
-
-                    tittle:
-                        'Summary Planning',
-
-                    active:
-                        'summaryPlanning',
-
-                    canManage,
-
-                    user:
-                        req.user,
-
-                    planning:
-                        rows[0]
-
-                }
+            return res.status(500).send(
+                'Gagal mengambil data planning'
             );
 
         }
-    );
+
+        res.render('summary/index', {
+
+            tittle: 'Summary Planning',
+
+            active: 'summary',
+
+            canManage,
+
+            user: req.user,
+
+            tgl,
+
+            planning: rows
+
+        });
+
+    });
 
 };
 // =====================================================
@@ -885,8 +868,7 @@ exports.delete = (req, res) => {
 };
 exports.getAllSummary = (req, res) => {
 
-    const tgl = req.params.tgl
-
+    const tgl = req.params.tgl;
 
     const sql = `
 
@@ -896,18 +878,27 @@ exports.getAllSummary = (req, res) => {
             s.id_plan,
             s.shift,
 
+            s.target_qty,
             s.actual_qty,
-            s.downtime_minute,
+            s.minus_qty,
+            s.achievement,
 
             s.status,
-            s.kendala,
             s.keterangan,
 
-            p.no_mc,
-            p.target_hour,
-            p.target_day,
-            p.target_shift,
+            s.created_at,
+            s.updated_at,
+            s.downtime_minute,
+
             p.tgl,
+            p.no_mc,
+            p.tonage,
+            p.cycle_time,
+            p.cavity,
+
+            p.target_day,
+            p.target_hour,
+            p.target_shift,
 
             pr.nama_produk,
             pr.no_part,
@@ -917,12 +908,12 @@ exports.getAllSummary = (req, res) => {
         FROM summary_planning s
 
         INNER JOIN planning p
-            ON p.id_plan = s.id_plan
+            ON s.id_plan = p.id_plan
 
         LEFT JOIN produk pr
-            ON pr.id_produk = p.id_produk
+            ON p.id_produk = pr.id_produk
 
-        WHERE p.tgl = ?
+        WHERE DATE(p.tgl) = ?
 
         ORDER BY
             p.no_mc ASC,
@@ -930,182 +921,111 @@ exports.getAllSummary = (req, res) => {
 
     `;
 
+    db.query(sql, [tgl], (err, rows) => {
 
-    db.query(
-        sql,
-        [tgl],
-        (err, rows) => {
+        if (err) {
 
-            if (err) {
+            console.error(
+                'SUMMARY SHOW ERROR:',
+                err
+            );
 
-                console.error(
-                    'GET SUMMARY ERROR:',
-                    err
-                );
+            return res.status(500).json({
 
-                return res.status(500)
-                    .json({
+                success: false,
 
-                        success: false,
-
-                        message:
-                            'Gagal mengambil data summary'
-
-                    });
-
-            }
-
-
-            let totalTarget = 0;
-            let totalActual = 0;
-            let totalDowntime = 0;
-
-            let totalPending = 0;
-            let totalRunning = 0;
-
-
-            rows.forEach(row => {
-
-                const target =
-                    Number(
-                        row.target_shift
-                    ) || 0;
-
-
-                const actual =
-                    Number(
-                        row.actual_qty
-                    ) || 0;
-
-
-                const downtime =
-                    Number(
-                        row.downtime_minute
-                    ) || 0;
-
-
-                row.target =
-                    target;
-
-
-                row.actual =
-                    actual;
-
-
-                row.downtime =
-                    downtime;
-
-
-                // =========================
-                // MINUS
-                // =========================
-
-                row.minus =
-                    actual - target;
-
-
-                // =========================
-                // ACHIEVEMENT
-                // =========================
-
-                row.achievement = 0;
-
-
-                if (target > 0) {
-
-                    row.achievement =
-                        (
-                            actual /
-                            target
-                        ) * 100;
-
-                }
-
-
-                // =========================
-                // TOTAL
-                // =========================
-
-                totalTarget += target;
-
-                totalActual += actual;
-
-                totalDowntime += downtime;
-
-
-                // =========================
-                // STATUS
-                // =========================
-
-                if (
-                    row.status === 'Pending'
-                ) {
-
-                    totalPending++;
-
-                }
-                else {
-
-                    totalRunning++;
-
-                }
-
-            });
-
-
-            const totalMinus =
-                totalActual -
-                totalTarget;
-
-
-            let totalAchievement = 0;
-
-
-            if (totalTarget > 0) {
-
-                totalAchievement =
-                    (
-                        totalActual /
-                        totalTarget
-                    ) * 100;
-
-            }
-
-
-            res.json({
-
-                success: true,
-
-                data: rows,
-
-                total: {
-
-                    target:
-                        totalTarget,
-
-                    actual:
-                        totalActual,
-
-                    minus:
-                        totalMinus,
-
-                    achievement:
-                        totalAchievement,
-
-                    downtime:
-                        totalDowntime,
-
-                    pending:
-                        totalPending,
-
-                    running:
-                        totalRunning
-
-                }
+                message: 'Gagal mengambil data summary'
 
             });
 
         }
-    );
+
+
+        let total = {
+
+            target: 0,
+            actual: 0,
+            minus: 0,
+            achievement: 0
+
+        };
+
+
+        const data = rows.map(row => {
+
+            const target = Number(
+                row.target_qty || row.target_shift || 0
+            );
+
+            const actual = Number(
+                row.actual_qty || 0
+            );
+
+            const minus = Math.max(
+                target - actual,
+                0
+            );
+
+            let achievement = 0;
+
+            if (target > 0) {
+
+                achievement =
+                    (actual / target) * 100;
+
+            }
+
+
+            achievement = Number(
+                achievement.toFixed(2)
+            );
+
+
+            total.target += target;
+            total.actual += actual;
+            total.minus += minus;
+
+
+            return {
+
+                ...row,
+
+                target,
+                actual,
+                minus,
+                achievement
+
+            };
+
+        });
+
+
+        if (total.target > 0) {
+
+            total.achievement = Number(
+                (
+                    total.actual /
+                    total.target *
+                    100
+                ).toFixed(2)
+            );
+
+        }
+
+
+        res.json({
+
+            success: true,
+
+            data,
+
+            total
+
+        });
+
+    });
 
 };
+
+
+
