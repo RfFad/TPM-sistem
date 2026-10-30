@@ -1,156 +1,465 @@
 <%- include("../partials/header") %>
 <%- include("../partials/sideNavbar") %>
-<div class="content-wrapper">
- <section class="content">
 
-<div class="row mb-3">
+<style>
 
-    <div class="col-md-3">
+.summary-page {
+    background: #f4f6f9;
+}
 
-        <label>Search</label>
+/* =========================
+   HEADER
+========================= */
 
-        <input
-            type="text"
-            id="searchSummary"
-            class="form-control"
-            placeholder="Cari MC / Part / Customer..."
-        >
+.summary-title {
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.summary-subtitle {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* =========================
+   FILTER
+========================= */
+
+.filter-box {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px 14px;
+    height: 100%;
+}
+
+.filter-box label {
+    display: block;
+    font-size: 11px;
+    color: #6c757d;
+    margin-bottom: 3px;
+}
+
+.filter-box strong {
+    font-size: 13px;
+}
+
+/* =========================
+   KPI
+========================= */
+
+.kpi-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 15px;
+    min-height: 105px;
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 18px;
+    float: left;
+    margin-right: 10px;
+}
+
+.kpi-title {
+    font-size: 11px;
+    color: #52606d;
+    font-weight: 600;
+}
+
+.kpi-value {
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 28px;
+}
+
+.kpi-info {
+    clear: both;
+    padding-top: 9px;
+    font-size: 10px;
+    color: #6c757d;
+}
+
+.kpi-blue .kpi-icon {
+    background: #2196f3;
+}
+
+.kpi-green .kpi-icon {
+    background: #20a464;
+}
+
+.kpi-teal .kpi-icon {
+    background: #12a67a;
+}
+
+.kpi-red .kpi-icon {
+    background: #e5485d;
+}
+
+.kpi-purple .kpi-icon {
+    background: #6755c7;
+}
+
+.kpi-orange .kpi-icon {
+    background: #f39c12;
+}
+
+.kpi-cyan .kpi-icon {
+    background: #22afd0;
+}
+
+.kpi-gray .kpi-icon {
+    background: #60758a;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.dashboard-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 15px;
+}
+
+.dashboard-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #19324d;
+}
+
+.chart-wrapper {
+    position: relative;
+    width: 100%;
+    height: 270px;
+}
+
+.chart-wrapper-small {
+    height: 220px;
+}
+
+/* =========================
+   MINI KPI
+========================= */
+
+.mini-kpi {
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    padding: 10px;
+    height: 75px;
+}
+
+.mini-kpi-title {
+    font-size: 10px;
+    color: #6c757d;
+}
+
+.mini-kpi-value {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.summary-table {
+    width: 100%;
+    font-size: 11px;
+}
+
+.summary-table th {
+    background: #f1f5f9;
+    color: #29415a;
+    font-weight: 700;
+}
+
+.summary-table td,
+.summary-table th {
+    padding: 7px 6px;
+    vertical-align: middle;
+}
+
+.status {
+    display: inline-block;
+    padding: 4px 9px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.status-running {
+    background: #18a866;
+}
+
+.status-pending {
+    background: #f5a623;
+}
+
+.status-finish {
+    background: #2196f3;
+}
+
+/* =========================
+   OEE
+========================= */
+
+.oee-box {
+    text-align: center;
+    padding: 5px;
+}
+
+.oee-circle {
+    width: 115px;
+    height: 115px;
+    margin: auto;
+    position: relative;
+}
+
+.oee-circle canvas {
+    width: 115px !important;
+    height: 115px !important;
+}
+
+.oee-center {
+    position: absolute;
+    top: 38px;
+    left: 0;
+    width: 100%;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.oee-name {
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 7px;
+}
+
+.oee-target {
+    font-size: 9px;
+    color: #6c757d;
+}
+
+/* =========================
+   ATTENTION
+========================= */
+
+.attention-item {
+    border-bottom: 1px solid #eee;
+    padding: 9px 4px;
+}
+
+.attention-item:last-child {
+    border-bottom: none;
+}
+
+.attention-title {
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.attention-detail {
+    font-size: 10px;
+    color: #6c757d;
+}
+
+.pending-badge {
+    background: #fff1d6;
+    color: #b56b00;
+    padding: 3px 7px;
+    border-radius: 4px;
+    font-size: 9px;
+}
+
+/* =========================
+   INFO
+========================= */
+
+.info-box {
+    font-size: 11px;
+    color: #52606d;
+    line-height: 1.6;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width: 991px) {
+
+    .kpi-card {
+        margin-bottom: 10px;
+    }
+
+    .chart-wrapper {
+        height: 250px;
+    }
+
+}
+
+</style>
+
+
+<div class="content-wrapper summary-page">
+
+<section class="content-header">
+
+    <div class="container-fluid">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-6">
+
+                <h1 class="summary-title">
+                    Summary Planning
+                </h1>
+
+                <div class="summary-subtitle">
+                    Monitoring planning, actual produksi dan performa mesin
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="filter-box">
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <label>
+                                Tanggal Planning
+                            </label>
+
+                            <strong id="tanggalPlanning">
+                                -
+                            </strong>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label>
+                                Search
+                            </label>
+
+                            <input
+                                type="text"
+                                id="searchSummary"
+                                class="form-control form-control-sm"
+                                placeholder="Cari mesin / produk / status..."
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
-
-    <div class="col-md-2">
-
-        <label>MC</label>
-
-        <select
-            id="filterMC"
-            class="form-control"
-        >
-
-            <option value="">
-                Semua MC
-            </option>
-
-        </select>
-
-    </div>
+</section>
 
 
-    <div class="col-md-2">
+<section class="content">
 
-        <label>Shift</label>
-
-        <select
-            id="filterShift"
-            class="form-control"
-        >
-
-            <option value="">
-                Semua Shift
-            </option>
-
-            <option value="1">
-                Shift 1
-            </option>
-
-            <option value="2">
-                Shift 2
-            </option>
-
-            <option value="3">
-                Shift 3
-            </option>
-
-        </select>
-
-    </div>
+<div class="container-fluid">
 
 
-    <div class="col-md-2">
-
-        <label>Status</label>
-
-        <select
-            id="filterStatus"
-            class="form-control"
-        >
-
-            <option value="">
-                Semua Status
-            </option>
-
-            <option value="Running">
-                Running
-            </option>
-
-            <option value="Pending">
-                Pending
-            </option>
-
-        </select>
-
-    </div>
-
-
-    <div class="col-md-2 d-flex align-items-end">
-
-        <button
-            type="button"
-            id="btnResetFilter"
-            class="btn btn-secondary w-100"
-        >
-
-            <i class="fas fa-sync"></i>
-            Reset
-
-        </button>
-
-    </div>
-
-</div>
+<!-- =========================
+     KPI
+========================= -->
 
 <div class="row">
 
     <div class="col-lg-3 col-md-6">
 
-        <div class="small-box bg-info">
+        <div class="kpi-card kpi-blue">
 
-            <div class="inner">
-
-                <h3 id="totalTarget">
-                    0
-                </h3>
-
-                <p>TOTAL TARGET</p>
-
+            <div class="kpi-icon">
+                <i class="fas fa-calendar-check"></i>
             </div>
 
-            <div class="icon">
+            <div class="kpi-title">
+                Production Plan
+            </div>
+
+            <div class="kpi-value" id="kpiPlan">
+                0 pcs
+            </div>
+
+            <div class="kpi-info">
+                Total target produksi
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="kpi-card kpi-green">
+
+            <div class="kpi-icon">
+                <i class="fas fa-industry"></i>
+            </div>
+
+            <div class="kpi-title">
+                Actual Production
+            </div>
+
+            <div class="kpi-value" id="kpiActual">
+                0 pcs
+            </div>
+
+            <div class="kpi-info">
+                Total actual produksi
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="kpi-card kpi-teal">
+
+            <div class="kpi-icon">
                 <i class="fas fa-bullseye"></i>
             </div>
 
-        </div>
-
-    </div>
-
-
-    <div class="col-lg-3 col-md-6">
-
-        <div class="small-box bg-success">
-
-            <div class="inner">
-
-                <h3 id="totalActual">
-                    0
-                </h3>
-
-                <p>TOTAL AKTUAL</p>
-
+            <div class="kpi-title">
+                Achievement
             </div>
 
-            <div class="icon">
-                <i class="fas fa-box"></i>
+            <div class="kpi-value" id="kpiAchievement">
+                0%
+            </div>
+
+            <div class="kpi-info">
+                Actual dibanding target
             </div>
 
         </div>
@@ -160,20 +469,22 @@
 
     <div class="col-lg-3 col-md-6">
 
-        <div class="small-box bg-danger">
+        <div class="kpi-card kpi-red">
 
-            <div class="inner">
-
-                <h3 id="totalMinus">
-                    0
-                </h3>
-
-                <p>TOTAL MINUS</p>
-
+            <div class="kpi-icon">
+                <i class="fas fa-minus"></i>
             </div>
 
-            <div class="icon">
-                <i class="fas fa-arrow-down"></i>
+            <div class="kpi-title">
+                Gap / Minus
+            </div>
+
+            <div class="kpi-value" id="kpiMinus">
+                0 pcs
+            </div>
+
+            <div class="kpi-info">
+                Kekurangan produksi
             </div>
 
         </div>
@@ -183,20 +494,97 @@
 
     <div class="col-lg-3 col-md-6">
 
-        <div class="small-box bg-warning">
+        <div class="kpi-card kpi-purple">
 
-            <div class="inner">
-
-                <h3 id="totalAchievement">
-                    0%
-                </h3>
-
-                <p>ACHIEVEMENT</p>
-
+            <div class="kpi-icon">
+                <i class="fas fa-chart-pie"></i>
             </div>
 
-            <div class="icon">
-                <i class="fas fa-chart-line"></i>
+            <div class="kpi-title">
+                OEE
+            </div>
+
+            <div class="kpi-value" id="kpiOee">
+                0%
+            </div>
+
+            <div class="kpi-info">
+                Berdasarkan data planning
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="kpi-card kpi-cyan">
+
+            <div class="kpi-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+
+            <div class="kpi-title">
+                Good Product
+            </div>
+
+            <div class="kpi-value">
+                N/A
+            </div>
+
+            <div class="kpi-info">
+                Data quality belum tersedia
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="kpi-card kpi-orange">
+
+            <div class="kpi-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+
+            <div class="kpi-title">
+                NG
+            </div>
+
+            <div class="kpi-value">
+                N/A
+            </div>
+
+            <div class="kpi-info">
+                Data NG belum tersedia
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="kpi-card kpi-gray">
+
+            <div class="kpi-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+
+            <div class="kpi-title">
+                Downtime
+            </div>
+
+            <div class="kpi-value" id="kpiDowntime">
+                0 min
+            </div>
+
+            <div class="kpi-info">
+                Total waktu berhenti
             </div>
 
         </div>
@@ -205,1289 +593,1481 @@
 
 </div>
 
-<div class="row">
 
-    <div class="col-md-4">
+<!-- =========================
+     PLAN VS ACTUAL + TABLE
+========================= -->
 
-        <div class="info-box">
+<div class="row mt-5">
 
-            <span class="info-box-icon bg-danger">
+    <div class="col-lg-7">
 
-                <i class="fas fa-stopwatch"></i>
+        <div class="dashboard-card">
 
-            </span>
+            <div class="dashboard-card-title">
+                <i class="fas fa-chart-bar"></i>
+                Plan vs Actual Production
+            </div>
 
-            <div class="info-box-content">
+            <div class="chart-wrapper">
 
-                <span class="info-box-text">
-                    TOTAL DOWNTIME
-                </span>
-
-                <span
-                    class="info-box-number"
-                    id="totalDowntime"
-                >
-                    0 Menit
-                </span>
+                <canvas id="planActualChart"></canvas>
 
             </div>
 
-        </div>
-
-    </div>
-
-
-    <div class="col-md-4">
-
-        <div class="info-box">
-
-            <span class="info-box-icon bg-warning">
-
-                <i class="fas fa-pause"></i>
-
-            </span>
-
-            <div class="info-box-content">
-
-                <span class="info-box-text">
-                    PENDING
-                </span>
-
-                <span
-                    class="info-box-number"
-                    id="totalPending"
-                >
-                    0 Shift
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="col-md-4">
-
-        <div class="info-box">
-
-            <span class="info-box-icon bg-success">
-
-                <i class="fas fa-play"></i>
-
-            </span>
-
-            <div class="info-box-content">
-
-                <span class="info-box-text">
-                    RUNNING
-                </span>
-
-                <span
-                    class="info-box-number"
-                    id="totalRunning"
-                >
-                    0 Shift
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<div class="row">
-
-    <div class="col-md-6">
-
-        <div class="card">
-
-            <div class="card-header">
-
-                <h3 class="card-title">
-                    Target vs Aktual
-                </h3>
-
-            </div>
-
-            <div class="card-body">
-
-                <canvas
-                    id="targetActualChart"
-                    style="height:300px;"
-                ></canvas>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="col-md-6">
-
-        <div class="card">
-
-            <div class="card-header">
-
-                <h3 class="card-title">
-                    Achievement per MC
-                </h3>
-
-            </div>
-
-            <div class="card-body">
-
-                <canvas
-                    id="achievementChart"
-                    style="height:300px;"
-                ></canvas>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<div class="card">
-
-    <div class="card-header">
-
-        <h3 class="card-title">
-            Detail Summary Planning
-        </h3>
-
-    </div>
-
-
-    <div class="card-body">
-
-        <div class="table-responsive">
-
-            <table
-                class="table table-bordered table-sm"
-            >
-
-                <thead>
-
-                    <tr>
-
-                        <th>MC</th>
-
-                        <th>NAMA PART</th>
-
-                        <th>CUSTOMER</th>
-
-                        <th>SHIFT</th>
-
-                        <th>TARGET</th>
-
-                        <th>AKTUAL</th>
-
-                        <th>MINUS</th>
-
-                        <th>ACHIEVEMENT</th>
-
-                        <th>STATUS</th>
-
-                        <th>PROBLEM / KENDALA</th>
-
-                        <th>STOP<br>(MENIT)</th>
-
-                        <th>KETERANGAN</th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody id="summaryTable">
-
-                </tbody>
-
-
-                <tfoot>
-
-                    <tr class="font-weight-bold">
-
-                        <th colspan="4">
-                            TOTAL
-                        </th>
-
-                        <th id="footerTarget">
+            <div class="row mt-2">
+
+                <div class="col-3">
+                    <div class="mini-kpi">
+                        <div class="mini-kpi-title">
+                            Total Plan
+                        </div>
+                        <div class="mini-kpi-value" id="miniPlan">
                             0
-                        </th>
+                        </div>
+                    </div>
+                </div>
 
-                        <th id="footerActual">
+                <div class="col-3">
+                    <div class="mini-kpi">
+                        <div class="mini-kpi-title">
+                            Total Actual
+                        </div>
+                        <div class="mini-kpi-value" id="miniActual">
                             0
-                        </th>
+                        </div>
+                    </div>
+                </div>
 
-                        <th id="footerMinus">
-                            0
-                        </th>
-
-                        <th id="footerAchievement">
+                <div class="col-3">
+                    <div class="mini-kpi">
+                        <div class="mini-kpi-title">
+                            Achievement
+                        </div>
+                        <div class="mini-kpi-value" id="miniAchievement">
                             0%
-                        </th>
+                        </div>
+                    </div>
+                </div>
 
-                        <th></th>
-
-                        <th></th>
-
-                        <th id="footerDowntime">
+                <div class="col-3">
+                    <div class="mini-kpi">
+                        <div class="mini-kpi-title">
+                            Gap
+                        </div>
+                        <div class="mini-kpi-value" id="miniGap">
                             0
-                        </th>
+                        </div>
+                    </div>
+                </div>
 
-                        <th></th>
+            </div>
 
-                    </tr>
+        </div>
 
-                </tfoot>
+    </div>
 
-            </table>
+
+    <div class="col-lg-5">
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-card-title">
+                <i class="fas fa-calendar-day"></i>
+                Today Production Planning
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-sm summary-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Machine</th>
+                            <th>Product</th>
+                            <th>Plan</th>
+                            <th>Actual</th>
+                            <th>Achv.</th>
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="planningTable">
+                    </tbody>
+
+                </table>
+
+            </div>
 
         </div>
 
     </div>
 
 </div>
+
+
+<!-- =========================
+     OEE
+========================= -->
+
+<div class="row">
+
+    <div class="col-lg-7">
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-card-title">
+                <i class="fas fa-chart-pie"></i>
+                OEE
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-3">
+
+                    <div class="oee-box">
+
+                        <div class="oee-circle">
+
+                            <canvas id="oeeChart"></canvas>
+
+                            <div
+                                class="oee-center"
+                                id="oeeValue"
+                            >
+                                0%
+                            </div>
+
+                        </div>
+
+                        <div class="oee-name">
+                            OEE
+                        </div>
+
+                        <div class="oee-target">
+                            Target 85%
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <div class="oee-box">
+
+                        <div class="oee-circle">
+
+                            <canvas id="availabilityChart"></canvas>
+
+                            <div
+                                class="oee-center"
+                                id="availabilityValue"
+                            >
+                                0%
+                            </div>
+
+                        </div>
+
+                        <div class="oee-name">
+                            Availability
+                        </div>
+
+                        <div class="oee-target">
+                            Downtime
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <div class="oee-box">
+
+                        <div class="oee-circle">
+
+                            <canvas id="performanceChart"></canvas>
+
+                            <div
+                                class="oee-center"
+                                id="performanceValue"
+                            >
+                                0%
+                            </div>
+
+                        </div>
+
+                        <div class="oee-name">
+                            Performance
+                        </div>
+
+                        <div class="oee-target">
+                            Actual / Target
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <div class="oee-box">
+
+                        <div class="oee-circle">
+
+                            <canvas id="qualityChart"></canvas>
+
+                            <div
+                                class="oee-center"
+                                id="qualityValue"
+                            >
+                                N/A
+                            </div>
+
+                        </div>
+
+                        <div class="oee-name">
+                            Quality
+                        </div>
+
+                        <div class="oee-target">
+                            Data NG belum tersedia
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-5">
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-card-title">
+                <i class="fas fa-info-circle"></i>
+                Rumus OEE
+            </div>
+
+            <div class="info-box">
+
+                <p>
+                    <b>OEE = Availability × Performance × Quality</b>
+                </p>
+
+                <p>
+                    Availability =
+                    <span id="rumusAvailability">0%</span>
+                </p>
+
+                <p>
+                    Performance =
+                    <span id="rumusPerformance">0%</span>
+                </p>
+
+                <p>
+                    Quality =
+                    <span id="rumusQuality">N/A</span>
+                </p>
+
+                <hr>
+
+                <p>
+                    OEE =
+                    <b id="rumusOee">0%</b>
+                </p>
+
+                <small>
+                    Quality belum dapat dihitung secara nyata
+                    karena tabel summary belum memiliki data
+                    Good Product dan NG.
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     PRODUCTION RECORD
+========================= -->
+
+<div class="row">
+
+    <div class="col-12">
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-card-title">
+
+                <i class="fas fa-table"></i>
+                Production Record
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table
+                    class="table table-sm table-bordered summary-table"
+                    id="recordTable"
+                >
+
+                    <thead>
+
+                        <tr>
+
+                            <th>No</th>
+                            <th>Machine</th>
+                            <th>Product</th>
+                            <th>Shift</th>
+                            <th>Plan</th>
+                            <th>Actual</th>
+                            <th>Minus</th>
+                            <th>Achievement</th>
+                            <th>Downtime</th>
+                            <th>Status</th>
+                            <th>Keterangan</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="recordTableBody">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     TREND
+========================= -->
+
+<div class="row">
+
+    <div class="col-lg-4">
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-card-title">
+                Achievement Trend
+            </div>
+
+            <div class="chart-wrapper chart-wrapper-small">
+
+                <canvas id="achievementChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-4">
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-card-title">
+                NG / Defect Trend
+            </div>
+
+            <div class="chart-wrapper chart-wrapper-small">
+
+                <canvas id="ngChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-4">
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-card-title">
+                Downtime Pareto
+            </div>
+
+            <div class="chart-wrapper chart-wrapper-small">
+
+                <canvas id="downtimeChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     ATTENTION
+========================= -->
+
+<div class="row">
+
+    <div class="col-lg-8">
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-card-title">
+
+                <i class="fas fa-bell"></i>
+                Attention Required
+
+            </div>
+
+            <div id="attentionContainer">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-lg-4">
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-card-title">
+
+                <i class="fas fa-info-circle"></i>
+                Informasi
+
+            </div>
+
+            <div class="info-box">
+
+                <p>
+                    Halaman ini menampilkan summary
+                    berdasarkan planning yang dipilih.
+                </p>
+
+                <p>
+                    Status <b>Pending</b> menunjukkan adanya
+                    kendala pada mesin.
+                </p>
+
+                <p>
+                    Downtime akan digunakan dalam perhitungan
+                    Availability.
+                </p>
+
+                <hr>
+
+                <b>TPM SYSTEM V1.0</b>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
 </section>
+
 </div>
 <%- include("../partials/footer") %>
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
 <script>
 
-    // =====================================================
-    // VARIABLE
-    // =====================================================
+$(document).ready(function () {
 
-    let summaryData = [];
+    const path = window.location.pathname;
 
-    let targetActualChart = null;
-
-    let achievementChart = null;
+    const tgl = path.split('/').pop();
 
 
-    // =====================================================
-    // DOCUMENT READY
-    // =====================================================
+    let allData = [];
 
-    $(document).ready(function () {
+    let planActualChart;
+    let achievementChart;
+    let ngChart;
+    let downtimeChart;
 
-        loadSummary();
+    let oeeChart;
+    let availabilityChart;
+    let performanceChart;
+    let qualityChart;
 
-    });
+
+    /* =====================================
+       FORMAT
+    ===================================== */
+
+    function numberFormat(number) {
+
+        return Number(number || 0)
+            .toLocaleString('id-ID');
+
+    }
 
 
-    // =====================================================
-    // LOAD SUMMARY
-    // =====================================================
+    function percentage(number) {
+
+        return Number(number || 0)
+            .toFixed(2) + '%';
+
+    }
+
+
+    function formatDate(date) {
+
+        if (!date) return '-';
+
+        const d = new Date(date);
+
+        return d.toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+
+    }
+
+
+    /* =====================================
+       LOAD DATA
+    ===================================== */
 
     function loadSummary() {
 
-        const id_plan =
-            `<%= new Date(planning.tgl).toLocaleDateString('id-ID').split('/').reverse().join('-') %>`;
+        $.get('/summary/summary-planning/data/' + tgl, function (response) {
 
+            if (!response.success) {
 
-        $.ajax({
-
-            url:
-                '/summary/summary-planning/data/' + id_plan,
-
-            type: 'GET',
-
-            dataType: 'json',
-
-            success: function (response) {
-
-                if (!response.success) {
-
-                    alert(
-                        response.message
-                    );
-
-                    return;
-
-                }
-
-
-                // Simpan data asli
-
-                summaryData =
-                    response.data || [];
-
-
-                // Isi filter MC
-
-                loadMCFilter(
-                    summaryData
+                Swal.fire(
+                    'Error',
+                    'Data summary gagal diambil',
+                    'error'
                 );
 
-
-                // Tampilkan tabel
-
-                renderSummary(
-                    summaryData
-                );
+                return;
+            }
 
 
-                // Hitung total
-
-                updateTotalFromData(
-                    summaryData
-                );
+            allData = response.data || [];
 
 
-                // Tampilkan diagram
+            if (allData.length > 0) {
 
-                renderCharts(
-                    summaryData
-                );
-
-            },
-
-
-            error: function (xhr) {
-
-                console.error(
-                    'SUMMARY ERROR:',
-                    xhr.responseText
-                );
-
-
-                alert(
-                    'Gagal mengambil data Summary'
-                );
+                $('#tanggalPlanning')
+                    .text(formatDate(allData[0].tgl));
 
             }
+
+
+            renderDashboard(allData);
+
+        }).fail(function () {
+
+            Swal.fire(
+                'Error',
+                'Gagal mengambil data summary',
+                'error'
+            );
 
         });
 
     }
 
 
-    // =====================================================
-    // LOAD FILTER MC
-    // =====================================================
+    /* =====================================
+       RENDER DASHBOARD
+    ===================================== */
 
-    function loadMCFilter(data) {
+    function renderDashboard(data) {
 
-        const mcList = [];
+        if (!data.length) {
 
+            $('#tanggalPlanning').text('-');
 
-        data.forEach(
-            function (row) {
+            return;
 
-                const mc =
-                    String(
-                        row.no_mc || ''
-                    );
+        }
 
 
-                if (
-                    mc &&
-                    !mcList.includes(mc)
-                ) {
+        let totalTarget = 0;
+        let totalActual = 0;
+        let totalMinus = 0;
+        let totalDowntime = 0;
 
-                    mcList.push(mc);
 
-                }
+        data.forEach(function (row) {
 
-            }
+            const target =
+                Number(row.target_qty || row.target || 0);
+
+            const actual =
+                Number(row.actual_qty || row.actual || 0);
+
+            const minus =
+                Math.max(target - actual, 0);
+
+            const downtime =
+                Number(row.downtime_minute || 0);
+
+
+            totalTarget += target;
+            totalActual += actual;
+            totalMinus += minus;
+            totalDowntime += downtime;
+
+        });
+
+
+        const achievement =
+            totalTarget > 0
+                ? (totalActual / totalTarget) * 100
+                : 0;
+
+
+        /* =========================
+           KPI
+        ========================= */
+
+        $('#kpiPlan')
+            .text(numberFormat(totalTarget) + ' pcs');
+
+        $('#kpiActual')
+            .text(numberFormat(totalActual) + ' pcs');
+
+        $('#kpiAchievement')
+            .text(percentage(achievement));
+
+        $('#kpiMinus')
+            .text(numberFormat(totalMinus) + ' pcs');
+
+        $('#kpiDowntime')
+            .text(numberFormat(totalDowntime) + ' min');
+
+
+        $('#miniPlan')
+            .text(numberFormat(totalTarget));
+
+        $('#miniActual')
+            .text(numberFormat(totalActual));
+
+        $('#miniAchievement')
+            .text(percentage(achievement));
+
+        $('#miniGap')
+            .text(numberFormat(totalMinus));
+
+
+        /* =========================
+           OEE
+        ========================= */
+
+        calculateOEE(
+            data,
+            totalTarget,
+            totalActual,
+            totalDowntime
         );
 
 
-        // Urutkan MC
+        /* =========================
+           TABLE
+        ========================= */
 
-        mcList.sort(
-            function (a, b) {
+        renderPlanningTable(data);
 
-                return (
-                    Number(a) -
-                    Number(b)
-                );
+        renderRecordTable(data);
 
-            }
-        );
+        renderAttention(data);
 
 
-        let html =
-            '<option value="">Semua MC</option>';
+        /* =========================
+           CHART
+        ========================= */
 
+        renderPlanActualChart(data);
 
-        mcList.forEach(
-            function (mc) {
+        renderAchievementChart(data);
 
-                html += `
+        renderNgChart(data);
 
-                    <option value="${mc}">
-                        MC ${mc}
-                    </option>
-
-                `;
-
-            }
-        );
-
-
-        $('#filterMC')
-            .html(html);
+        renderDowntimeChart(data);
 
     }
 
 
-    // =====================================================
-    // FILTER MC
-    // SHIFT
-    // STATUS
-    // =====================================================
+    /* =====================================
+       OEE
+    ===================================== */
 
-    $('#filterMC, #filterShift, #filterStatus')
-        .on(
-            'change',
-            function () {
+    function calculateOEE(
+        data,
+        totalTarget,
+        totalActual,
+        totalDowntime
+    ) {
 
-                applyFilter();
+        /*
+         * Target shift = 315
+         * Target hour = 45
+         *
+         * 315 / 45 = 7 jam / shift
+         */
+
+        let targetHour = 0;
+
+        data.forEach(function (row) {
+
+            targetHour +=
+                Number(row.target_hour || 0);
+
+        });
+
+
+        /*
+         * Total planned hour.
+         */
+
+        let plannedHour = 0;
+
+        data.forEach(function (row) {
+
+            const targetShift =
+                Number(row.target_shift || 0);
+
+            const hour =
+                Number(row.target_hour || 0);
+
+            if (hour > 0) {
+
+                plannedHour +=
+                    targetShift / hour;
 
             }
-        );
+
+        });
 
 
-    // =====================================================
-    // SEARCH
-    // =====================================================
+        /*
+         * Availability
+         */
 
-    $('#searchSummary')
-        .on(
-            'keyup',
-            function () {
-
-                applyFilter();
-
-            }
-        );
+        let availability = 100;
 
 
-    // =====================================================
-    // APPLY FILTER
-    // =====================================================
+        if (plannedHour > 0) {
 
-    function applyFilter() {
+            availability =
+                ((plannedHour * 60 - totalDowntime) /
+                (plannedHour * 60)) * 100;
 
-        const mc =
-            $('#filterMC').val();
-
-
-        const shift =
-            $('#filterShift').val();
+        }
 
 
-        const status =
-            $('#filterStatus').val();
+        availability =
+            Math.max(0, Math.min(100, availability));
 
 
-        const search =
-            $('#searchSummary')
-                .val()
-                .toLowerCase()
-                .trim();
+        /*
+         * Target setelah downtime
+         */
+
+        const lostProduction =
+            targetHour *
+            (totalDowntime / 60);
 
 
-        const filtered =
-            summaryData.filter(
-                function (row) {
-
-
-                    // =========================
-                    // FILTER MC
-                    // =========================
-
-                    const matchMC =
-                        !mc ||
-                        String(
-                            row.no_mc
-                        ) === mc;
-
-
-                    // =========================
-                    // FILTER SHIFT
-                    // =========================
-
-                    const matchShift =
-                        !shift ||
-                        String(
-                            row.shift
-                        ) === shift;
-
-
-                    // =========================
-                    // FILTER STATUS
-                    // =========================
-
-                    const matchStatus =
-                        !status ||
-                        row.status === status;
-
-
-                    // =========================
-                    // SEARCH
-                    // =========================
-
-                    const text = `
-
-                        ${row.no_mc || ''}
-                        ${row.nama_produk || ''}
-                        ${row.no_part || ''}
-                        ${row.costumer || ''}
-                        ${row.material || ''}
-                        ${row.kendala || ''}
-                        ${row.keterangan || ''}
-
-                    `.toLowerCase();
-
-
-                    const matchSearch =
-                        !search ||
-                        text.includes(search);
-
-
-                    return (
-                        matchMC &&
-                        matchShift &&
-                        matchStatus &&
-                        matchSearch
-                    );
-
-                }
+        const adjustedTarget =
+            Math.max(
+                totalTarget - lostProduction,
+                0
             );
 
 
-        // Render hasil filter
+        /*
+         * Performance
+         */
 
-        renderSummary(
-            filtered
+        let performance = 0;
+
+
+        if (adjustedTarget > 0) {
+
+            performance =
+                (totalActual / adjustedTarget) * 100;
+
+        }
+
+
+        performance =
+            Math.max(
+                0,
+                Math.min(100, performance)
+            );
+
+
+        /*
+         * Quality
+         *
+         * Belum ada data Good Product / NG.
+         *
+         * Untuk sementara 100%.
+         */
+
+        const quality = 100;
+
+
+        /*
+         * OEE
+         */
+
+        const oee =
+            (availability *
+             performance *
+             quality) / 10000;
+
+
+        $('#kpiOee')
+            .text(percentage(oee));
+
+        $('#oeeValue')
+            .text(percentage(oee));
+
+        $('#availabilityValue')
+            .text(percentage(availability));
+
+        $('#performanceValue')
+            .text(percentage(performance));
+
+        $('#qualityValue')
+            .text('100%');
+
+
+        $('#rumusAvailability')
+            .text(percentage(availability));
+
+        $('#rumusPerformance')
+            .text(percentage(performance));
+
+        $('#rumusQuality')
+            .text('100%');
+
+        $('#rumusOee')
+            .text(percentage(oee));
+
+
+        createOeeChart(
+            'oeeChart',
+            oee
         );
 
-
-        // Update dashboard
-
-        updateTotalFromData(
-            filtered
+        createOeeChart(
+            'availabilityChart',
+            availability
         );
 
+        createOeeChart(
+            'performanceChart',
+            performance
+        );
 
-        // Update diagram
-
-        renderCharts(
-            filtered
+        createOeeChart(
+            'qualityChart',
+            quality
         );
 
     }
 
 
-    // =====================================================
-    // RESET FILTER
-    // =====================================================
+    /* =====================================
+       OEE CIRCLE
+    ===================================== */
 
-    $('#btnResetFilter')
-        .on(
-            'click',
-            function () {
+    function createOeeChart(id, value) {
 
-                $('#filterMC')
-                    .val('');
+        const canvas =
+            document.getElementById(id);
 
-                $('#filterShift')
-                    .val('');
-
-                $('#filterStatus')
-                    .val('');
-
-                $('#searchSummary')
-                    .val('');
+        if (!canvas) return;
 
 
-                renderSummary(
-                    summaryData
-                );
+        if (canvas.chartInstance) {
+
+            canvas.chartInstance.destroy();
+
+        }
 
 
-                updateTotalFromData(
-                    summaryData
-                );
+        canvas.chartInstance =
+            new Chart(canvas, {
+
+                type: 'doughnut',
+
+                data: {
+
+                    datasets: [{
+
+                        data: [
+                            value,
+                            100 - value
+                        ],
+
+                        borderWidth: 0
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    cutout: '72%',
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        },
+
+                        tooltip: {
+                            enabled: false
+                        }
+
+                    }
+
+                }
+
+            });
+
+    }
 
 
-                renderCharts(
-                    summaryData
-                );
+    /* =====================================
+       PLAN VS ACTUAL
+    ===================================== */
+
+    function renderPlanActualChart(data) {
+
+        const machineData = {};
+
+
+        data.forEach(function (row) {
+
+            const machine =
+                'MC-' + row.no_mc;
+
+            if (!machineData[machine]) {
+
+                machineData[machine] = {
+                    target: 0,
+                    actual: 0
+                };
 
             }
-        );
 
 
-    // =====================================================
-    // RENDER TABLE
-    // =====================================================
+            machineData[machine].target +=
+                Number(row.target_qty || 0);
 
-    function renderSummary(data) {
+            machineData[machine].actual +=
+                Number(row.actual_qty || 0);
+
+        });
+
+
+        const labels =
+            Object.keys(machineData);
+
+        const target =
+            labels.map(function (x) {
+
+                return machineData[x].target;
+
+            });
+
+        const actual =
+            labels.map(function (x) {
+
+                return machineData[x].actual;
+
+            });
+
+
+        if (planActualChart) {
+
+            planActualChart.destroy();
+
+        }
+
+
+        planActualChart =
+            new Chart(
+
+                document.getElementById(
+                    'planActualChart'
+                ),
+
+                {
+
+                    type: 'bar',
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [
+
+                            {
+
+                                label: 'Target Plan',
+
+                                data: target
+
+                            },
+
+                            {
+
+                                label: 'Actual',
+
+                                data: actual
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+                                position: 'top'
+                            }
+
+                        },
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+    }
+
+
+    /* =====================================
+       PLANNING TABLE
+    ===================================== */
+
+    function renderPlanningTable(data) {
+
+        const grouped = {};
+
+
+        data.forEach(function (row) {
+
+            const key = row.id_plan;
+
+
+            if (!grouped[key]) {
+
+                grouped[key] = {
+
+                    machine: row.no_mc,
+
+                    product: row.nama_produk,
+
+                    target: 0,
+
+                    actual: 0,
+
+                    status: row.status
+
+                };
+
+            }
+
+
+            grouped[key].target +=
+                Number(row.target_qty || 0);
+
+            grouped[key].actual +=
+                Number(row.actual_qty || 0);
+
+
+            if (row.status === 'Pending') {
+
+                grouped[key].status =
+                    'Pending';
+
+            }
+
+        });
+
 
         let html = '';
 
 
-        // =========================
-        // TIDAK ADA DATA
-        // =========================
+        Object.keys(grouped).forEach(function (key) {
 
-        if (
-            !data ||
-            data.length === 0
-        ) {
+            const row = grouped[key];
 
-            html = `
+
+            const achievement =
+                row.target > 0
+                    ? (row.actual / row.target) * 100
+                    : 0;
+
+
+            let statusClass =
+                'status-running';
+
+
+            if (row.status === 'Pending') {
+
+                statusClass =
+                    'status-pending';
+
+            }
+
+
+            if (row.status === 'Finish') {
+
+                statusClass =
+                    'status-finish';
+
+            }
+
+
+            html += `
 
                 <tr>
 
-                    <td
-                        colspan="12"
-                        class="text-center"
-                    >
+                    <td>
+                        INJ-${row.machine}
+                    </td>
 
-                        Tidak ada data Summary
+                    <td>
+                        ${row.product || '-'}
+                    </td>
 
+                    <td>
+                        ${numberFormat(row.target)}
+                    </td>
+
+                    <td>
+                        ${numberFormat(row.actual)}
+                    </td>
+
+                    <td>
+                        ${percentage(achievement)}
+                    </td>
+
+                    <td>
+                        <span class="status ${statusClass}">
+                            ${row.status}
+                        </span>
                     </td>
 
                 </tr>
 
             `;
 
-        }
+        });
 
 
-        // =========================
-        // ADA DATA
-        // =========================
-
-        else {
-
-            data.forEach(
-                function (row) {
-
-                    const status =
-                        row.status || 'Running';
-
-
-                    const achievement =
-                        Number(
-                            row.achievement || 0
-                        );
-
-
-                    html += `
-
-                        <tr>
-
-                            <!-- MC -->
-
-                            <td>
-                                ${row.no_mc || '-'}
-                            </td>
-
-
-                            <!-- PART -->
-
-                            <td class="text-left">
-
-                                <b>
-                                    ${row.nama_produk || '-'}
-                                </b>
-
-                                <br>
-
-                                ${row.no_part || '-'}
-
-                            </td>
-
-
-                            <!-- CUSTOMER -->
-
-                            <td>
-                                ${row.costumer || '-'}
-                            </td>
-
-
-                            <!-- SHIFT -->
-
-                            <td>
-                                ${row.shift || '-'}
-                            </td>
-
-
-                            <!-- TARGET -->
-
-                            <td>
-
-                                ${formatNumber(
-                                    row.target
-                                )}
-
-                            </td>
-
-
-                            <!-- AKTUAL -->
-
-                            <td>
-
-                                ${formatNumber(
-                                    row.actual
-                                )}
-
-                            </td>
-
-
-                            <!-- MINUS -->
-
-                            <td>
-
-                                ${formatNumber(
-                                    row.minus
-                                )}
-
-                            </td>
-
-
-                            <!-- ACHIEVEMENT -->
-
-                            <td>
-
-                                ${achievement.toFixed(2)}%
-
-                            </td>
-
-
-                            <!-- STATUS -->
-
-                            <td>
-
-                                ${
-                                    status === 'Pending'
-
-                                    ?
-
-                                    '<span class="badge badge-warning">Pending</span>'
-
-                                    :
-
-                                    '<span class="badge badge-success">Running</span>'
-                                }
-
-                            </td>
-
-
-                            <!-- KENDALA -->
-
-                            <td class="text-left">
-
-                                ${
-                                    status === 'Pending'
-
-                                    ?
-
-                                    (
-                                        row.kendala || '-'
-                                    )
-
-                                    :
-
-                                    '-'
-                                }
-
-                            </td>
-
-
-                            <!-- DOWNTIME -->
-
-                            <td>
-
-                                ${
-                                    status === 'Pending'
-
-                                    ?
-
-                                    formatNumber(
-                                        row.downtime
-                                    )
-
-                                    :
-
-                                    '0'
-                                }
-
-                            </td>
-
-
-                            <!-- KETERANGAN -->
-
-                            <td class="text-left">
-
-                                ${
-                                    row.keterangan || '-'
-                                }
-
-                            </td>
-
-
-                        </tr>
-
-                    `;
-
-                }
-            );
-
-        }
-
-
-        $('#summaryTable')
+        $('#planningTable')
             .html(html);
 
     }
 
 
-    // =====================================================
-    // UPDATE TOTAL / DASHBOARD
-    // =====================================================
+    /* =====================================
+       RECORD TABLE
+    ===================================== */
 
-    function updateTotalFromData(data) {
+    function renderRecordTable(data) {
 
-        let target = 0;
-
-        let actual = 0;
-
-        let downtime = 0;
-
-        let pending = 0;
-
-        let running = 0;
+        let html = '';
 
 
-        // =========================
-        // HITUNG
-        // =========================
+        data.forEach(function (row, index) {
 
-        data.forEach(
-            function (row) {
+            const target =
+                Number(row.target_qty || 0);
 
-                target +=
-                    Number(
-                        row.target || 0
-                    );
+            const actual =
+                Number(row.actual_qty || 0);
 
+            const minus =
+                Math.max(target - actual, 0);
 
-                actual +=
-                    Number(
-                        row.actual || 0
-                    );
+            const achievement =
+                target > 0
+                    ? (actual / target) * 100
+                    : 0;
 
 
-                downtime +=
-                    Number(
-                        row.downtime || 0
-                    );
+            let statusClass =
+                'status-running';
 
 
-                if (
-                    row.status === 'Pending'
-                ) {
+            if (row.status === 'Pending') {
 
-                    pending++;
-
-                }
-                else {
-
-                    running++;
-
-                }
+                statusClass =
+                    'status-pending';
 
             }
-        );
 
 
-        // =========================
-        // MINUS
-        // =========================
+            if (row.status === 'Finish') {
 
-        const minus =
-            actual - target;
+                statusClass =
+                    'status-finish';
 
-
-        // =========================
-        // ACHIEVEMENT
-        // =========================
-
-        let achievement = 0;
+            }
 
 
-        if (target > 0) {
+            html += `
 
-            achievement =
-                (
-                    actual /
-                    target
-                ) * 100;
+                <tr>
 
-        }
+                    <td>
+                        ${index + 1}
+                    </td>
 
+                    <td>
+                        MC-${row.no_mc}
+                    </td>
 
-        // =========================
-        // DASHBOARD
-        // =========================
+                    <td>
+                        ${row.nama_produk || '-'}
+                    </td>
 
-        $('#totalTarget')
-            .text(
-                formatNumber(target)
-            );
+                    <td>
+                        ${row.shift}
+                    </td>
 
+                    <td>
+                        ${numberFormat(target)}
+                    </td>
 
-        $('#totalActual')
-            .text(
-                formatNumber(actual)
-            );
+                    <td>
+                        ${numberFormat(actual)}
+                    </td>
 
+                    <td>
+                        ${numberFormat(minus)}
+                    </td>
 
-        $('#totalMinus')
-            .text(
-                formatNumber(minus)
-            );
+                    <td>
+                        ${percentage(achievement)}
+                    </td>
 
+                    <td>
+                        ${numberFormat(
+                            row.downtime_minute
+                        )} min
+                    </td>
 
-        $('#totalAchievement')
-            .text(
-                achievement.toFixed(2)
-                + '%'
-            );
+                    <td>
 
+                        <span
+                            class="status ${statusClass}"
+                        >
+                            ${row.status}
+                        </span>
 
-        $('#totalDowntime')
-            .text(
-                formatNumber(downtime)
-                + ' Menit'
-            );
+                    </td>
 
+                    <td>
+                        ${row.keterangan || '-'}
+                    </td>
 
-        $('#totalPending')
-            .text(
-                pending
-                + ' Shift'
-            );
+                </tr>
 
+            `;
 
-        $('#totalRunning')
-            .text(
-                running
-                + ' Shift'
-            );
-
-
-        // =========================
-        // FOOTER TABLE
-        // =========================
-
-        $('#footerTarget')
-            .text(
-                formatNumber(target)
-            );
+        });
 
 
-        $('#footerActual')
-            .text(
-                formatNumber(actual)
-            );
-
-
-        $('#footerMinus')
-            .text(
-                formatNumber(minus)
-            );
-
-
-        $('#footerAchievement')
-            .text(
-                achievement.toFixed(2)
-                + '%'
-            );
-
-
-        $('#footerDowntime')
-            .text(
-                formatNumber(downtime)
-            );
+        $('#recordTableBody')
+            .html(html);
 
     }
 
 
-    // =====================================================
-    // CHART
-    // =====================================================
+    /* =====================================
+       ACHIEVEMENT TREND
+    ===================================== */
 
-    function renderCharts(data) {
+    function renderAchievementChart(data) {
 
-        const mcData = {};
+        const labels = [];
 
-
-        // =========================
-        // KELOMPOKKAN BERDASARKAN MC
-        // =========================
-
-        data.forEach(
-            function (row) {
-
-                const mc =
-                    String(
-                        row.no_mc || '-'
-                    );
+        const values = [];
 
 
-                if (!mcData[mc]) {
+        data.forEach(function (row) {
 
-                    mcData[mc] = {
-
-                        target: 0,
-
-                        actual: 0
-
-                    };
-
-                }
-
-
-                mcData[mc].target +=
-                    Number(
-                        row.target || 0
-                    );
-
-
-                mcData[mc].actual +=
-                    Number(
-                        row.actual || 0
-                    );
-
-            }
-        );
-
-
-        const labels =
-            Object.keys(mcData);
-
-
-        const targets =
-            labels.map(
-                function (mc) {
-
-                    return mcData[mc].target;
-
-                }
+            labels.push(
+                'Shift ' + row.shift
             );
 
 
-        const actuals =
-            labels.map(
-                function (mc) {
+            const target =
+                Number(row.target_qty || 0);
 
-                    return mcData[mc].actual;
+            const actual =
+                Number(row.actual_qty || 0);
 
-                }
+
+            values.push(
+
+                target > 0
+                    ? Number(
+                        ((actual / target) * 100)
+                        .toFixed(2)
+                    )
+                    : 0
+
             );
 
-
-        // =================================================
-        // CHART TARGET VS AKTUAL
-        // =================================================
-
-        if (
-            targetActualChart
-        ) {
-
-            targetActualChart.destroy();
-
-        }
+        });
 
 
-        const targetActualCanvas =
-            document.getElementById(
-                'targetActualChart'
-            );
-
-
-        if (
-            targetActualCanvas
-        ) {
-
-            targetActualChart =
-                new Chart(
-                    targetActualCanvas,
-                    {
-
-                        type: 'bar',
-
-                        data: {
-
-                            labels: labels,
-
-                            datasets: [
-
-                                {
-
-                                    label:
-                                        'Target',
-
-                                    data:
-                                        targets
-
-                                },
-
-                                {
-
-                                    label:
-                                        'Aktual',
-
-                                    data:
-                                        actuals
-
-                                }
-
-                            ]
-
-                        },
-
-                        options: {
-
-                            responsive: true,
-
-                            maintainAspectRatio: false,
-
-                            scales: {
-
-                                y: {
-
-                                    beginAtZero:
-                                        true
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-                );
-
-        }
-
-
-        // =================================================
-        // ACHIEVEMENT PER MC
-        // =================================================
-
-        const achievements =
-            labels.map(
-                function (mc) {
-
-                    const target =
-                        mcData[mc].target;
-
-
-                    const actual =
-                        mcData[mc].actual;
-
-
-                    if (
-                        target <= 0
-                    ) {
-
-                        return 0;
-
-                    }
-
-
-                    return (
-                        actual /
-                        target
-                    ) * 100;
-
-                }
-            );
-
-
-        // =========================
-        // HAPUS CHART LAMA
-        // =========================
-
-        if (
-            achievementChart
-        ) {
+        if (achievementChart) {
 
             achievementChart.destroy();
 
         }
 
 
-        const achievementCanvas =
-            document.getElementById(
-                'achievementChart'
-            );
+        achievementChart =
+            new Chart(
 
+                document.getElementById(
+                    'achievementChart'
+                ),
 
-        if (
-            achievementCanvas
-        ) {
+                {
 
-            achievementChart =
-                new Chart(
-                    achievementCanvas,
-                    {
+                    type: 'line',
 
-                        type: 'bar',
+                    data: {
 
-                        data: {
+                        labels: labels,
 
-                            labels: labels,
+                        datasets: [
 
-                            datasets: [
+                            {
 
-                                {
+                                label: 'Achievement',
 
-                                    label:
-                                        'Achievement (%)',
+                                data: values,
 
-                                    data:
-                                        achievements
+                                tension: 0.3,
 
-                                }
+                                fill: false
 
-                            ]
+                            },
 
-                        },
+                            {
 
-                        options: {
+                                label: 'Target',
 
-                            responsive: true,
+                                data: labels.map(
+                                    function () {
+                                        return 100;
+                                    }
+                                ),
 
-                            maintainAspectRatio: false,
+                                borderDash: [
+                                    5,
+                                    5
+                                ],
 
-                            scales: {
+                                tension: 0
 
-                                y: {
+                            }
 
-                                    beginAtZero:
-                                        true,
+                        ]
 
-                                    max: 100
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                min: 0,
+
+                                max: 100,
+
+                                ticks: {
+
+                                    callback:
+                                    function(value) {
+
+                                        return value + '%';
+
+                                    }
 
                                 }
 
@@ -1496,25 +2076,387 @@
                         }
 
                     }
-                );
+
+                }
+
+            );
+
+    }
+
+
+    /* =====================================
+       NG CHART
+    ===================================== */
+
+    function renderNgChart(data) {
+
+        /*
+         * Data NG belum tersedia.
+         *
+         * Chart tetap dibuat agar layout
+         * sama seperti dashboard.
+         */
+
+        const labels =
+            data.map(function(row) {
+
+                return 'Shift ' + row.shift;
+
+            });
+
+
+        const ng =
+            data.map(function() {
+
+                return 0;
+
+            });
+
+
+        const defect =
+            data.map(function() {
+
+                return 0;
+
+            });
+
+
+        if (ngChart) {
+
+            ngChart.destroy();
 
         }
 
+
+        ngChart =
+            new Chart(
+
+                document.getElementById(
+                    'ngChart'
+                ),
+
+                {
+
+                    type: 'bar',
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [
+
+                            {
+
+                                label: 'NG',
+
+                                data: ng
+
+                            },
+
+                            {
+
+                                label: 'Defect',
+
+                                data: defect
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
     }
 
 
-    // =====================================================
-    // FORMAT ANGKA INDONESIA
-    // =====================================================
+    /* =====================================
+       DOWNTIME PARETO
+    ===================================== */
 
-    function formatNumber(number) {
+    function renderDowntimeChart(data) {
 
-        return Number(
-            number || 0
-        ).toLocaleString(
-            'id-ID'
-        );
+        const labels = [];
+
+        const values = [];
+
+
+        data.forEach(function (row) {
+
+            const downtime =
+                Number(
+                    row.downtime_minute || 0
+                );
+
+
+            if (downtime > 0) {
+
+                labels.push(
+                    'Shift ' + row.shift
+                );
+
+                values.push(downtime);
+
+            }
+
+        });
+
+
+        if (!labels.length) {
+
+            labels.push('Tidak ada downtime');
+
+            values.push(0);
+
+        }
+
+
+        if (downtimeChart) {
+
+            downtimeChart.destroy();
+
+        }
+
+
+        downtimeChart =
+            new Chart(
+
+                document.getElementById(
+                    'downtimeChart'
+                ),
+
+                {
+
+                    type: 'bar',
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [
+
+                            {
+
+                                label:
+                                    'Downtime (Menit)',
+
+                                data: values
+
+                            }
+
+                        ]
+
+                    },
+
+                    options: {
+
+                        indexAxis: 'y',
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            x: {
+
+                                beginAtZero: true
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
 
     }
+
+
+    /* =====================================
+       ATTENTION
+    ===================================== */
+
+    function renderAttention(data) {
+
+        const pending =
+            data.filter(function(row) {
+
+                return row.status === 'Pending';
+
+            });
+
+
+        let html = '';
+
+
+        if (!pending.length) {
+
+            html = `
+
+                <div class="attention-item">
+
+                    <div class="attention-title">
+
+                        <i class="fas fa-check-circle text-success"></i>
+
+                        Tidak ada kendala
+
+                    </div>
+
+                    <div class="attention-detail">
+
+                        Semua summary tidak memiliki status Pending.
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        pending.forEach(function(row) {
+
+            html += `
+
+                <div class="attention-item">
+
+                    <div class="attention-title">
+
+                        <i class="fas fa-exclamation-circle text-warning"></i>
+
+                        MC-${row.no_mc}
+                        - Shift ${row.shift}
+
+                        <span class="pending-badge">
+                            Pending
+                        </span>
+
+                    </div>
+
+                    <div class="attention-detail">
+
+                        Produk :
+                        ${row.nama_produk || '-'}
+
+                        <br>
+
+                        Kendala :
+                        ${row.keterangan || '-'}
+
+                        <br>
+
+                        Downtime :
+                        <b>
+                            ${numberFormat(
+                                row.downtime_minute
+                            )} menit
+                        </b>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+
+        $('#attentionContainer')
+            .html(html);
+
+    }
+
+
+    /* =====================================
+       SEARCH
+    ===================================== */
+
+    $('#searchSummary').on(
+        'keyup',
+        function () {
+
+            const keyword =
+                $(this)
+                .val()
+                .toLowerCase();
+
+
+            const filtered =
+                allData.filter(function(row) {
+
+                    return (
+
+                        String(row.no_mc)
+                            .toLowerCase()
+                            .includes(keyword)
+
+                        ||
+
+                        String(row.nama_produk || '')
+                            .toLowerCase()
+                            .includes(keyword)
+
+                        ||
+
+                        String(row.no_part || '')
+                            .toLowerCase()
+                            .includes(keyword)
+
+                        ||
+
+                        String(row.status || '')
+                            .toLowerCase()
+                            .includes(keyword)
+
+                        ||
+
+                        String(row.shift)
+                            .toLowerCase()
+                            .includes(keyword)
+
+                    );
+
+                });
+
+
+            renderDashboard(filtered);
+
+        }
+    );
+
+
+    /* =====================================
+       START
+    ===================================== */
+
+    loadSummary();
+
+});
 
 </script>
+

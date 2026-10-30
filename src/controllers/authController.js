@@ -40,7 +40,11 @@ exports.login = (req, res) => {
         sameSite: 'strict',
         maxAge: Number(process.env.COOKIE_EXPIRE),
       });
-      res.redirect('/')
+      if (user.role === 'ppic') {
+  return res.redirect('/ppic');
+}
+
+return res.redirect('/');
          }
   );
 };

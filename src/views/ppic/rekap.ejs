@@ -1,0 +1,63 @@
+<%- include('partials/header', { title: title, active: active }) %>
+<%- include('partials/filterbar') %>
+
+<div id="pageContent" class="position-relative">
+  <div id="loading" class="loading-overlay d-none"><div class="spinner-border text-primary"></div></div>
+
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div class="btn-group" role="group" id="levelTabs">
+      <button type="button" class="btn btn-outline-primary" data-level="minggu">Mingguan</button>
+      <button type="button" class="btn btn-outline-primary active" data-level="bulan">Bulanan</button>
+      <button type="button" class="btn btn-outline-primary" data-level="tahun">Tahunan</button>
+    </div>
+    <button class="btn btn-outline-success btn-sm" id="btnCsv" type="button"><i class="bi bi-download"></i> Unduh CSV</button>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-lg-7"><div class="card h-100"><div class="card-header">Produksi &amp; OEE per Periode</div><div class="card-body">
+      <div class="chart-box" style="height:320px"><canvas id="cProd"></canvas></div>
+    </div></div></div>
+    <div class="col-lg-5"><div class="card h-100"><div class="card-header">Availability · Performance · Quality</div><div class="card-body">
+      <div class="chart-box" style="height:320px"><canvas id="cApq"></canvas></div>
+    </div></div></div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-12"><div class="card"><div class="card-header">Downtime (jam) &amp; % NG per Periode</div><div class="card-body">
+      <div class="chart-box" style="height:280px"><canvas id="cLoss"></canvas></div>
+    </div></div></div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header">Tabel Rekap</div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0 small" id="tblRekap">
+        <thead><tr>
+          <th>Periode</th><th class="text-end">Hari</th><th class="text-end">Produksi</th><th class="text-end">Δ Produksi</th>
+          <th class="text-end">OK</th><th class="text-end">NG</th><th class="text-end">% NG</th><th class="text-end">Downtime</th>
+          <th class="text-end">A</th><th class="text-end">P</th><th class="text-end">Q</th><th class="text-end">OEE</th><th class="text-end">Δ OEE</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="card-footer small text-muted">Δ dibandingkan periode sebelumnya pada tabel ini. Δ OEE dalam poin persentase.</div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header">Bandingkan Dua Periode</div>
+    <div class="card-body">
+      <div class="row g-2 mb-3">
+        <div class="col-md-3"><label class="form-label small mb-1">Periode A</label><select class="form-select form-select-sm" id="cmpA"></select></div>
+        <div class="col-md-3"><label class="form-label small mb-1">Periode B</label><select class="form-select form-select-sm" id="cmpB"></select></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0" id="tblCmp">
+          <thead><tr><th>Metrik</th><th class="text-end">A</th><th class="text-end">B</th><th class="text-end">Selisih (B − A)</th><th class="text-end">Perubahan</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer', { script: 'rekap', charts: true }) %>

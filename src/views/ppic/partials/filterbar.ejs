@@ -1,0 +1,46 @@
+<div class="card filter-card mb-3">
+  <div class="card-body py-3">
+    <div class="row g-2 align-items-end">
+      <div class="col-6 col-md-3 col-xl-2">
+        <label class="form-label small mb-1">Dari tanggal</label>
+        <input type="date" class="form-control form-control-sm" id="fDari">
+      </div>
+      <div class="col-6 col-md-3 col-xl-2">
+        <label class="form-label small mb-1">Sampai tanggal</label>
+        <input type="date" class="form-control form-control-sm" id="fSampai">
+      </div>
+      <div class="col-6 col-md-3 col-xl-2">
+        <label class="form-label small mb-1">Mesin</label>
+        <select class="form-select form-select-sm" id="fMesin"><option value="">Semua mesin</option></select>
+      </div>
+      <div class="col-6 col-md-3 col-xl-2">
+        <label class="form-label small mb-1">Customer</label>
+        <select class="form-select form-select-sm" id="fCustomer"><option value="">Semua customer</option></select>
+      </div>
+      <div class="col-12 col-md-6 col-xl-2">
+        <label class="form-label small mb-1">Part</label>
+        <select class="form-select form-select-sm" id="fProduk"><option value="">Semua part</option></select>
+      </div>
+      <div class="col-12 col-md-6 col-xl-2 d-flex gap-2">
+        <button class="btn btn-primary btn-sm flex-fill" id="btnApply" type="button"><i class="bi bi-funnel"></i> Terapkan</button>
+        <div class="dropdown">
+          <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown" type="button" title="Rentang cepat"><i class="bi bi-calendar3"></i></button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item preset" data-preset="bulan" href="#">Bulan data terakhir</a></li>
+            <li><a class="dropdown-item preset" data-preset="30" href="#">30 hari terakhir</a></li>
+            <li><a class="dropdown-item preset" data-preset="tahun" href="#">Tahun data terakhir</a></li>
+            <li><a class="dropdown-item preset" data-preset="semua" href="#">Semua data</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" id="btnReset" href="#">Reset filter</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="emptyState" class="empty-state d-none">
+  <i class="bi bi-inbox"></i>
+  <h5>Belum ada data produksi</h5>
+  <p class="text-muted mb-3">Import file Excel laporan produksi untuk mulai melihat dashboard.</p>
+  <a href="/ppic/import" class="btn btn-primary"><i class="bi bi-file-earmark-excel"></i> Import Excel</a>
+</div>
