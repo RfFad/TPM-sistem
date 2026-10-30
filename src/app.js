@@ -68,6 +68,14 @@ app.use(
 const summaryRoutes = require('./routes/summary/summaryRoutes')
 app.use('/summary', summaryRoutes);
 
+const productionRoutes =
+    require('./routes/production/productionRoutes');
+
+app.use(
+    '/production',
+    productionRoutes
+);
+
 /**
  * Server
  */

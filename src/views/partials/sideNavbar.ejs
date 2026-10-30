@@ -47,23 +47,27 @@
         </p>
     </a>
 </li>
-          <% if (canManage) { %>
-          <li class="nav-item has-treeview">
-            <a href="/user/page" class="nav-link nav-link <%= active === 'user' ? 'active' : '' %>">
-              <i class="nav-icon fas fa-user"></i>
-              <p>
-                User
-              </p>
-            </a>
-          </li>
-          <% } %>
+
+<% if (typeof user !== 'undefined' && user && ['admin', 'develop'].includes(user.role)) { %>
+
+<li class="nav-item has-treeview">
+    <a href="/user/page" class="nav-link <%= active === 'user' ? 'active' : '' %>">
+        <i class="nav-icon fas fa-user"></i>
+        <p>
+            User
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+</li>
+
+<% } %>
          <li class="nav-item has-treeview <%= 
   ['departemen','qms','mtn','produksi','qc','mold','ppic'].includes(active) 
     ? 'menu-open' 
     : '' 
 %>">
 
-  <!-- Menu Utama -->
+  <!-- Menu Utama -->S
   <a href="/departemen/page" 
      class="nav-link <%= 
        ['departemen','qms','mtn','produksi','qc','mold','ppic'].includes(active) 
@@ -172,6 +176,23 @@
       Audit
     </p>
   </a>
+</li>
+
+<li class="nav-item">
+
+    <a
+        href="/production/page"
+        class="nav-link <%= active === 'production' ? 'active' : '' %>"
+    >
+
+        <i class="nav-icon fas fa-industry"></i
+
+        <p>
+            Production
+        </p>
+
+    </a>
+
 </li>
         </ul>
       </nav>

@@ -1,0 +1,3895 @@
+<%- include("../partials/header") %>
+<%- include("../partials/sideNavbar") %>
+
+<div class="content-wrapper">
+
+    <!-- =====================================================
+         TOP HEADER / BREADCRUMB
+    ====================================================== -->
+
+    <section class="content-header">
+
+        <div class="container-fluid">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <ol class="breadcrumb float-sm-left mb-2">
+
+                        <li class="breadcrumb-item">
+                            <a href="/">
+                                Home
+                            </a>
+                        </li>
+
+                        <li class="breadcrumb-item">
+                            Production
+                        </li>
+
+                        <li class="breadcrumb-item active">
+                            Dashboard
+                        </li>
+
+                    </ol>
+
+                    <div class="clearfix"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <section class="content">
+
+        <div class="container-fluid">
+
+
+            <!-- =================================================
+                 PAGE TITLE + FILTER
+            ================================================== -->
+
+            <div class="dashboard-top mb-3">
+
+                <div class="dashboard-title">
+
+                    <h2>
+                        Production Dashboard
+                    </h2>
+
+                    <p>
+                        Monitoring produksi, planning dan performa
+                        mesin secara real-time
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-filters">
+
+
+                    <div class="filter-item">
+
+                        <label>
+                            Tanggal
+                        </label>
+
+                        <div class="filter-control">
+
+                            <i class="far fa-calendar-alt"></i>
+
+                            <input
+                                type="date"
+                                id="filterDate"
+                                value="2026-09-07"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="filter-item">
+
+                        <label>
+                            Departemen
+                        </label>
+
+                        <select
+                            id="filterDepartment"
+                            class="form-control"
+                        >
+
+                            <option>
+                                Plastic Injection
+                            </option>
+
+                            <option>
+                                Compression
+                            </option>
+
+                            <option>
+                                Assembly
+                            </option>
+
+                            <option>
+                                All Department
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="filter-item">
+
+                        <label>
+                            Shift
+                        </label>
+
+                        <select
+                            id="filterShift"
+                            class="form-control"
+                        >
+
+                            <option>
+                                All Shift
+                            </option>
+
+                            <option>
+                                Shift 1
+                            </option>
+
+                            <option>
+                                Shift 2
+                            </option>
+
+                            <option>
+                                Shift 3
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="filter-item">
+
+                        <label>
+                            Machine
+                        </label>
+
+                        <select
+                            id="filterMachine"
+                            class="form-control"
+                        >
+
+                            <option>
+                                All Machine
+                            </option>
+
+                            <option>
+                                INJ-01
+                            </option>
+
+                            <option>
+                                INJ-02
+                            </option>
+
+                            <option>
+                                INJ-03
+                            </option>
+
+                            <option>
+                                INJ-04
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="btn-refresh"
+                        id="btnRefresh"
+                        title="Refresh"
+                    >
+
+                        <i class="fas fa-sync-alt"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 KPI CARDS
+            ================================================== -->
+
+            <div class="row">
+
+
+                <!-- PLAN -->
+
+                <div class="col-xl-3 col-lg-4 col-md-6">
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-icon bg-blue">
+
+                            <i class="fas fa-calendar-check"></i>
+
+                        </div>
+
+                        <div class="kpi-content">
+
+                            <span class="kpi-label">
+                                Production Plan
+                            </span>
+
+                            <h3 id="kpiPlan">
+                                12,500
+                                <small>pcs</small>
+                            </h3>
+
+                            <span class="kpi-trend positive">
+
+                                <i class="fas fa-arrow-up"></i>
+
+                                +2.4%
+
+                                <small>
+                                    vs kemarin
+                                </small>
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTUAL -->
+
+                <div class="col-xl-3 col-lg-4 col-md-6">
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-icon bg-green">
+
+                            <i class="fas fa-industry"></i>
+
+                        </div>
+
+                        <div class="kpi-content">
+
+                            <span class="kpi-label">
+                                Actual Production
+                            </span>
+
+                            <h3 id="kpiActual">
+                                11,850
+                                <small>pcs</small>
+                            </h3>
+
+                            <span class="kpi-trend positive">
+
+                                <i class="fas fa-arrow-up"></i>
+
+                                +1.8%
+
+                                <small>
+                                    vs kemarin
+                                </small>
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACHIEVEMENT -->
+
+                <div class="col-xl-3 col-lg-4 col-md-6">
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-icon bg-teal">
+
+                            <i class="fas fa-bullseye"></i>
+
+                        </div>
+
+                        <div class="kpi-content">
+
+                            <span class="kpi-label">
+                                Achievement
+                            </span>
+
+                            <h3
+                                id="kpiAchievement"
+                                class="text-success"
+                            >
+                                94.8%
+                            </h3>
+
+                            <span class="kpi-trend positive">
+
+                                <i class="fas fa-arrow-up"></i>
+
+                                +2.1%
+
+                                <small>
+                                    vs kemarin
+                                </small>
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- GAP -->
+
+                <div class="col-xl-3 col-lg-4 col-md-6">
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-icon bg-red">
+
+                            <i class="fas fa-minus"></i>
+
+                        </div>
+
+                        <div class="kpi-content">
+
+                            <span class="kpi-label">
+                                Gap
+                            </span>
+
+                            <h3
+                                id="kpiGap"
+                                class="text-danger"
+                            >
+                                -650
+                                <small>pcs</small>
+                            </h3>
+
+                            <span class="kpi-trend negative">
+
+                                <i class="fas fa-arrow-down"></i>
+
+                                -5.2%
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OEE -->
+
+                <div class="col-xl-3 col-lg-4 col-md-6">
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-icon bg-purple">
+
+                            <i class="fas fa-chart-line"></i>
+
+                        </div>
+
+                        <div class="kpi-content">
+
+                            <span class="kpi-label">
+                                OEE
+                            </span>
+
+                            <h3>
+                                82.4%
+                            </h3>
+
+                            <span class="kpi-trend positive">
+
+                                <i class="fas fa-arrow-up"></i>
+
+                                +3.6%
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- GOOD -->
+
+                <div class="col-xl-3 col-lg-4 col-md-6">
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-icon bg-cyan">
+
+                            <i class="fas fa-check-circle"></i>
+
+                        </div>
+
+                        <div class="kpi-content">
+
+                            <span class="kpi-label">
+                                Good Product
+                            </span>
+
+                            <h3>
+                                11,620
+                                <small>pcs</small>
+                            </h3>
+
+                            <span class="kpi-trend positive">
+
+                                <i class="fas fa-arrow-up"></i>
+
+                                +2.0%
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NG -->
+
+                <div class="col-xl-3 col-lg-4 col-md-6">
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-icon bg-orange">
+
+                            <i class="fas fa-exclamation-triangle"></i>
+
+                        </div>
+
+                        <div class="kpi-content">
+
+                            <span class="kpi-label">
+                                NG
+                            </span>
+
+                            <h3
+                                class="text-danger"
+                            >
+                                230
+                                <small>pcs</small>
+                            </h3>
+
+                            <span class="kpi-trend negative">
+
+                                <i class="fas fa-arrow-up"></i>
+
+                                +0.3%
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DOWNTIME -->
+
+                <div class="col-xl-3 col-lg-4 col-md-6">
+
+                    <div class="kpi-card">
+
+                        <div class="kpi-icon bg-gray">
+
+                            <i class="far fa-clock"></i>
+
+                        </div>
+
+                        <div class="kpi-content">
+
+                            <span class="kpi-label">
+                                Downtime
+                            </span>
+
+                            <h3>
+                                48
+                                <small>min</small>
+                            </h3>
+
+                            <span class="kpi-trend negative">
+
+                                <i class="fas fa-arrow-down"></i>
+
+                                -12.7%
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PLAN VS ACTUAL + TODAY PLAN
+            ================================================== -->
+
+            <div class="row">
+
+
+                <!-- GRAPH -->
+
+                <div class="col-lg-7">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-title-row">
+
+                            <div>
+
+                                <h5>
+                                    Plan vs Actual Production
+                                </h5>
+
+                            </div>
+
+                            <div class="chart-legend">
+
+                                <span>
+                                    <i class="legend-blue"></i>
+                                    Target (Plan)
+                                </span>
+
+                                <span>
+                                    <i class="legend-dark"></i>
+                                    Actual
+                                </span>
+
+                                <span>
+                                    <i class="legend-green"></i>
+                                    Achievement
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="chart-container">
+
+                            <canvas
+                                id="productionChart"
+                            ></canvas>
+
+                        </div>
+
+
+                        <div class="mini-summary-row">
+
+
+                            <div class="mini-summary">
+
+                                <span>
+                                    Total Plan
+                                </span>
+
+                                <strong>
+                                    12,500
+                                    <small>pcs</small>
+                                </strong>
+
+                            </div>
+
+
+                            <div class="mini-summary">
+
+                                <span>
+                                    Total Actual
+                                </span>
+
+                                <strong>
+                                    11,850
+                                    <small>pcs</small>
+                                </strong>
+
+                            </div>
+
+
+                            <div class="mini-summary">
+
+                                <span>
+                                    Achievement
+                                </span>
+
+                                <strong
+                                    class="text-success"
+                                >
+                                    94.8%
+                                </strong>
+
+                            </div>
+
+
+                            <div class="mini-summary">
+
+                                <span>
+                                    Gap
+                                </span>
+
+                                <strong
+                                    class="text-danger"
+                                >
+                                    -650 pcs
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- TODAY PLANNING -->
+
+                <div class="col-lg-5">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-title-row">
+
+                            <h5>
+                                Today Production Planning
+                            </h5>
+
+                            <a href="/planning/page">
+                                Lihat Semua
+                            </a>
+
+                        </div>
+
+
+                        <div class="table-responsive">
+
+                            <table class="table production-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Machine
+                                        </th>
+
+                                        <th>
+                                            Product
+                                        </th>
+
+                                        <th>
+                                            Plan
+                                        </th>
+
+                                        <th>
+                                            Actual
+                                        </th>
+
+                                        <th>
+                                            Achv.
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <strong>
+                                                INJ-01
+                                            </strong>
+                                        </td>
+
+                                        <td>
+
+                                            <strong>
+                                                YAMAHA-ABS-001
+                                            </strong>
+
+                                            <small>
+                                                No. Part : 123456
+                                            </small>
+
+                                        </td>
+
+                                        <td>
+                                            2,500
+                                        </td>
+
+                                        <td>
+                                            2,420
+                                        </td>
+
+                                        <td
+                                            class="text-success font-weight-bold"
+                                        >
+                                            96.8%
+                                        </td>
+
+                                        <td>
+
+                                            <span class="status-running">
+                                                Running
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <strong>
+                                                INJ-02
+                                            </strong>
+                                        </td>
+
+                                        <td>
+
+                                            <strong>
+                                                YAMAHA-ABS-002
+                                            </strong>
+
+                                            <small>
+                                                No. Part : 654321
+                                            </small>
+
+                                        </td>
+
+                                        <td>
+                                            2,500
+                                        </td>
+
+                                        <td>
+                                            2,300
+                                        </td>
+
+                                        <td
+                                            class="text-success font-weight-bold"
+                                        >
+                                            92.0%
+                                        </td>
+
+                                        <td>
+
+                                            <span class="status-running">
+                                                Running
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <strong>
+                                                INJ-03
+                                            </strong>
+                                        </td>
+
+                                        <td>
+
+                                            <strong>
+                                                YAMAHA-PP-001
+                                            </strong>
+
+                                            <small>
+                                                No. Part : 987654
+                                            </small>
+
+                                        </td>
+
+                                        <td>
+                                            3,000
+                                        </td>
+
+                                        <td>
+                                            2,860
+                                        </td>
+
+                                        <td
+                                            class="text-success font-weight-bold"
+                                        >
+                                            95.3%
+                                        </td>
+
+                                        <td>
+
+                                            <span class="status-idle">
+                                                Idle
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <strong>
+                                                INJ-04
+                                            </strong>
+                                        </td>
+
+                                        <td>
+
+                                            <strong>
+                                                YAMAHA-PP-002
+                                            </strong>
+
+                                            <small>
+                                                No. Part : 112233
+                                            </small>
+
+                                        </td>
+
+                                        <td>
+                                            2,500
+                                        </td>
+
+                                        <td>
+                                            2,270
+                                        </td>
+
+                                        <td
+                                            class="text-success font-weight-bold"
+                                        >
+                                            90.8%
+                                        </td>
+
+                                        <td>
+
+                                            <span class="status-down">
+                                                Down
+                                            </span>
+
+                                        </td>
+
+                                    </tr>
+
+
+                                </tbody>
+
+
+                                <tfoot>
+
+                                    <tr>
+
+                                        <th colspan="2">
+                                            Total
+                                        </th>
+
+                                        <th>
+                                            12,500
+                                        </th>
+
+                                        <th>
+                                            11,850
+                                        </th>
+
+                                        <th
+                                            class="text-success"
+                                        >
+                                            94.8%
+                                        </th>
+
+                                        <th>
+                                            -
+                                        </th>
+
+                                    </tr>
+
+                                </tfoot>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 OEE + ATTENTION
+            ================================================== -->
+
+            <div class="row">
+
+
+                <!-- OEE -->
+
+                <div class="col-lg-7">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-title-row">
+
+                            <h5>
+                                OEE
+                            </h5>
+
+                            <small class="text-muted">
+                                Overall Equipment Effectiveness
+                            </small>
+
+                        </div>
+
+
+                        <div class="oee-layout">
+
+
+                            <div class="oee-main">
+
+                                <div class="oee-circle">
+
+                                    <div>
+
+                                        <strong>
+                                            82.4%
+                                        </strong>
+
+                                        <span>
+                                            OEE
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <small>
+                                    Target 85%
+                                </small>
+
+                            </div>
+
+
+                            <div class="oee-metric">
+
+                                <div class="oee-ring availability">
+
+                                    <span>
+                                        91.2%
+                                    </span>
+
+                                </div>
+
+                                <strong>
+                                    Availability
+                                </strong>
+
+                                <small>
+                                    Target 90%
+                                </small>
+
+                            </div>
+
+
+                            <div class="oee-metric">
+
+                                <div class="oee-ring performance">
+
+                                    <span>
+                                        88.6%
+                                    </span>
+
+                                </div>
+
+                                <strong>
+                                    Performance
+                                </strong>
+
+                                <small>
+                                    Target 90%
+                                </small>
+
+                            </div>
+
+
+                            <div class="oee-metric">
+
+                                <div class="oee-ring quality">
+
+                                    <span>
+                                        99.1%
+                                    </span>
+
+                                </div>
+
+                                <strong>
+                                    Quality
+                                </strong>
+
+                                <small>
+                                    Target 98%
+                                </small>
+
+                            </div>
+
+
+                            <div class="oee-explanation">
+
+                                <h6>
+                                    Rumus OEE
+                                </h6>
+
+                                <p>
+                                    OEE = Availability × Performance × Quality
+                                </p>
+
+                                <strong>
+                                    91.2% × 88.6% × 99.1%
+                                    = 82.4%
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ATTENTION -->
+
+                <div class="col-lg-5">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-title-row">
+
+                            <h5>
+
+                                <i
+                                    class="fas fa-bell text-danger mr-2"
+                                ></i>
+
+                                Attention Required
+
+                            </h5>
+
+                            <a href="#">
+                                Lihat Semua
+                            </a>
+
+                        </div>
+
+
+                        <div class="attention-item">
+
+                            <div class="attention-icon danger">
+
+                                <i
+                                    class="
+                                        fas
+                                        fa-exclamation-circle
+                                    "
+                                ></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <strong>
+                                    Mesin di bawah target
+                                </strong>
+
+                                <div class="attention-row">
+
+                                    <span>
+                                        INJ-03
+                                    </span>
+
+                                    <strong>
+                                        95.3%
+                                    </strong>
+
+                                    <small>
+                                        Target 98%
+                                    </small>
+
+                                </div>
+
+                                <div class="attention-row">
+
+                                    <span>
+                                        INJ-04
+                                    </span>
+
+                                    <strong>
+                                        90.8%
+                                    </strong>
+
+                                    <small>
+                                        Target 95%
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="attention-item">
+
+                            <div class="attention-icon warning">
+
+                                <i
+                                    class="fas fa-clock"
+                                ></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <strong>
+                                    Plan produksi terlambat
+                                </strong>
+
+                                <div class="attention-row">
+
+                                    <span>
+                                        INJ-04
+                                    </span>
+
+                                    <small>
+                                        Product PP-002
+                                    </small>
+
+                                    <em>
+                                        Terlambat 2 jam
+                                    </em>
+
+                                </div>
+
+                                <div class="attention-row">
+
+                                    <span>
+                                        INJ-03
+                                    </span>
+
+                                    <small>
+                                        Product PP-001
+                                    </small>
+
+                                    <em>
+                                        Terlambat 1 jam
+                                    </em>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PRODUCTION RECORD
+            ================================================== -->
+
+            <div class="row">
+
+                <div class="col-12">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-title-row">
+
+                            <div>
+
+                                <h5>
+                                    <i class="far fa-calendar-alt mr-2"></i>
+                                    Production Record
+                                </h5>
+
+                            </div>
+
+                            <div>
+
+                                <span class="record-date">
+                                    07 Sep 2026
+                                </span>
+
+                                <a
+                                    href="#"
+                                    class="ml-3"
+                                >
+                                    Lihat Semua
+                                </a>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="table-responsive">
+
+                            <table
+                                class="
+                                    table
+                                    production-record-table
+                                "
+                            >
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            No
+                                        </th>
+
+                                        <th>
+                                            Time
+                                        </th>
+
+                                        <th>
+                                            Machine
+                                        </th>
+
+                                        <th>
+                                            Product
+                                        </th>
+
+                                        <th>
+                                            Plan
+                                        </th>
+
+                                        <th>
+                                            Actual
+                                        </th>
+
+                                        <th>
+                                            Good
+                                        </th>
+
+                                        <th>
+                                            NG
+                                        </th>
+
+                                        <th>
+                                            Achievement
+                                        </th>
+
+                                        <th>
+                                            OEE
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody>
+
+                                    <tr>
+
+                                        <td>1</td>
+
+                                        <td>
+                                            07:00 - 08:00
+                                        </td>
+
+                                        <td>
+                                            INJ-01
+                                        </td>
+
+                                        <td>
+                                            YAMAHA-ABS-001
+                                        </td>
+
+                                        <td>
+                                            2,500
+                                        </td>
+
+                                        <td>
+                                            2,420
+                                        </td>
+
+                                        <td>
+                                            2,380
+                                        </td>
+
+                                        <td>
+                                            40
+                                        </td>
+
+                                        <td class="text-success">
+                                            96.8%
+                                        </td>
+
+                                        <td>
+                                            88.7%
+                                        </td>
+
+                                        <td>
+                                            <span class="status-running">
+                                                Running
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>2</td>
+
+                                        <td>
+                                            08:00 - 09:00
+                                        </td>
+
+                                        <td>
+                                            INJ-02
+                                        </td>
+
+                                        <td>
+                                            YAMAHA-ABS-002
+                                        </td>
+
+                                        <td>
+                                            2,500
+                                        </td>
+
+                                        <td>
+                                            2,300
+                                        </td>
+
+                                        <td>
+                                            2,270
+                                        </td>
+
+                                        <td>
+                                            30
+                                        </td>
+
+                                        <td class="text-success">
+                                            92.0%
+                                        </td>
+
+                                        <td>
+                                            82.3%
+                                        </td>
+
+                                        <td>
+                                            <span class="status-running">
+                                                Running
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>3</td>
+
+                                        <td>
+                                            09:00 - 10:00
+                                        </td>
+
+                                        <td>
+                                            INJ-03
+                                        </td>
+
+                                        <td>
+                                            YAMAHA-PP-001
+                                        </td>
+
+                                        <td>
+                                            3,000
+                                        </td>
+
+                                        <td>
+                                            2,860
+                                        </td>
+
+                                        <td>
+                                            2,825
+                                        </td>
+
+                                        <td>
+                                            35
+                                        </td>
+
+                                        <td class="text-success">
+                                            95.3%
+                                        </td>
+
+                                        <td>
+                                            85.6%
+                                        </td>
+
+                                        <td>
+                                            <span class="status-idle">
+                                                Idle
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>4</td>
+
+                                        <td>
+                                            10:00 - 11:00
+                                        </td>
+
+                                        <td>
+                                            INJ-04
+                                        </td>
+
+                                        <td>
+                                            YAMAHA-PP-002
+                                        </td>
+
+                                        <td>
+                                            2,500
+                                        </td>
+
+                                        <td>
+                                            2,270
+                                        </td>
+
+                                        <td>
+                                            2,240
+                                        </td>
+
+                                        <td>
+                                            30
+                                        </td>
+
+                                        <td class="text-success">
+                                            90.8%
+                                        </td>
+
+                                        <td>
+                                            81.9%
+                                        </td>
+
+                                        <td>
+                                            <span class="status-down">
+                                                Down
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>5</td>
+
+                                        <td>
+                                            11:00 - 12:00
+                                        </td>
+
+                                        <td>
+                                            INJ-01
+                                        </td>
+
+                                        <td>
+                                            YAMAHA-ABS-001
+                                        </td>
+
+                                        <td>
+                                            2,500
+                                        </td>
+
+                                        <td>
+                                            2,450
+                                        </td>
+
+                                        <td>
+                                            2,420
+                                        </td>
+
+                                        <td>
+                                            30
+                                        </td>
+
+                                        <td class="text-success">
+                                            98.0%
+                                        </td>
+
+                                        <td>
+                                            86.9%
+                                        </td>
+
+                                        <td>
+                                            <span class="status-running">
+                                                Running
+                                            </span>
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 BOTTOM ANALYTICS
+            ================================================== -->
+
+            <div class="row">
+
+
+                <!-- ACHIEVEMENT -->
+
+                <div class="col-lg-4">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-title-row">
+
+                            <h5>
+                                Achievement Trend
+                                <small>
+                                    (7 Hari Terakhir)
+                                </small>
+                            </h5>
+
+                        </div>
+
+                        <div class="bottom-chart">
+
+                            <canvas
+                                id="achievementChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- NG -->
+
+                <div class="col-lg-4">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-title-row">
+
+                            <h5>
+                                NG / Defect Trend
+                                <small>
+                                    (7 Hari Terakhir)
+                                </small>
+                            </h5>
+
+                        </div>
+
+                        <div class="bottom-chart">
+
+                            <canvas
+                                id="defectChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DOWNTIME -->
+
+                <div class="col-lg-4">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-title-row">
+
+                            <h5>
+                                Downtime Pareto
+                                <small>
+                                    (Menit)
+                                </small>
+                            </h5>
+
+                        </div>
+
+                        <div class="bottom-chart">
+
+                            <canvas
+                                id="downtimeChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FOOTER INFORMATION
+            ================================================== -->
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+                    <div class="dashboard-card quick-filter">
+
+                        <div class="card-title-row">
+
+                            <h5>
+                                <i class="fas fa-filter mr-2"></i>
+                                Filter Cepat
+                            </h5>
+
+                        </div>
+
+
+                        <div class="quick-buttons">
+
+                            <button
+                                class="active"
+                            >
+                                Hari Ini
+                            </button>
+
+                            <button>
+                                Kemarin
+                            </button>
+
+                            <button>
+                                7 Hari
+                            </button>
+
+                            <button>
+                                30 Hari
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-title-row">
+
+                            <h5>
+
+                                <i
+                                    class="
+                                        fas
+                                        fa-database
+                                        mr-2
+                                    "
+                                ></i>
+
+                                Data Integration
+
+                            </h5>
+
+                        </div>
+
+
+                        <p class="integration-text">
+
+                            Data production diambil dari
+                            hasil import Excel dan tersimpan
+                            otomatis ke database.
+
+                        </p>
+
+                        <span class="integration-status">
+
+                            <i class="fas fa-circle"></i>
+
+                            Database Connected
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="dashboard-card">
+
+                        <div class="card-title-row">
+
+                            <h5>
+
+                                <i
+                                    class="
+                                        fas
+                                        fa-info-circle
+                                        mr-2
+                                    "
+                                ></i>
+
+                                Informasi
+
+                            </h5>
+
+                        </div>
+
+
+                        <p class="integration-text">
+
+                            Sistem TPM membantu meningkatkan
+                            produktivitas, kualitas dan
+                            efektivitas mesin secara
+                            berkelanjutan.
+
+                        </p>
+
+
+                        <small class="text-muted">
+                            TPM SYSTEM V1.0
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<%- include("../partials/footer") %>
+
+
+<!-- =========================================================
+     CSS
+========================================================= -->
+
+<style>
+
+body {
+    background: #f4f7fb;
+}
+
+
+/* =========================================================
+   TOP HEADER
+========================================================= */
+
+.dashboard-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-end;
+
+    gap: 20px;
+
+}
+
+.dashboard-title h2 {
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    margin: 0;
+
+    color: #172b4d;
+
+}
+
+.dashboard-title p {
+
+    margin:
+        4px 0 0;
+
+    color: #66809a;
+
+    font-size: 13px;
+
+}
+
+
+.dashboard-filters {
+
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+}
+
+
+.filter-item label {
+
+    display: block;
+
+    font-size: 10px;
+
+    color: #55708a;
+
+    margin-bottom: 4px;
+
+}
+
+
+.filter-control {
+
+    height: 39px;
+
+    min-width: 145px;
+
+    background: white;
+
+    border: 1px solid #dce5ef;
+
+    border-radius: 6px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding:
+        0 10px;
+
+}
+
+
+.filter-control i {
+
+    color:
+        #54708b;
+
+    margin-right:
+        8px;
+
+}
+
+
+.filter-control input {
+
+    width:
+        110px;
+
+    border:
+        none;
+
+    outline:
+        none;
+
+    font-size:
+        12px;
+
+}
+
+
+.filter-item .form-control {
+
+    height:
+        39px;
+
+    min-width:
+        145px;
+
+    font-size:
+        12px;
+
+    border:
+        1px solid #dce5ef;
+
+}
+
+
+.btn-refresh {
+
+    width:
+        39px;
+
+    height:
+        39px;
+
+    border:
+        1px solid #dce5ef;
+
+    background:
+        white;
+
+    border-radius:
+        6px;
+
+    color:
+        #1475d1;
+
+    cursor:
+        pointer;
+
+}
+
+
+/* =========================================================
+   KPI
+========================================================= */
+
+.kpi-card {
+
+    background:
+        white;
+
+    border:
+        1px solid #e5edf5;
+
+    border-radius:
+        8px;
+
+    min-height:
+        125px;
+
+    padding:
+        16px;
+
+    margin-bottom:
+        15px;
+
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    box-shadow:
+        0 2px 8px rgba(22,45,75,.035);
+
+}
+
+
+.kpi-icon {
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    min-width:
+        40px;
+
+    border-radius:
+        8px;
+
+    color:
+        white;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    margin-right:
+        12px;
+
+}
+
+
+.kpi-label {
+
+    display:
+        block;
+
+    color:
+        #61778f;
+
+    font-size:
+        10px;
+
+    font-weight:
+        600;
+
+}
+
+
+.kpi-content h3 {
+
+    margin:
+        4px 0 6px;
+
+    color:
+        #172b4d;
+
+    font-size:
+        22px;
+
+    line-height:
+        1.1;
+
+    font-weight:
+        700;
+
+}
+
+
+.kpi-content h3 small {
+
+    font-size:
+        11px;
+
+    font-weight:
+        500;
+
+    color:
+        #7890a5;
+
+}
+
+
+.kpi-trend {
+
+    font-size:
+        10px;
+
+    font-weight:
+        600;
+
+}
+
+
+.kpi-trend small {
+
+    font-weight:
+        400;
+
+    color:
+        #8497a9;
+
+}
+
+
+.positive {
+
+    color:
+        #0ba55b;
+
+}
+
+
+.negative {
+
+    color:
+        #eb4454;
+
+}
+
+
+/* COLORS */
+
+.bg-blue {
+    background:
+        #1976ed;
+}
+
+.bg-green {
+    background:
+        #16a863;
+}
+
+.bg-teal {
+    background:
+        #0fa673;
+}
+
+.bg-red {
+    background:
+        #e94758;
+}
+
+.bg-purple {
+    background:
+        #6753c8;
+}
+
+.bg-cyan {
+    background:
+        #16b2db;
+}
+
+.bg-orange {
+    background:
+        #f28c28;
+}
+
+.bg-gray {
+    background:
+        #64748b;
+}
+
+
+/* =========================================================
+   DASHBOARD CARD
+========================================================= */
+
+.dashboard-card {
+
+    background:
+        white;
+
+    border:
+        1px solid #e5edf5;
+
+    border-radius:
+        8px;
+
+    margin-bottom:
+        15px;
+
+    padding:
+        14px;
+
+    box-shadow:
+        0 2px 8px rgba(22,45,75,.035);
+
+}
+
+
+.card-title-row {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    margin-bottom:
+        10px;
+
+}
+
+
+.card-title-row h5 {
+
+    margin:
+        0;
+
+    font-size:
+        13px;
+
+    font-weight:
+        700;
+
+    color:
+        #1c3554;
+
+}
+
+
+.card-title-row h5 small {
+
+    color:
+        #7990a5;
+
+    font-size:
+        9px;
+
+    font-weight:
+        400;
+
+}
+
+
+.card-title-row a {
+
+    font-size:
+        10px;
+
+    color:
+        #1475d1;
+
+}
+
+
+/* =========================================================
+   GRAPH
+========================================================= */
+
+.chart-container {
+
+    height:
+        250px;
+
+    position:
+        relative;
+
+}
+
+
+.chart-legend {
+
+    display:
+        flex;
+
+    gap:
+        12px;
+
+    font-size:
+        9px;
+
+    color:
+        #61778f;
+
+}
+
+
+.chart-legend span {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+}
+
+
+.chart-legend i {
+
+    display:
+        inline-block;
+
+    width:
+        15px;
+
+    height:
+        3px;
+
+    margin-right:
+        4px;
+
+}
+
+
+.legend-blue {
+    background:
+        #4f9be8;
+}
+
+
+.legend-dark {
+    background:
+        #173f71;
+}
+
+
+.legend-green {
+    background:
+        #14a568;
+}
+
+
+.mini-summary-row {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap:
+        8px;
+
+    margin-top:
+        10px;
+
+}
+
+
+.mini-summary {
+
+    background:
+        #f8fafc;
+
+    border:
+        1px solid #edf1f5;
+
+    border-radius:
+        6px;
+
+    padding:
+        8px;
+
+}
+
+
+.mini-summary span {
+
+    display:
+        block;
+
+    color:
+        #71869a;
+
+    font-size:
+        9px;
+
+}
+
+
+.mini-summary strong {
+
+    display:
+        block;
+
+    margin-top:
+        3px;
+
+    font-size:
+        14px;
+
+    color:
+        #172b4d;
+
+}
+
+
+.mini-summary strong small {
+
+    font-size:
+        9px;
+
+    color:
+        #7f91a1;
+
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.production-table {
+
+    font-size:
+        9px;
+
+    margin:
+        0;
+
+}
+
+
+.production-table thead th {
+
+    font-size:
+        9px;
+
+    color:
+        #2b4d70;
+
+    background:
+        #f3f7fb;
+
+    border-color:
+        #e5edf5;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.production-table tbody td,
+.production-table tfoot th {
+
+    border-color:
+        #e5edf5;
+
+    padding:
+        8px 5px;
+
+    vertical-align:
+        middle;
+
+}
+
+
+.production-table tbody td small {
+
+    display:
+        block;
+
+    color:
+        #7890a5;
+
+    font-size:
+        8px;
+
+    margin-top:
+        2px;
+
+}
+
+
+.production-table tfoot {
+
+    background:
+        #f8fbfd;
+
+}
+
+
+.status-running,
+.status-idle,
+.status-down {
+
+    display:
+        inline-block;
+
+    padding:
+        4px 8px;
+
+    border-radius:
+        5px;
+
+    font-size:
+        8px;
+
+    font-weight:
+        700;
+
+    color:
+        white;
+
+}
+
+
+.status-running {
+    background:
+        #16a56b;
+}
+
+
+.status-idle {
+    background:
+        #f59a23;
+}
+
+
+.status-down {
+    background:
+        #ea4455;
+}
+
+
+/* =========================================================
+   OEE
+========================================================= */
+
+.oee-layout {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1.1fr
+        .8fr
+        .8fr
+        .8fr
+        1.5fr;
+
+    gap:
+        10px;
+
+    align-items:
+        center;
+
+}
+
+
+.oee-main {
+
+    text-align:
+        center;
+
+}
+
+
+.oee-circle {
+
+    width:
+        120px;
+
+    height:
+        120px;
+
+    border-radius:
+        50%;
+
+    margin:
+        auto;
+
+    background:
+        conic-gradient(
+            #0fa66e 82.4%,
+            #dfe8ef 0
+        );
+
+    position:
+        relative;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+}
+
+
+.oee-circle:before {
+
+    content:
+        '';
+
+    position:
+        absolute;
+
+    width:
+        92px;
+
+    height:
+        92px;
+
+    background:
+        white;
+
+    border-radius:
+        50%;
+
+}
+
+
+.oee-circle div {
+
+    position:
+        relative;
+
+    z-index:
+        1;
+
+}
+
+
+.oee-circle strong {
+
+    display:
+        block;
+
+    font-size:
+        20px;
+
+    color:
+        #172b4d;
+
+}
+
+
+.oee-circle span {
+
+    font-size:
+        9px;
+
+    color:
+        #7890a5;
+
+}
+
+
+.oee-main > small {
+
+    display:
+        block;
+
+    margin-top:
+        6px;
+
+    color:
+        #5a7087;
+
+    font-size:
+        9px;
+
+}
+
+
+.oee-metric {
+
+    text-align:
+        center;
+
+}
+
+
+.oee-ring {
+
+    width:
+        68px;
+
+    height:
+        68px;
+
+    margin:
+        auto auto 6px;
+
+    border-radius:
+        50%;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    position:
+        relative;
+
+}
+
+
+.oee-ring:before {
+
+    content:
+        '';
+
+    position:
+        absolute;
+
+    width:
+        54px;
+
+    height:
+        54px;
+
+    border-radius:
+        50%;
+
+    background:
+        white;
+
+}
+
+
+.oee-ring span {
+
+    position:
+        relative;
+
+    z-index:
+        1;
+
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+    color:
+        #263e58;
+
+}
+
+
+.availability {
+
+    background:
+        conic-gradient(
+            #14a36e 91.2%,
+            #e5edf3 0
+        );
+
+}
+
+
+.performance {
+
+    background:
+        conic-gradient(
+            #2677db 88.6%,
+            #e5edf3 0
+        );
+
+}
+
+
+.quality {
+
+    background:
+        conic-gradient(
+            #7951c9 99.1%,
+            #e5edf3 0
+        );
+
+}
+
+
+.oee-metric strong {
+
+    display:
+        block;
+
+    font-size:
+        10px;
+
+    color:
+        #1d3754;
+
+}
+
+
+.oee-metric small {
+
+    font-size:
+        8px;
+
+    color:
+        #7b8fa2;
+
+}
+
+
+.oee-explanation {
+
+    background:
+        #f7fafc;
+
+    border:
+        1px solid #e5edf4;
+
+    border-radius:
+        7px;
+
+    padding:
+        12px;
+
+}
+
+
+.oee-explanation h6 {
+
+    margin:
+        0 0 6px;
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    color:
+        #1d3754;
+
+}
+
+
+.oee-explanation p {
+
+    margin:
+        0 0 7px;
+
+    font-size:
+        9px;
+
+    color:
+        #587188;
+
+}
+
+
+.oee-explanation strong {
+
+    font-size:
+        9px;
+
+    color:
+        #124e82;
+
+}
+
+
+/* =========================================================
+   ATTENTION
+========================================================= */
+
+.attention-item {
+
+    display:
+        flex;
+
+    gap:
+        10px;
+
+    padding:
+        12px 0;
+
+    border-bottom:
+        1px solid #edf1f5;
+
+}
+
+
+.attention-item:last-child {
+
+    border-bottom:
+        none;
+
+}
+
+
+.attention-icon {
+
+    width:
+        32px;
+
+    height:
+        32px;
+
+    min-width:
+        32px;
+
+    border-radius:
+        50%;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    color:
+        white;
+
+}
+
+
+.attention-icon.danger {
+
+    background:
+        #e94758;
+
+}
+
+
+.attention-icon.warning {
+
+    background:
+        #f29a28;
+
+}
+
+
+.attention-item > div:last-child {
+
+    flex:
+        1;
+
+}
+
+
+.attention-item strong {
+
+    font-size:
+        10px;
+
+    display:
+        block;
+
+    margin-bottom:
+        7px;
+
+    color:
+        #273e56;
+
+}
+
+
+.attention-row {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    font-size:
+        9px;
+
+    margin-bottom:
+        4px;
+
+}
+
+
+.attention-row span {
+
+    color:
+        #506a82;
+
+}
+
+
+.attention-row strong {
+
+    margin:
+        0;
+
+    color:
+        #1689b5;
+
+    font-size:
+        9px;
+
+}
+
+
+.attention-row small {
+
+    font-size:
+        8px;
+
+    color:
+        #7c8fa1;
+
+}
+
+
+.attention-row em {
+
+    font-style:
+        normal;
+
+    color:
+        #eb4454;
+
+    font-size:
+        8px;
+
+}
+
+
+/* =========================================================
+   PRODUCTION RECORD
+========================================================= */
+
+.record-date {
+
+    padding:
+        5px 8px;
+
+    border:
+        1px solid #dce5ef;
+
+    border-radius:
+        5px;
+
+    font-size:
+        9px;
+
+    color:
+        #587188;
+
+}
+
+
+.production-record-table {
+
+    font-size:
+        9px;
+
+    margin:
+        0;
+
+}
+
+
+.production-record-table th {
+
+    background:
+        #f3f7fb;
+
+    color:
+        #284c70;
+
+    font-size:
+        9px;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.production-record-table td {
+
+    white-space:
+        nowrap;
+
+}
+
+
+.production-record-table td,
+.production-record-table th {
+
+    padding:
+        7px 6px;
+
+    border-color:
+        #e4ebf2;
+
+    vertical-align:
+        middle;
+
+}
+
+
+/* =========================================================
+   BOTTOM CHART
+========================================================= */
+
+.bottom-chart {
+
+    height:
+        210px;
+
+    position:
+        relative;
+
+}
+
+
+/* =========================================================
+   QUICK FILTER
+========================================================= */
+
+.quick-buttons {
+
+    display:
+        flex;
+
+    gap:
+        6px;
+
+}
+
+
+.quick-buttons button {
+
+    border:
+        1px solid #dce5ef;
+
+    background:
+        white;
+
+    border-radius:
+        5px;
+
+    padding:
+        7px 13px;
+
+    font-size:
+        9px;
+
+    color:
+        #4f6b84;
+
+    cursor:
+        pointer;
+
+}
+
+
+.quick-buttons button.active {
+
+    background:
+        #1976ed;
+
+    color:
+        white;
+
+    border-color:
+        #1976ed;
+
+}
+
+
+/* =========================================================
+   INFORMATION
+========================================================= */
+
+.integration-text {
+
+    font-size:
+        10px;
+
+    line-height:
+        1.6;
+
+    color:
+        #637a91;
+
+}
+
+
+.integration-status {
+
+    font-size:
+        9px;
+
+    color:
+        #159964;
+
+}
+
+
+.integration-status i {
+
+    font-size:
+        7px;
+
+    margin-right:
+        4px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width: 1200px) {
+
+    .dashboard-top {
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+    }
+
+
+    .oee-layout {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
+
+    .oee-main {
+
+        grid-column:
+            span 3;
+
+    }
+
+
+    .oee-explanation {
+
+        grid-column:
+            span 3;
+
+    }
+
+}
+
+
+@media(max-width: 768px) {
+
+    .dashboard-filters {
+
+        width:
+            100%;
+
+    }
+
+
+    .filter-item {
+
+        width:
+            100%;
+
+    }
+
+
+    .filter-item .form-control,
+    .filter-control {
+
+        width:
+            100%;
+
+    }
+
+
+    .mini-summary-row {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .oee-layout {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .oee-main {
+
+        grid-column:
+            span 2;
+
+    }
+
+
+    .oee-explanation {
+
+        grid-column:
+            span 2;
+
+    }
+
+}
+
+</style>
+
+
+<!-- =========================================================
+     CHART.JS
+========================================================= -->
+
+<script src="/plugins/chart.js/Chart.min.js"></script>
+
+
+<script>
+
+/* =========================================================
+   PRODUCTION CHART
+========================================================= */
+
+const productionCtx =
+    document
+        .getElementById(
+            'productionChart'
+        )
+        .getContext('2d');
+
+
+new Chart(
+    productionCtx,
+    {
+
+        type:
+            'bar',
+
+        data:
+        {
+
+            labels:
+            [
+                '07:00',
+                '08:00',
+                '09:00',
+                '10:00',
+                '11:00',
+                '12:00',
+                '13:00',
+                '14:00',
+                '15:00',
+                '16:00',
+                '17:00',
+                '18:00',
+                '19:00',
+                '20:00'
+            ],
+
+            datasets:
+            [
+
+                {
+
+                    label:
+                        'Target',
+
+                    data:
+                    [
+                        1200,
+                        1450,
+                        1550,
+                        1650,
+                        1700,
+                        1750,
+                        1780,
+                        1800,
+                        1750,
+                        1800,
+                        1820,
+                        1780,
+                        1650,
+                        1680
+                    ]
+
+                },
+
+                {
+
+                    label:
+                        'Actual',
+
+                    data:
+                    [
+                        980,
+                        1320,
+                        1480,
+                        1510,
+                        1550,
+                        1640,
+                        1690,
+                        1700,
+                        1640,
+                        1720,
+                        1700,
+                        1500,
+                        1580,
+                        1620
+                    ]
+
+                }
+
+            ]
+
+        },
+
+        options:
+        {
+
+            responsive:
+                true,
+
+            maintainAspectRatio:
+                false,
+
+            legend:
+            {
+                display:
+                    false
+            },
+
+            scales:
+            {
+
+                yAxes:
+                [
+                    {
+
+                        ticks:
+                        {
+                            beginAtZero:
+                                true
+                        }
+
+                    }
+
+                ]
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   ACHIEVEMENT
+========================================================= */
+
+const achievementCtx =
+    document
+        .getElementById(
+            'achievementChart'
+        )
+        .getContext('2d');
+
+
+new Chart(
+    achievementCtx,
+    {
+
+        type:
+            'line',
+
+        data:
+        {
+
+            labels:
+            [
+                '01 Sep',
+                '02 Sep',
+                '03 Sep',
+                '04 Sep',
+                '05 Sep',
+                '06 Sep',
+                '07 Sep'
+            ],
+
+            datasets:
+            [
+
+                {
+
+                    label:
+                        'Achievement',
+
+                    data:
+                    [
+                        88.2,
+                        90.1,
+                        91.7,
+                        92.3,
+                        93.6,
+                        94.2,
+                        94.8
+                    ],
+
+                    fill:
+                        false,
+
+                    tension:
+                        .3
+
+                },
+
+                {
+
+                    label:
+                        'Target',
+
+                    data:
+                    [
+                        90,
+                        90,
+                        90,
+                        90,
+                        90,
+                        90,
+                        90
+                    ],
+
+                    fill:
+                        false,
+
+                    borderDash:
+                        [5,5]
+
+                }
+
+            ]
+
+        },
+
+        options:
+        {
+
+            responsive:
+                true,
+
+            maintainAspectRatio:
+                false,
+
+            legend:
+            {
+                position:
+                    'top'
+            },
+
+            scales:
+            {
+
+                yAxes:
+                [
+                    {
+
+                        ticks:
+                        {
+                            min:
+                                70,
+                            max:
+                                100
+                        }
+
+                    }
+
+                ]
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   DEFECT
+========================================================= */
+
+const defectCtx =
+    document
+        .getElementById(
+            'defectChart'
+        )
+        .getContext('2d');
+
+
+new Chart(
+    defectCtx,
+    {
+
+        type:
+            'bar',
+
+        data:
+        {
+
+            labels:
+            [
+                '01 Sep',
+                '02 Sep',
+                '03 Sep',
+                '04 Sep',
+                '05 Sep',
+                '06 Sep',
+                '07 Sep'
+            ],
+
+            datasets:
+            [
+
+                {
+
+                    label:
+                        'NG',
+
+                    data:
+                    [
+                        120,
+                        160,
+                        180,
+                        140,
+                        120,
+                        110,
+                        90
+                    ]
+
+                },
+
+                {
+
+                    label:
+                        'Defect',
+
+                    data:
+                    [
+                        95,
+                        110,
+                        120,
+                        105,
+                        90,
+                        80,
+                        60
+                    ]
+
+                }
+
+            ]
+
+        },
+
+        options:
+        {
+
+            responsive:
+                true,
+
+            maintainAspectRatio:
+                false,
+
+            legend:
+            {
+                position:
+                    'top'
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   DOWNTIME PARETO
+========================================================= */
+
+const downtimeCtx =
+    document
+        .getElementById(
+            'downtimeChart'
+        )
+        .getContext('2d');
+
+
+new Chart(
+    downtimeCtx,
+    {
+
+        type:
+            'horizontalBar',
+
+        data:
+        {
+
+            labels:
+            [
+                'Breakdown',
+                'Setup',
+                'Material',
+                'Quality',
+                'Minor Stop'
+            ],
+
+            datasets:
+            [
+
+                {
+
+                    label:
+                        'Minutes',
+
+                    data:
+                    [
+                        18,
+                        16,
+                        14,
+                        10,
+                        8
+                    ]
+
+                }
+
+            ]
+
+        },
+
+        options:
+        {
+
+            responsive:
+                true,
+
+            maintainAspectRatio:
+                false,
+
+            legend:
+            {
+                display:
+                    false
+            },
+
+            scales:
+            {
+
+                xAxes:
+                [
+                    {
+
+                        ticks:
+                        {
+                            beginAtZero:
+                                true
+                        }
+
+                    }
+
+                ]
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+$('#btnRefresh')
+    .on(
+        'click',
+        function() {
+
+            const icon =
+                $(this).find('i');
+
+
+            icon.addClass(
+                'fa-spin'
+            );
+
+
+            setTimeout(
+                function() {
+
+                    icon.removeClass(
+                        'fa-spin'
+                    );
+
+                },
+                700
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   QUICK FILTER
+========================================================= */
+
+$('.quick-buttons button')
+    .on(
+        'click',
+        function() {
+
+            $('.quick-buttons button')
+                .removeClass('active');
+
+
+            $(this)
+                .addClass('active');
+
+        }
+    );
+
+</script>
